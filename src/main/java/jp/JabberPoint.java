@@ -10,6 +10,7 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
 
+import com.darwinsys.swingui.UtilGUI;
 import jp.io.AccessorFactory;
 import jp.model.Model;
 
