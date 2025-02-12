@@ -4,12 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d6af35ae-4d21-4a5a-877b-e8ecf8fd88a1" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Documents/Class Diagram.asta" beforeDir="false" afterPath="$PROJECT_DIR$/Documents/Class Diagram.asta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Jabberpoint-IT/DemoPresentation.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Jabberpoint-IT/DemoPresentation.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/JabberPoint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/JabberPoint.java" afterDir="false" />
-    </list>
+    <list default="true" id="d6af35ae-4d21-4a5a-877b-e8ecf8fd88a1" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -74,7 +69,7 @@
       <option name="presentableId" value="Default" />
       <updated>1739212130172</updated>
       <workItem from="1739212131879" duration="5510000" />
-      <workItem from="1739349473883" duration="8285000" />
+      <workItem from="1739349473883" duration="8770000" />
     </task>
     <servers />
   </component>

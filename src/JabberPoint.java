@@ -21,9 +21,11 @@ public class JabberPoint {
 	protected static final String JABERR = "Jabberpoint Error ";
 	protected static final String JABVERSION = "Jabberpoint 1.6 - OU version";
 
-	/** Het Main Programma */
+	/**
+	 * Het Main Programma
+	 */
 	public static void main(String argv[]) {
-		
+
 		Style.createStyles();
 		Presentation presentation = new Presentation();
 		new SlideViewerFrame(JABVERSION, presentation);
@@ -40,3 +42,4 @@ public class JabberPoint {
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}
+}
