@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  pull_request:   <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>3.0.0</version>
+        </plugin>
+    branches:
+      - main  # Or specify the branch you want to track pull requests for
+  push:
+    branches:
+      - main  # Run on pushes to the main branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # You can also choose windows or macOS if needed
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adoptopenjdk'
+
+      - name: Cache Maven dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Build with Maven
+        run: mvn clean install
+
+      - name: Run Tests with Maven
+        run: mvn test
