@@ -1,20 +1,16 @@
 name: CI
 
 on:
-  pull_request:   <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <version>3.0.0</version>
-        </plugin>
+  pull_request:
     branches:
-      - main  # Or specify the branch you want to track pull requests for
+      - main  # or the branch you want to target for PRs
   push:
     branches:
-      - main  # Run on pushes to the main branch
+      - main  # or the branch you want to trigger on push events
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # You can also choose windows or macOS if needed
+    runs-on: ubuntu-latest  # Can be windows-latest or macos-latest if needed
 
     steps:
       - name: Checkout code
