@@ -16,8 +16,8 @@ public class TestSomething {
         assertTrue(true);
     }
 
-//    @Test
-//    public void testFail() {
-//        fail();
-//    }
+    @Test
+    public void testFail() {
+        fail();
+    }
 }
