@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d6af35ae-4d21-4a5a-877b-e8ecf8fd88a1" name="Changes" comment="" />
+    <list default="true" id="d6af35ae-4d21-4a5a-877b-e8ecf8fd88a1" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/docs/class-diagram.asta" beforeDir="false" afterPath="$PROJECT_DIR$/docs/class-diagram.asta" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -48,7 +50,7 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "git-widget-placeholder": "3ef93ad6",
+    "git-widget-placeholder": "activity-diagram",
     "kotlin-language-version-configured": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
