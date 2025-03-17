@@ -4,54 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d6af35ae-4d21-4a5a-877b-e8ecf8fd88a1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/com/example/TestSomething.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Jabberpoint-IT.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Jabberpoint-IT.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jabberpoint.dtd" beforeDir="false" afterPath="$PROJECT_DIR$/jabberpoint.dtd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Jabberpoint-IT/AboutBox.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Jabberpoint-IT/Accessor.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Jabberpoint-IT/BitmapItem.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Jabberpoint-IT/DemoPresentation.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Jabberpoint-IT/JabberPoint.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Jabberpoint-IT/KeyController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Jabberpoint-IT/MenuController$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Jabberpoint-IT/MenuController$2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Jabberpoint-IT/MenuController$3.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Jabberpoint-IT/MenuController$4.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Jabberpoint-IT/MenuController$5.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Jabberpoint-IT/MenuController$6.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Jabberpoint-IT/MenuController$7.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Jabberpoint-IT/MenuController$8.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Jabberpoint-IT/MenuController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Jabberpoint-IT/Presentation.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Jabberpoint-IT/Slide.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Jabberpoint-IT/SlideItem.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Jabberpoint-IT/SlideViewerComponent.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Jabberpoint-IT/SlideViewerFrame$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Jabberpoint-IT/SlideViewerFrame.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Jabberpoint-IT/Style.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Jabberpoint-IT/TextItem.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Jabberpoint-IT/XMLAccessor.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AboutBox.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/com/AboutBox.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Accessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/com/Accessor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/BitmapItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/com/BitmapItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DemoPresentation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/com/DemoPresentation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/JabberPoint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/com/JabberPoint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/KeyController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/com/KeyController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MenuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/com/MenuController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Presentation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/com/Presentation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Slide.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/com/Slide.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/SlideItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/com/SlideItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/SlideViewerComponent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/com/SlideViewerComponent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/SlideViewerFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/com/SlideViewerFrame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Style.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/com/Style.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/TextItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/com/TextItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/XMLAccessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/com/XMLAccessor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.xml" beforeDir="false" afterPath="$PROJECT_DIR$/test.xml" afterDir="false" />
-    </list>
+    <list default="true" id="d6af35ae-4d21-4a5a-877b-e8ecf8fd88a1" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -95,7 +48,7 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "3ef93ad6",
     "kotlin-language-version-configured": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
