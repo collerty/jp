@@ -2,19 +2,11 @@ package org.example;
 
 import com.formdev.flatlaf.intellijthemes.FlatNordIJTheme;
 
-import java.awt.MenuBar;
-import java.awt.Frame;
-import java.awt.Menu;
-import java.awt.MenuItem;
-import java.awt.MenuShortcut;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.filechooser.FileNameExtensionFilter;
-
-import javax.swing.*;
 
 /** <p>The controller for the menu</p>
  * @author Ian F. Darwin, ian@darwinsys.com, Gert Florijn, Sylvia Stuurman
@@ -25,9 +17,9 @@ import javax.swing.*;
  * @version 1.5 2010/03/03 Sylvia Stuurman
  * @version 1.6 2014/05/16 Sylvia Stuurman
  */
-public class MenuController extends MenuBar {
+public class MenuController extends JMenuBar {
 
-	private Frame parent; // the frame, only used as parent for the Dialogs
+	private JFrame parent; // the frame, only used as parent for the Dialogs
 	private Presentation presentation; // Commands are given to the presentation
 	private File currentFile;  // tracks current file to chnage on save
 
@@ -53,153 +45,130 @@ public class MenuController extends MenuBar {
 	protected static final String LOADERR = "Load Error";
 	protected static final String SAVEERR = "Save Error";
 
-	public MenuController(Frame frame, Presentation pres) {
+	public MenuController(JFrame frame, Presentation pres) {
 		parent = frame;
 		presentation = pres;
-		MenuItem menuItem;
-		Menu fileMenu = new Menu(FILE);
+		JMenuItem menuItem;
+		JMenu fileMenu = new JMenu(FILE);
 
 		fileMenu.add(menuItem = mkMenuItem(NEW));
-		menuItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent actionEvent) {
-				presentation.clear();
-				parent.repaint();
-			}
+		menuItem.addActionListener(e -> {
+			presentation.clear();
+			parent.repaint();
 		});
+
 		fileMenu.add(menuItem = mkMenuItem(OPEN));
-		menuItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent actionEvent) {
+		menuItem.addActionListener(e -> {
+			try {
+				UIManager.setLookAndFeel(new FlatNordIJTheme());
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+
+			JFileChooser fileChooser = new JFileChooser();
+			fileChooser.setDialogTitle("Open Presentation File");
+			fileChooser.setFileFilter(new FileNameExtensionFilter("Presentation Files (*.xml)", "xml"));
+
+			int userSelection = fileChooser.showOpenDialog(parent);
+
+			if (userSelection == JFileChooser.APPROVE_OPTION) {
+				File selectedFile = fileChooser.getSelectedFile();
+				currentFile = selectedFile;
+				presentation.clear();
+				Accessor xmlAccessor = new XMLAccessor();
+
 				try {
-					UIManager.setLookAndFeel(new FlatNordIJTheme());
-				} catch (Exception e) {
-					e.printStackTrace();
+					xmlAccessor.loadFile(presentation, selectedFile.getAbsolutePath());
+					presentation.setSlideNumber(0);
+				} catch (IOException exc) {
+					JOptionPane.showMessageDialog(parent, IOEX + exc,
+							LOADERR, JOptionPane.ERROR_MESSAGE);
 				}
-
-				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.setDialogTitle("Open Presentation File");
-//				fileChooser.setCurrentDirectory(new File(System.getProperty("user.home") + "/Desktop"));
-				fileChooser.setFileFilter(new FileNameExtensionFilter("Presentation Files (*.xml)", "xml"));
-
-				int userSelection = fileChooser.showOpenDialog(parent);
-
-				if (userSelection == JFileChooser.APPROVE_OPTION) {
-					File selectedFile = fileChooser.getSelectedFile();
-					currentFile = selectedFile;
-					presentation.clear();
-					Accessor xmlAccessor = new XMLAccessor();
-
-					try {
-						xmlAccessor.loadFile(presentation, selectedFile.getAbsolutePath());
-						presentation.setSlideNumber(0);
-					} catch (IOException exc) {
-						JOptionPane.showMessageDialog(parent, IOEX + exc,
-								LOADERR, JOptionPane.ERROR_MESSAGE);
-					}
-					parent.repaint();
-				}
+				parent.repaint();
 			}
 		});
 
 		fileMenu.add(menuItem = mkMenuItem(SAVE));
-		menuItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (currentFile != null) {
-					// If there's a current file, save to it
-					Accessor xmlAccessor = new XMLAccessor();
-					try {
-						xmlAccessor.saveFile(presentation, currentFile.getAbsolutePath());
-					} catch (IOException exc) {
-						JOptionPane.showMessageDialog(parent, IOEX + exc,
-								SAVEERR, JOptionPane.ERROR_MESSAGE);
-					}
-				} else {
-					// If no file is opened, fall back to "Save As..."
-					JOptionPane.showMessageDialog(parent, "No file opened. Please use 'Save As...'",
-							SAVEERR, JOptionPane.WARNING_MESSAGE);
+		menuItem.addActionListener(e -> {
+			if (currentFile != null) {
+				Accessor xmlAccessor = new XMLAccessor();
+				try {
+					xmlAccessor.saveFile(presentation, currentFile.getAbsolutePath());
+				} catch (IOException exc) {
+					JOptionPane.showMessageDialog(parent, IOEX + exc,
+							SAVEERR, JOptionPane.ERROR_MESSAGE);
 				}
+			} else {
+				JOptionPane.showMessageDialog(parent, "No file opened. Please use 'Save As...'",
+						SAVEERR, JOptionPane.WARNING_MESSAGE);
 			}
 		});
-		fileMenu.add(menuItem = mkMenuItem(SAVE_AS, KeyEvent.VK_S, true));		menuItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					UIManager.setLookAndFeel(new FlatNordIJTheme());
-				} catch (Exception ex) {
-					ex.printStackTrace();
+
+		fileMenu.add(menuItem = mkMenuItem(SAVE_AS, KeyEvent.VK_S, true));
+		menuItem.addActionListener(e -> {
+			try {
+				UIManager.setLookAndFeel(new FlatNordIJTheme());
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+
+			JFileChooser fileChooser = new JFileChooser();
+			fileChooser.setDialogTitle("Save Presentation As...");
+			fileChooser.setFileFilter(new FileNameExtensionFilter("Presentation Files (*.xml)", "xml"));
+
+			int userSelection = fileChooser.showSaveDialog(parent);
+
+			if (userSelection == JFileChooser.APPROVE_OPTION) {
+				File selectedFile = fileChooser.getSelectedFile();
+				currentFile = selectedFile;
+				String filePath = selectedFile.getAbsolutePath();
+				if (!filePath.toLowerCase().endsWith(".xml")) {
+					filePath += ".xml";
 				}
 
-				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.setDialogTitle("Save Presentation As...");
-				fileChooser.setFileFilter(new FileNameExtensionFilter("Presentation Files (*.xml)", "xml"));
-
-				int userSelection = fileChooser.showSaveDialog(parent);
-
-				if (userSelection == JFileChooser.APPROVE_OPTION) {
-					File selectedFile = fileChooser.getSelectedFile();
-					currentFile = selectedFile;
-					// Ensure the file has .xml extension
-					String filePath = selectedFile.getAbsolutePath();
-					if (!filePath.toLowerCase().endsWith(".xml")) {
-						filePath += ".xml";
-					}
-
-					Accessor xmlAccessor = new XMLAccessor();
-					try {
-						xmlAccessor.saveFile(presentation, filePath);
-					} catch (IOException exc) {
-						JOptionPane.showMessageDialog(parent, IOEX + exc,
-								SAVEERR, JOptionPane.ERROR_MESSAGE);
-					}
+				Accessor xmlAccessor = new XMLAccessor();
+				try {
+					xmlAccessor.saveFile(presentation, filePath);
+				} catch (IOException exc) {
+					JOptionPane.showMessageDialog(parent, IOEX + exc,
+							SAVEERR, JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
 
 		fileMenu.addSeparator();
 		fileMenu.add(menuItem = mkMenuItem(EXIT));
-		menuItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent actionEvent) {
-				presentation.exit(0);
-			}
-		});
+		menuItem.addActionListener(e -> presentation.exit(0));
 		add(fileMenu);
-		Menu viewMenu = new Menu(VIEW);
+
+		JMenu viewMenu = new JMenu(VIEW);
 		viewMenu.add(menuItem = mkMenuItem(NEXT));
-		menuItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent actionEvent) {
-				presentation.nextSlide();
-			}
-		});
+		menuItem.addActionListener(e -> presentation.nextSlide());
 		viewMenu.add(menuItem = mkMenuItem(PREV));
-		menuItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent actionEvent) {
-				presentation.prevSlide();
-			}
-		});
+		menuItem.addActionListener(e -> presentation.prevSlide());
 		viewMenu.add(menuItem = mkMenuItem(GOTO));
-		menuItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent actionEvent) {
-				String pageNumberStr = JOptionPane.showInputDialog((Object)PAGENR);
-				int pageNumber = Integer.parseInt(pageNumberStr);
-				presentation.setSlideNumber(pageNumber - 1);
-			}
+		menuItem.addActionListener(e -> {
+			String pageNumberStr = JOptionPane.showInputDialog((Object)PAGENR);
+			int pageNumber = Integer.parseInt(pageNumberStr);
+			presentation.setSlideNumber(pageNumber - 1);
 		});
 		add(viewMenu);
-		Menu helpMenu = new Menu(HELP);
+
+		JMenu helpMenu = new JMenu(HELP);
 		helpMenu.add(menuItem = mkMenuItem(ABOUT));
-		menuItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent actionEvent) {
-				AboutBox.show(parent);
-			}
-		});
-		setHelpMenu(helpMenu);		// needed for portability (Motif, etc.).
+		menuItem.addActionListener(e -> AboutBox.show(parent));
+		add(helpMenu);
 	}
 
 	// Create a menu item with specific shortcut key
-	public MenuItem mkMenuItem(String name, int keyCode, boolean useShiftModifier) {
-		return new MenuItem(name, new MenuShortcut(keyCode, useShiftModifier));
+	public JMenuItem mkMenuItem(String name, int keyCode, boolean useShiftModifier) {
+		JMenuItem item = new JMenuItem(name);
+		item.setAccelerator(KeyStroke.getKeyStroke(keyCode, useShiftModifier ? KeyEvent.SHIFT_DOWN_MASK : 0));
+		return item;
 	}
 
 	// Create a menu item with default shortcut (first letter)
-	public MenuItem mkMenuItem(String name) {
-		return new MenuItem(name, new MenuShortcut(name.charAt(0)));
+	public JMenuItem mkMenuItem(String name) {
+		return new JMenuItem(name);
 	}
 }

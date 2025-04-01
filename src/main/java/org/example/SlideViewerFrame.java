@@ -2,10 +2,10 @@ package org.example;
 
 import com.formdev.flatlaf.intellijthemes.FlatNordIJTheme;
 
-import java.awt.Dimension;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowAdapter;
 import javax.swing.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.Dimension;
 
 /**
  * <p>The application window for a slideviewcomponent</p>
@@ -49,9 +49,12 @@ public class SlideViewerFrame extends JFrame {
 			});
 		getContentPane().add(slideViewerComponent);
 		addKeyListener(new KeyController(presentation)); // add a controller
-		setMenuBar(new MenuController(this, presentation));	// add another controller
+		setJMenuBar(new MenuController(this, presentation));	// add another controller
 		setSize(new Dimension(WIDTH, HEIGHT)); // Same sizes as java.com.Slide has.
 		setVisible(true);
+		requestFocus(); // Request focus for the window
+		requestFocusInWindow(); // Request focus in the window
+		toFront(); // Bring window to front
 	}
 	public SlideViewerComponent getSlideViewerComponent() {
 		return slideViewerComponent;

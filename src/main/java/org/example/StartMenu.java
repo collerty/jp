@@ -25,7 +25,7 @@ public class StartMenu extends JFrame {
         this.presentation = new Presentation();
 
         // Set up the frame
-        setTitle("JabberPoint - Start Menu");
+        setTitle("JabberPoint - Start Menu 123");
         setLayout(new FlowLayout());
         setSize(400, 300);
         setLocationRelativeTo(null);
