@@ -7,9 +7,11 @@ import java.awt.MenuItem;
 import java.awt.MenuShortcut;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.io.IOException;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
-import javax.swing.JOptionPane;
+import javax.swing.*;
 
 /** <p>The controller for the menu</p>
  * @author Ian F. Darwin, ian@darwinsys.com, Gert Florijn, Sylvia Stuurman
@@ -38,6 +40,7 @@ public class MenuController extends MenuBar {
 	protected static final String PAGENR = "Page number?";
 	protected static final String PREV = "Prev";
 	protected static final String SAVE = "Save";
+	protected static final String SAVE_AS = "Save As...";
 	protected static final String VIEW = "View";
 	
 	protected static final String TESTFILE = "test.xml";
@@ -52,21 +55,7 @@ public class MenuController extends MenuBar {
 		presentation = pres;
 		MenuItem menuItem;
 		Menu fileMenu = new Menu(FILE);
-		fileMenu.add(menuItem = mkMenuItem(OPEN));
-		menuItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent actionEvent) {
-				presentation.clear();
-				Accessor xmlAccessor = new XMLAccessor();
-				try {
-					xmlAccessor.loadFile(presentation, TESTFILE);
-					presentation.setSlideNumber(0);
-				} catch (IOException exc) {
-					JOptionPane.showMessageDialog(parent, IOEX + exc, 
-         			LOADERR, JOptionPane.ERROR_MESSAGE);
-				}
-				parent.repaint();
-			}
-		} );
+
 		fileMenu.add(menuItem = mkMenuItem(NEW));
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent actionEvent) {
@@ -74,6 +63,39 @@ public class MenuController extends MenuBar {
 				parent.repaint();
 			}
 		});
+		fileMenu.add(menuItem = mkMenuItem(OPEN));
+		menuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent actionEvent) {
+				try {
+					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); // Modern UI
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setDialogTitle("Open Presentation File");
+//				fileChooser.setCurrentDirectory(new File(System.getProperty("user.home") + "/Desktop"));
+				fileChooser.setFileFilter(new FileNameExtensionFilter("Presentation Files (*.xml)", "xml"));
+
+				int userSelection = fileChooser.showOpenDialog(parent);
+
+				if (userSelection == JFileChooser.APPROVE_OPTION) {
+					File selectedFile = fileChooser.getSelectedFile();
+					presentation.clear();
+					Accessor xmlAccessor = new XMLAccessor();
+
+					try {
+						xmlAccessor.loadFile(presentation, selectedFile.getAbsolutePath());
+						presentation.setSlideNumber(0);
+					} catch (IOException exc) {
+						JOptionPane.showMessageDialog(parent, IOEX + exc,
+								LOADERR, JOptionPane.ERROR_MESSAGE);
+					}
+					parent.repaint();
+				}
+			}
+		});
+
 		fileMenu.add(menuItem = mkMenuItem(SAVE));
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -86,6 +108,41 @@ public class MenuController extends MenuBar {
 				}
 			}
 		});
+		fileMenu.add(menuItem = mkMenuItem(SAVE_AS));
+		menuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); // Modern UI
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setDialogTitle("Save Presentation As...");
+				fileChooser.setFileFilter(new FileNameExtensionFilter("Presentation Files (*.xml)", "xml"));
+
+				int userSelection = fileChooser.showSaveDialog(parent);
+
+				if (userSelection == JFileChooser.APPROVE_OPTION) {
+					File selectedFile = fileChooser.getSelectedFile();
+
+					// Ensure the file has .xml extension
+					String filePath = selectedFile.getAbsolutePath();
+					if (!filePath.toLowerCase().endsWith(".xml")) {
+						filePath += ".xml";
+					}
+
+					Accessor xmlAccessor = new XMLAccessor();
+					try {
+						xmlAccessor.saveFile(presentation, filePath);
+					} catch (IOException exc) {
+						JOptionPane.showMessageDialog(parent, IOEX + exc,
+								SAVEERR, JOptionPane.ERROR_MESSAGE);
+					}
+				}
+			}
+		});
+
 		fileMenu.addSeparator();
 		fileMenu.add(menuItem = mkMenuItem(EXIT));
 		menuItem.addActionListener(new ActionListener() {
