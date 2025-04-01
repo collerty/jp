@@ -28,8 +28,8 @@ public class SlideViewerComponent extends JComponent {
 	
 	private static final long serialVersionUID = 227L;
 	
-	private static final Color BGCOLOR = Color.white;
-	private static final Color COLOR = Color.black;
+	private static final Color BGCOLOR = new Color(46, 52, 64);
+	private static final Color COLOR =new Color(216, 222, 233);
 	private static final String FONTNAME = "Dialog";
 	private static final int FONTSTYLE = Font.BOLD;
 	private static final int FONTHEIGHT = 10;

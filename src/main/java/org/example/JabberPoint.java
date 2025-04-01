@@ -1,8 +1,8 @@
 package org.example;
 
-import javax.swing.JOptionPane;
+import com.formdev.flatlaf.intellijthemes.FlatNordIJTheme;
 
-import java.io.IOException;
+import javax.swing.*;
 
 /** java.com.JabberPoint Main Programma
  * <p>This program is distributed under the terms of the accompanying
@@ -24,24 +24,21 @@ public class JabberPoint {
 	protected static final String JABVERSION = "Jabberpoint 1.6 - OU version";
 
 	/**
-	 * Het Main Programma
+	 * Main Program
 	 */
-	public static void main(String argv[]) {
 
+	public static void main(String argv[]) {
+		try {
+			UIManager.setLookAndFeel(new FlatNordIJTheme());  // Set the Look and Feel
+		} catch (UnsupportedLookAndFeelException e) {
+			e.printStackTrace();
+		}
+		// Create styles
 		Style.createStyles();
 		Presentation presentation = new Presentation();
-		new SlideViewerFrame(JABVERSION, presentation);
-		try {
-			if (argv.length == 0) { // een demo presentatie
-				Accessor.getDemoAccessor().loadFile(presentation, "");
-			} else {
-				new XMLAccessor().loadFile(presentation, argv[0]);
-			}
-			presentation.setSlideNumber(0);
-		} catch (IOException ex) {
-			JOptionPane.showMessageDialog(null,
-					IOERR + ex, JABERR,
-					JOptionPane.ERROR_MESSAGE);
-		}
+
+		// First show the Start Menu
+		StartMenu startMenu = new StartMenu(new JFrame());
+
 	}
 }

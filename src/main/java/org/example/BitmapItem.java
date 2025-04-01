@@ -9,6 +9,7 @@ import java.io.File;
 import javax.imageio.ImageIO;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 
 /** <p>De klasse voor een Bitmap item</p>
@@ -30,16 +31,21 @@ public class BitmapItem extends SlideItem {
   protected static final String NOTFOUND = " not found";
 
 // level is equal to item-level; name is the name of the file with the Image
-	public BitmapItem(int level, String name) {
-		super(level);
-		imageName = name;
-		try {
-			bufferedImage = ImageIO.read(new File(imageName));
+public BitmapItem(int level, String name) {
+	super(level);
+	imageName = name;
+	try {
+		// Use getClassLoader().getResourceAsStream() to load from classpath
+		InputStream imgStream = getClass().getClassLoader().getResourceAsStream(imageName);
+		if (imgStream == null) {
+			throw new IOException(FILE + imageName + NOTFOUND);
 		}
-		catch (IOException e) {
-			System.err.println(FILE + imageName + NOTFOUND) ;
-		}
+		bufferedImage = ImageIO.read(imgStream);
+	} catch (IOException e) {
+		System.err.println(FILE + imageName + NOTFOUND);
 	}
+}
+
 
 // An empty bitmap-item
 	public BitmapItem() {
