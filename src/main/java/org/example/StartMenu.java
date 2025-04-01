@@ -12,7 +12,7 @@ import java.io.IOException;
 
 public class StartMenu extends JFrame {
     private Presentation presentation;
-    private Frame parent;
+    private JFrame parent;
 
     // Constants for menu options
     private static final String NEW = "New";
@@ -20,12 +20,12 @@ public class StartMenu extends JFrame {
     private static final String DEMO = "Demo";
     private static final String BROWSE = "Browse file system";
 
-    public StartMenu(Frame parent) {
+    public StartMenu(JFrame parent) {
         this.parent = parent;
         this.presentation = new Presentation();
 
         // Set up the frame
-        setTitle("JabberPoint - Start Menu 123");
+        setTitle("JabberPoint - Start Menu");
         setLayout(new FlowLayout());
         setSize(400, 300);
         setLocationRelativeTo(null);
@@ -37,27 +37,9 @@ public class StartMenu extends JFrame {
         JButton demoButton = new JButton(DEMO);
 
         // Add action listeners to buttons
-        newButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                // Create a new blank presentation or load a demo one
-                loadNewPresentation();
-            }
-        });
-
-        openButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                // Open a file chooser to browse for an existing presentation
-                openPresentationFile();
-            }
-        });
-
-        demoButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                // Load a demo template (for now, just test.xml)
-                loadDemoPresentation();
-            }
-        });
-
+        newButton.addActionListener(e -> loadNewPresentation());
+        openButton.addActionListener(e -> openPresentationFile());
+        demoButton.addActionListener(e -> loadDemoPresentation());
 
         // Add buttons to the frame
         add(newButton);
@@ -65,9 +47,9 @@ public class StartMenu extends JFrame {
         add(demoButton);
 
         // Ensure no button has focus when the window opens
-        newButton.setFocusable(false); // Disable focus on this button
-        openButton.setFocusable(false); // Disable focus on this button
-        demoButton.setFocusable(false); // Disable focus on this button
+        newButton.setFocusable(false);
+        openButton.setFocusable(false);
+        demoButton.setFocusable(false);
 
         // Request focus for the frame to avoid focusing on buttons
         this.requestFocusInWindow();
@@ -77,27 +59,35 @@ public class StartMenu extends JFrame {
     }
 
     private void loadNewPresentation() {
+        presentation.clear();
+        SlideViewerFrame viewerFrame = new SlideViewerFrame("JabberPoint", presentation);
+        presentation.setShowView(viewerFrame.getSlideViewerComponent());
         presentation.setSlideNumber(0);
-        new SlideViewerFrame("JabberPoint", presentation);
-        dispose(); // Close the start menu
+        viewerFrame.getSlideViewerComponent().revalidate();
+        viewerFrame.getSlideViewerComponent().repaint();
+        dispose();
     }
 
     private void loadDemoPresentation() {
-        SlideViewerFrame viewer = new SlideViewerFrame("JabberPoint Demo", presentation);
         try {
+            presentation.clear();
+            SlideViewerFrame viewerFrame = new SlideViewerFrame("JabberPoint Demo", presentation);
+            presentation.setShowView(viewerFrame.getSlideViewerComponent());
+            
             Accessor.getDemoAccessor().loadFile(presentation, "");
             presentation.setSlideNumber(0);
-
-            dispose(); // Close the start menu
+            
+            viewerFrame.getSlideViewerComponent().revalidate();
+            viewerFrame.getSlideViewerComponent().repaint();
+            
+            dispose();
         } catch (IOException ex) {
-            JOptionPane.showMessageDialog(parent, "IO Error: " + ex, "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "IO Error: " + ex, "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-
     private void openPresentationFile() {
         try {
-//            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); // Modern UI
             UIManager.setLookAndFeel(new FlatNordIJTheme());
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -107,34 +97,27 @@ public class StartMenu extends JFrame {
         fileChooser.setDialogTitle("Open Presentation File");
         fileChooser.setFileFilter(new FileNameExtensionFilter("Presentation Files (*.xml)", "xml"));
 
-        int userSelection = fileChooser.showOpenDialog(parent);
+        int userSelection = fileChooser.showOpenDialog(this);
 
         if (userSelection == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
             presentation.clear();
+            
+            SlideViewerFrame viewerFrame = new SlideViewerFrame("JabberPoint - " + selectedFile.getName(), presentation);
+            presentation.setShowView(viewerFrame.getSlideViewerComponent());
+            
             Accessor xmlAccessor = new XMLAccessor();
-
             try {
-                // Load the selected file
                 xmlAccessor.loadFile(presentation, selectedFile.getAbsolutePath());
-                presentation.setSlideNumber(0);  // Reset the slide number
-
-                // Create a new SlideViewerFrame with the correct title
-                SlideViewerFrame viewerFrame = new SlideViewerFrame("JabberPoint - " + selectedFile.getName(), presentation);
-
-                // Revalidate and repaint the SlideViewerComponent to ensure it updates correctly
+                presentation.setSlideNumber(0);
+                
                 viewerFrame.getSlideViewerComponent().revalidate();
                 viewerFrame.getSlideViewerComponent().repaint();
-
-                // If needed, you can repaint the parent or other components as well
-                parent.repaint();
-
-                dispose(); // Close the start menu frame
-
+                
+                dispose();
             } catch (IOException ex) {
-                JOptionPane.showMessageDialog(parent, "IO Error: " + ex, "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "IO Error: " + ex, "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
-
 }

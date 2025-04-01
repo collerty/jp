@@ -3,8 +3,6 @@ package org.example;
 import com.formdev.flatlaf.intellijthemes.FlatNordIJTheme;
 
 import javax.swing.*;
-import java.awt.*;
-import java.io.IOException;
 
 /** java.com.JabberPoint Main Programma
  * <p>This program is distributed under the terms of the accompanying
@@ -40,7 +38,7 @@ public class JabberPoint {
 		Presentation presentation = new Presentation();
 
 		// First show the Start Menu
-		StartMenu startMenu = new StartMenu(new Frame());
+		StartMenu startMenu = new StartMenu(new JFrame());
 
 	}
 }
