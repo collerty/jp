@@ -1,7 +1,7 @@
 package org.example;
 
 import javax.swing.JOptionPane;
-
+import java.awt.*;
 import java.io.IOException;
 
 /** java.com.JabberPoint Main Programma
@@ -24,24 +24,39 @@ public class JabberPoint {
 	protected static final String JABVERSION = "Jabberpoint 1.6 - OU version";
 
 	/**
-	 * Het Main Programma
+	 * Main Program
 	 */
 	public static void main(String argv[]) {
 
+		// Create styles
 		Style.createStyles();
 		Presentation presentation = new Presentation();
-		new SlideViewerFrame(JABVERSION, presentation);
-		try {
-			if (argv.length == 0) { // een demo presentatie
-				Accessor.getDemoAccessor().loadFile(presentation, "");
-			} else {
-				new XMLAccessor().loadFile(presentation, argv[0]);
-			}
-			presentation.setSlideNumber(0);
-		} catch (IOException ex) {
-			JOptionPane.showMessageDialog(null,
-					IOERR + ex, JABERR,
-					JOptionPane.ERROR_MESSAGE);
-		}
+
+		// First show the Start Menu
+		StartMenu startMenu = new StartMenu(new Frame());
+
+		// Wait for user action from the Start Menu (you could have callbacks here)
+		// Once the user chooses an option, proceed to the following steps:
+
+		// In this case, simulate an option selection (open file or create new)
+//		if (argv.length == 0) {
+//			// Show the presentation window after starting with a demo presentation
+//			try {
+//				Accessor.getDemoAccessor().loadFile(presentation, "");
+//				presentation.setSlideNumber(0);
+//				new SlideViewerFrame(JABVERSION, presentation);
+//			} catch (IOException ex) {
+//				JOptionPane.showMessageDialog(null, IOERR + ex, JABERR, JOptionPane.ERROR_MESSAGE);
+//			}
+//		} else {
+//			// Load a specific file passed as an argument
+//			try {
+//				new XMLAccessor().loadFile(presentation, argv[0]);
+//				presentation.setSlideNumber(0);
+//				new SlideViewerFrame(JABVERSION, presentation);
+//			} catch (IOException ex) {
+//				JOptionPane.showMessageDialog(null, IOERR + ex, JABERR, JOptionPane.ERROR_MESSAGE);
+//			}
+//		}
 	}
 }

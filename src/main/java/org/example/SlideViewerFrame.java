@@ -22,10 +22,11 @@ public class SlideViewerFrame extends JFrame {
 	private static final String JABTITLE = "Jabberpoint 1.6 - OU";
 	public final static int WIDTH = 1200;
 	public final static int HEIGHT = 800;
-	
+	private SlideViewerComponent slideViewerComponent; // an instance variable
+
 	public SlideViewerFrame(String title, Presentation presentation) {
 		super(title);
-		SlideViewerComponent slideViewerComponent = new SlideViewerComponent(presentation, this);
+		this.slideViewerComponent = new SlideViewerComponent(presentation, this);
 		presentation.setShowView(slideViewerComponent);
 		setupWindow(slideViewerComponent, presentation);
 	}
@@ -44,5 +45,8 @@ public class SlideViewerFrame extends JFrame {
 		setMenuBar(new MenuController(this, presentation));	// add another controller
 		setSize(new Dimension(WIDTH, HEIGHT)); // Same sizes as java.com.Slide has.
 		setVisible(true);
+	}
+	public SlideViewerComponent getSlideViewerComponent() {
+		return slideViewerComponent;
 	}
 }

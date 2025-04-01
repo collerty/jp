@@ -7,6 +7,7 @@ import java.awt.MenuItem;
 import java.awt.MenuShortcut;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -23,12 +24,13 @@ import javax.swing.*;
  * @version 1.6 2014/05/16 Sylvia Stuurman
  */
 public class MenuController extends MenuBar {
-	
+
 	private Frame parent; // the frame, only used as parent for the Dialogs
 	private Presentation presentation; // Commands are given to the presentation
-	
+	private File currentFile;  // tracks current file to chnage on save
+
 	private static final long serialVersionUID = 227L;
-	
+
 	protected static final String ABOUT = "About";
 	protected static final String FILE = "File";
 	protected static final String EXIT = "Exit";
@@ -42,10 +44,9 @@ public class MenuController extends MenuBar {
 	protected static final String SAVE = "Save";
 	protected static final String SAVE_AS = "Save As...";
 	protected static final String VIEW = "View";
-	
-	protected static final String TESTFILE = "test.xml";
+
 	protected static final String SAVEFILE = "dump.xml";
-	
+
 	protected static final String IOEX = "IO Exception: ";
 	protected static final String LOADERR = "Load Error";
 	protected static final String SAVEERR = "Save Error";
@@ -81,6 +82,7 @@ public class MenuController extends MenuBar {
 
 				if (userSelection == JFileChooser.APPROVE_OPTION) {
 					File selectedFile = fileChooser.getSelectedFile();
+					currentFile = selectedFile;
 					presentation.clear();
 					Accessor xmlAccessor = new XMLAccessor();
 
@@ -99,17 +101,23 @@ public class MenuController extends MenuBar {
 		fileMenu.add(menuItem = mkMenuItem(SAVE));
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Accessor xmlAccessor = new XMLAccessor();
-				try {
-					xmlAccessor.saveFile(presentation, SAVEFILE);
-				} catch (IOException exc) {
-					JOptionPane.showMessageDialog(parent, IOEX + exc, 
-							SAVEERR, JOptionPane.ERROR_MESSAGE);
+				if (currentFile != null) {
+					// If there's a current file, save to it
+					Accessor xmlAccessor = new XMLAccessor();
+					try {
+						xmlAccessor.saveFile(presentation, currentFile.getAbsolutePath());
+					} catch (IOException exc) {
+						JOptionPane.showMessageDialog(parent, IOEX + exc,
+								SAVEERR, JOptionPane.ERROR_MESSAGE);
+					}
+				} else {
+					// If no file is opened, fall back to "Save As..."
+					JOptionPane.showMessageDialog(parent, "No file opened. Please use 'Save As...'",
+							SAVEERR, JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});
-		fileMenu.add(menuItem = mkMenuItem(SAVE_AS));
-		menuItem.addActionListener(new ActionListener() {
+		fileMenu.add(menuItem = mkMenuItem(SAVE_AS, KeyEvent.VK_S, true));		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); // Modern UI
@@ -183,7 +191,12 @@ public class MenuController extends MenuBar {
 		setHelpMenu(helpMenu);		// needed for portability (Motif, etc.).
 	}
 
-// create a menu item
+	// Create a menu item with specific shortcut key
+	public MenuItem mkMenuItem(String name, int keyCode, boolean useShiftModifier) {
+		return new MenuItem(name, new MenuShortcut(keyCode, useShiftModifier));
+	}
+
+	// Create a menu item with default shortcut (first letter)
 	public MenuItem mkMenuItem(String name) {
 		return new MenuItem(name, new MenuShortcut(name.charAt(0)));
 	}
