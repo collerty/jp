@@ -1,5 +1,7 @@
 package org.example;
 
+import com.formdev.flatlaf.intellijthemes.FlatNordIJTheme;
+
 import java.awt.MenuBar;
 import java.awt.Frame;
 import java.awt.Menu;
@@ -68,7 +70,7 @@ public class MenuController extends MenuBar {
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent actionEvent) {
 				try {
-					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); // Modern UI
+					UIManager.setLookAndFeel(new FlatNordIJTheme());
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -120,7 +122,7 @@ public class MenuController extends MenuBar {
 		fileMenu.add(menuItem = mkMenuItem(SAVE_AS, KeyEvent.VK_S, true));		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); // Modern UI
+					UIManager.setLookAndFeel(new FlatNordIJTheme());
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
@@ -133,7 +135,7 @@ public class MenuController extends MenuBar {
 
 				if (userSelection == JFileChooser.APPROVE_OPTION) {
 					File selectedFile = fileChooser.getSelectedFile();
-
+					currentFile = selectedFile;
 					// Ensure the file has .xml extension
 					String filePath = selectedFile.getAbsolutePath();
 					if (!filePath.toLowerCase().endsWith(".xml")) {

@@ -95,30 +95,46 @@ public class StartMenu extends JFrame {
     }
 
 
-
     private void openPresentationFile() {
         try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); // Modern UI
-//            UIManager.setLookAndFeel(new FlatNordIJTheme());
+//            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); // Modern UI
+            UIManager.setLookAndFeel(new FlatNordIJTheme());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Open Presentation File");
         fileChooser.setFileFilter(new FileNameExtensionFilter("Presentation Files (*.xml)", "xml"));
 
         int userSelection = fileChooser.showOpenDialog(parent);
+
         if (userSelection == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
+            presentation.clear();
             Accessor xmlAccessor = new XMLAccessor();
+
             try {
+                // Load the selected file
                 xmlAccessor.loadFile(presentation, selectedFile.getAbsolutePath());
-                presentation.setSlideNumber(0);
-                new SlideViewerFrame("JabberPoint", presentation);
-                dispose(); // Close the start menu
+                presentation.setSlideNumber(0);  // Reset the slide number
+
+                // Create a new SlideViewerFrame with the correct title
+                SlideViewerFrame viewerFrame = new SlideViewerFrame("JabberPoint - " + selectedFile.getName(), presentation);
+
+                // Revalidate and repaint the SlideViewerComponent to ensure it updates correctly
+                viewerFrame.getSlideViewerComponent().revalidate();
+                viewerFrame.getSlideViewerComponent().repaint();
+
+                // If needed, you can repaint the parent or other components as well
+                parent.repaint();
+
+                dispose(); // Close the start menu frame
+
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(parent, "IO Error: " + ex, "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
+
 }

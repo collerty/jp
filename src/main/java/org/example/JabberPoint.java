@@ -1,6 +1,8 @@
 package org.example;
 
-import javax.swing.JOptionPane;
+import com.formdev.flatlaf.intellijthemes.FlatNordIJTheme;
+
+import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 
@@ -26,8 +28,13 @@ public class JabberPoint {
 	/**
 	 * Main Program
 	 */
-	public static void main(String argv[]) {
 
+	public static void main(String argv[]) {
+		try {
+			UIManager.setLookAndFeel(new FlatNordIJTheme());  // Set the Look and Feel
+		} catch (UnsupportedLookAndFeelException e) {
+			e.printStackTrace();
+		}
 		// Create styles
 		Style.createStyles();
 		Presentation presentation = new Presentation();
@@ -35,28 +42,5 @@ public class JabberPoint {
 		// First show the Start Menu
 		StartMenu startMenu = new StartMenu(new Frame());
 
-		// Wait for user action from the Start Menu (you could have callbacks here)
-		// Once the user chooses an option, proceed to the following steps:
-
-		// In this case, simulate an option selection (open file or create new)
-//		if (argv.length == 0) {
-//			// Show the presentation window after starting with a demo presentation
-//			try {
-//				Accessor.getDemoAccessor().loadFile(presentation, "");
-//				presentation.setSlideNumber(0);
-//				new SlideViewerFrame(JABVERSION, presentation);
-//			} catch (IOException ex) {
-//				JOptionPane.showMessageDialog(null, IOERR + ex, JABERR, JOptionPane.ERROR_MESSAGE);
-//			}
-//		} else {
-//			// Load a specific file passed as an argument
-//			try {
-//				new XMLAccessor().loadFile(presentation, argv[0]);
-//				presentation.setSlideNumber(0);
-//				new SlideViewerFrame(JABVERSION, presentation);
-//			} catch (IOException ex) {
-//				JOptionPane.showMessageDialog(null, IOERR + ex, JABERR, JOptionPane.ERROR_MESSAGE);
-//			}
-//		}
 	}
 }

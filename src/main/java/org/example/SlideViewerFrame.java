@@ -1,9 +1,11 @@
 package org.example;
 
+import com.formdev.flatlaf.intellijthemes.FlatNordIJTheme;
+
 import java.awt.Dimension;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowAdapter;
-import javax.swing.JFrame;
+import javax.swing.*;
 
 /**
  * <p>The application window for a slideviewcomponent</p>
@@ -26,6 +28,11 @@ public class SlideViewerFrame extends JFrame {
 
 	public SlideViewerFrame(String title, Presentation presentation) {
 		super(title);
+		try {
+			UIManager.setLookAndFeel(new FlatNordIJTheme());  // Apply the FlatNord theme
+		} catch (UnsupportedLookAndFeelException e) {
+			e.printStackTrace();
+		}
 		this.slideViewerComponent = new SlideViewerComponent(presentation, this);
 		presentation.setShowView(slideViewerComponent);
 		setupWindow(slideViewerComponent, presentation);
