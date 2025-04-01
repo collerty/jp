@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="de0b1eba-e914-44c5-9ae8-601c68a03d5e" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -12,7 +15,8 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "git-widget-placeholder": "ci-cd"
+    "git-widget-placeholder": "ci-cd",
+    "node.js.selected.package.tslint": "(autodetect)"
   }
 }]]></component>
   <component name="RunManager">
