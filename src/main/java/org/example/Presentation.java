@@ -20,6 +20,7 @@ public class Presentation {
 	private ArrayList<Slide> showList = null; // an ArrayList with Slides
 	private int currentSlideNumber = 0; // the slidenummer of the current java.com.Slide
 	private SlideViewerComponent slideViewComponent = null; // the viewcomponent of the Slides
+	private SlideThumbnailPanel thumbnailPanel = null; // the thumbnail panel
 
 	public Presentation() {
 		slideViewComponent = null;
@@ -47,6 +48,10 @@ public class Presentation {
 		this.slideViewComponent = slideViewerComponent;
 	}
 
+	public void setThumbnailPanel(SlideThumbnailPanel panel) {
+		this.thumbnailPanel = panel;
+	}
+
 	// give the number of the current slide
 	public int getSlideNumber() {
 		return currentSlideNumber;
@@ -57,6 +62,9 @@ public class Presentation {
 		currentSlideNumber = number;
 		if (slideViewComponent != null) {
 			slideViewComponent.update(this, getCurrentSlide());
+		}
+		if (thumbnailPanel != null) {
+			thumbnailPanel.setSelectedIndex(number);
 		}
 	}
 
@@ -83,6 +91,9 @@ public class Presentation {
 	// Add a slide to the presentation
 	public void append(Slide slide) {
 		showList.add(slide);
+		if (thumbnailPanel != null) {
+			thumbnailPanel.updateThumbnails();
+		}
 	}
 
 	// Get a slide with a certain slidenumber

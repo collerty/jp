@@ -36,7 +36,7 @@ public class KeyController extends KeyAdapter {
 			case 'q':
 			case 'Q':
 				System.exit(0);
-				break; // Probably never reached!!
+				break;
 			default:
 				break;
 		}

@@ -3,6 +3,7 @@ package org.example;
 import com.formdev.flatlaf.intellijthemes.FlatNordIJTheme;
 
 import javax.swing.*;
+import java.awt.Font;
 
 /** java.com.JabberPoint Main Programma
  * <p>This program is distributed under the terms of the accompanying
@@ -33,8 +34,11 @@ public class JabberPoint {
 		} catch (UnsupportedLookAndFeelException e) {
 			e.printStackTrace();
 		}
+
+
 		// Create styles
 		Style.createStyles();
+
 		Presentation presentation = new Presentation();
 
 		// First show the Start Menu

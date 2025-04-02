@@ -28,33 +28,35 @@ public class SlideViewerComponent extends JComponent {
 	
 	private static final long serialVersionUID = 227L;
 	
-	private static final Color BGCOLOR = new Color(46, 52, 64);
-	private static final Color COLOR =new Color(216, 222, 233);
+	private static final Color BGCOLOR = new Color(46, 52, 64); // Dark background
+	private static final Color COLOR = new Color(216, 222, 233);
 	private static final String FONTNAME = "Dialog";
 	private static final int FONTSTYLE = Font.BOLD;
 	private static final int FONTHEIGHT = 10;
 	private static final int XPOS = 1100;
 	private static final int YPOS = 20;
+	private static final int SLIDE_MARGIN = 40; // Margin around the slide
 
 	public SlideViewerComponent(Presentation pres, JFrame frame) {
 		setBackground(BGCOLOR); 
 		presentation = pres;
 		labelFont = new Font(FONTNAME, FONTSTYLE, FONTHEIGHT);
 		this.frame = frame;
+		setDoubleBuffered(false); // Disable double buffering for faster updates
 	}
 
 	public Dimension getPreferredSize() {
-		return new Dimension(Slide.WIDTH, Slide.HEIGHT);
+		return new Dimension(Slide.WIDTH + (2 * SLIDE_MARGIN), Slide.HEIGHT + (2 * SLIDE_MARGIN));
 	}
 
 	public void update(Presentation presentation, Slide data) {
 		if (data == null) {
-			repaint();
+			repaint(0); // Immediate repaint
 			return;
 		}
 		this.presentation = presentation;
 		this.slide = data;
-		repaint();
+		repaint(0); // Immediate repaint
 		frame.setTitle(presentation.getTitle());
 	}
 
@@ -69,7 +71,11 @@ public class SlideViewerComponent extends JComponent {
 		g.setColor(COLOR);
 		g.drawString("java.com.Slide " + (1 + presentation.getSlideNumber()) + " of " +
                  presentation.getSize(), XPOS, YPOS);
-		Rectangle area = new Rectangle(0, YPOS, getWidth(), (getHeight() - YPOS));
+		
+		// Calculate center position with margins
+		int x = (getWidth() - Slide.WIDTH) / 2;
+		int y = YPOS + SLIDE_MARGIN; // Add margin from top
+		Rectangle area = new Rectangle(x, y, Slide.WIDTH, Slide.HEIGHT);
 		slide.draw(g, area, this);
 	}
 }

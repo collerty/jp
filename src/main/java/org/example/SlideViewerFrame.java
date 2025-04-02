@@ -6,6 +6,8 @@ import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.Dimension;
+import java.awt.Color;
+import java.awt.BorderLayout;
 
 /**
  * <p>The application window for a slideviewcomponent</p>
@@ -24,7 +26,9 @@ public class SlideViewerFrame extends JFrame {
 	private static final String JABTITLE = "Jabberpoint 1.6 - OU";
 	public final static int WIDTH = 1200;
 	public final static int HEIGHT = 800;
-	private SlideViewerComponent slideViewerComponent; // an instance variable
+	private SlideViewerComponent slideViewerComponent;
+	private SlideThumbnailPanel thumbnailPanel;
+	private HeaderPanel headerPanel;
 
 	public SlideViewerFrame(String title, Presentation presentation) {
 		super(title);
@@ -34,7 +38,10 @@ public class SlideViewerFrame extends JFrame {
 			e.printStackTrace();
 		}
 		this.slideViewerComponent = new SlideViewerComponent(presentation, this);
+		this.thumbnailPanel = new SlideThumbnailPanel(presentation);
+		this.headerPanel = new HeaderPanel(presentation);
 		presentation.setShowView(slideViewerComponent);
+		presentation.setThumbnailPanel(thumbnailPanel);
 		setupWindow(slideViewerComponent, presentation);
 	}
 
@@ -47,16 +54,45 @@ public class SlideViewerFrame extends JFrame {
 					System.exit(0);
 				}
 			});
-		getContentPane().add(slideViewerComponent);
-		addKeyListener(new KeyController(presentation)); // add a controller
-		setJMenuBar(new MenuController(this, presentation));	// add another controller
-		setSize(new Dimension(WIDTH, HEIGHT)); // Same sizes as java.com.Slide has.
+
+		// Create main content panel with BorderLayout
+		JPanel mainPanel = new JPanel(new BorderLayout());
+		mainPanel.setBackground(new Color(46, 52, 64)); // Dark background
+
+		// Create a wrapper panel for the header with padding
+		JPanel headerWrapper = new JPanel(new BorderLayout());
+		headerWrapper.setBackground(new Color(46, 52, 64));
+		headerWrapper.setBorder(BorderFactory.createEmptyBorder(0, 24, 0, 24)); // Match slide panel's left padding
+		headerWrapper.add(headerPanel, BorderLayout.CENTER);
+
+		// Add header panel at the top
+		mainPanel.add(headerWrapper, BorderLayout.NORTH);
+
+		// Add thumbnail panel to the left
+		mainPanel.add(thumbnailPanel, BorderLayout.WEST);
+
+		// Add slide viewer to the center
+		mainPanel.add(slideViewerComponent, BorderLayout.CENTER);
+
+		// Add the main panel to the frame
+		getContentPane().add(mainPanel);
+
+		// Set up the menu and other components
+		setJMenuBar(new MenuController(this, presentation));
+		addKeyListener(new KeyController(presentation));
+
+		// Set window size and make it visible
+		setSize(new Dimension(WIDTH + thumbnailPanel.getPreferredSize().width, HEIGHT + headerPanel.getPreferredSize().height));
 		setVisible(true);
-		requestFocus(); // Request focus for the window
-		requestFocusInWindow(); // Request focus in the window
-		toFront(); // Bring window to front
+		requestFocus();
+		requestFocusInWindow();
+		toFront();
 	}
 	public SlideViewerComponent getSlideViewerComponent() {
 		return slideViewerComponent;
+	}
+
+	public SlideThumbnailPanel getThumbnailPanel() {
+		return thumbnailPanel;
 	}
 }
