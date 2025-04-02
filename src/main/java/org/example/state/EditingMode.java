@@ -22,7 +22,8 @@ public class EditingMode implements PresentationState
     @Override
     public void editSlide(Presentation presentation)
     {
-
+        presentation.setCurrentState(new ViewingMode());
+        presentation.getSlideViewerFrame().exitEditMode();
     }
 
     @Override
@@ -46,13 +47,6 @@ public class EditingMode implements PresentationState
         {
             System.exit(statusCode);
         }
-
-    }
-
-
-    @Override
-    public void save(Presentation presentation)
-    {
 
     }
 

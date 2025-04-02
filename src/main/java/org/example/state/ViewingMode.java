@@ -31,7 +31,8 @@ public class ViewingMode implements PresentationState
     @Override
     public void editSlide(Presentation presentation)
     {
-
+        presentation.setCurrentState(new EditingMode());
+        presentation.getSlideViewerFrame().enterEditMode();
     }
 
     @Override
@@ -50,26 +51,15 @@ public class ViewingMode implements PresentationState
 
 
     @Override
-    public void save(Presentation presentation)
-    {
-
-    }
-
-    @Override
     public void clear(Presentation presentation)
     {
         presentation.setShowList(new ArrayList<Slide>());
-//        presentation.setSlideNumber(-1);
     }
 
     @Override
     public void addSlide(Presentation presentation, Slide slide)
     {
         presentation.getShowList().add(slide);
-//        if (presentation.getThumbnailPanel() != null)
-//        {
-//            presentation.getThumbnailPanel().updateThumbnails();
-//        }
     }
 
 }

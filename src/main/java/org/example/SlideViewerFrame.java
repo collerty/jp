@@ -40,10 +40,25 @@ public class SlideViewerFrame extends JFrame
             e.printStackTrace();
         }
         this.slideViewerComponent = new SlideViewerComponent(presentation, this);
-        this.thumbnailPanel = new SlideThumbnailPanel(presentation);
-        this.headerPanel = new HeaderPanel(presentation);
         presentation.setShowView(slideViewerComponent);
 //        presentation.setThumbnailPanel(thumbnailPanel);
+
+        // Create main content panel with BorderLayout
+        mainPanel = new JPanel(new BorderLayout());
+        mainPanel.setBackground(new Color(46, 52, 64)); // Dark background
+
+        // Setting up the header panel
+        this.headerPanel = new HeaderPanel(presentation);
+
+        this.headerWrapper = new JPanel(new BorderLayout());
+        this.headerWrapper.setBackground(new Color(46, 52, 64));
+        this.headerWrapper.setBorder(BorderFactory.createEmptyBorder(0, 24, 0, 24)); // Match slide panel's left padding
+        this.headerWrapper.add(this.headerPanel, BorderLayout.CENTER);
+
+        // Setting up the sidebar panel
+        this.thumbnailPanel = new SlideThumbnailPanel(presentation);
+
+        // Making setup window for viewing mode
         setupWindow(slideViewerComponent, presentation);
     }
 
@@ -80,18 +95,6 @@ public class SlideViewerFrame extends JFrame
             }
         });
 
-        // Create main content panel with BorderLayout
-        mainPanel = new JPanel(new BorderLayout());
-        mainPanel.setBackground(new Color(46, 52, 64)); // Dark background
-
-        // Create a wrapper panel for the header with padding
-        headerWrapper = new JPanel(new BorderLayout());
-        headerWrapper.setBackground(new Color(46, 52, 64));
-        headerWrapper.setBorder(BorderFactory.createEmptyBorder(0, 24, 0, 24)); // Match slide panel's left padding
-        headerWrapper.add(headerPanel, BorderLayout.CENTER);
-
-        // Add header panel at the top
-        mainPanel.add(headerWrapper, BorderLayout.NORTH);
 
         // Add thumbnail panel to the left
         mainPanel.add(thumbnailPanel, BorderLayout.WEST);
@@ -118,24 +121,31 @@ public class SlideViewerFrame extends JFrame
     public void enterFullScreen()
     {
         this.mainPanel.remove(thumbnailPanel);
-        this.mainPanel.remove(headerWrapper);
         this.mainPanel.repaint();
-//        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+
         this.slideViewerComponent.enterFullScreen();
     }
 
     public void exitFullScreen()
     {
-        this.headerWrapper = new JPanel(new BorderLayout());
-        this.headerWrapper.setBackground(new Color(46, 52, 64));
-        this.headerWrapper.setBorder(BorderFactory.createEmptyBorder(0, 24, 0, 24)); // Match slide panel's left padding
-        this.headerWrapper.add(this.headerPanel, BorderLayout.CENTER);
-
-        mainPanel.add(this.headerWrapper, BorderLayout.NORTH);
 
         this.mainPanel.add(thumbnailPanel, BorderLayout.WEST);
         this.mainPanel.revalidate();
         this.mainPanel.repaint();
         this.slideViewerComponent.exitFullScreen();
+    }
+
+    public void enterEditMode()
+    {
+        this.mainPanel.add(this.headerWrapper, BorderLayout.NORTH);
+        this.mainPanel.revalidate();
+        this.mainPanel.repaint();
+    }
+
+    public void exitEditMode()
+    {
+        this.mainPanel.remove(this.headerWrapper);
+        this.mainPanel.revalidate();
+        this.mainPanel.repaint();
     }
 }

@@ -19,6 +19,4 @@ public interface PresentationState
 
     void exit(Presentation presentation, int statusCode);
 
-    void save(Presentation presentation);
-
 }

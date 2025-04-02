@@ -41,6 +41,10 @@ public class KeyController extends KeyAdapter {
 			case 'F':
 				presentation.enterFullscreen();
 				break;
+			case 'e':
+			case 'E':
+				presentation.editSlide();
+				break;
 			default:
 				break;
 		}

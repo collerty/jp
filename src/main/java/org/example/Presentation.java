@@ -11,7 +11,6 @@ public class Presentation
     private ArrayList<Slide> showList = null; // an ArrayList with Slides
     private int currentSlideNumber = 0; // the slidenummer of the current java.com.Slide
     private SlideViewerComponent slideViewComponent = null; // the viewcomponent of the Slides
-//    private SlideThumbnailPanel thumbnailPanel = null; // the thumbnail panel
     private PresentationState currentState;
     private SlideViewerFrame slideViewerFrame = null;
 
@@ -188,5 +187,10 @@ public class Presentation
     public void enterFullscreen()
     {
         this.currentState.enterFullscreen(this);
+    }
+
+    public void editSlide()
+    {
+        this.currentState.editSlide(this);
     }
 }
