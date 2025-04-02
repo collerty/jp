@@ -22,8 +22,7 @@ public class FullscreenMode implements PresentationState{
     @Override
     public void enterFullscreen(Presentation presentation)
     {
-        presentation.getThumbnailPanel().setVisible(true);
-        presentation.getSlideViewComponent().exitFullScreen();
+        presentation.getSlideViewerFrame().exitFullScreen();
         System.out.println("Exit fullscreen mode");
         presentation.setCurrentState(new ViewingMode());
     }

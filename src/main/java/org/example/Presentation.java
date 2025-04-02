@@ -11,12 +11,14 @@ public class Presentation
     private ArrayList<Slide> showList = null; // an ArrayList with Slides
     private int currentSlideNumber = 0; // the slidenummer of the current java.com.Slide
     private SlideViewerComponent slideViewComponent = null; // the viewcomponent of the Slides
-    private SlideThumbnailPanel thumbnailPanel = null; // the thumbnail panel
+//    private SlideThumbnailPanel thumbnailPanel = null; // the thumbnail panel
     private PresentationState currentState;
+    private SlideViewerFrame slideViewerFrame = null;
+
 
     public Presentation()
     {
-        slideViewComponent = null;
+        this.slideViewComponent = null;
         this.currentState = new ViewingMode();
         clear();
     }
@@ -60,9 +62,9 @@ public class Presentation
         {
             slideViewComponent.update(this, getCurrentSlide());
         }
-        if (thumbnailPanel != null)
+        if (this.slideViewerFrame.getThumbnailPanel()  != null)
         {
-            thumbnailPanel.setSelectedIndex(number);
+            this.slideViewerFrame.getThumbnailPanel().setSelectedIndex(number);
         }
     }
 
@@ -106,15 +108,15 @@ public class Presentation
         this.slideViewComponent = slideViewComponent;
     }
 
-    public SlideThumbnailPanel getThumbnailPanel()
-    {
-        return this.thumbnailPanel;
-    }
-
-    public void setThumbnailPanel(SlideThumbnailPanel panel)
-    {
-        this.thumbnailPanel = panel;
-    }
+//    public SlideThumbnailPanel getThumbnailPanel()
+//    {
+//        return this.thumbnailPanel;
+//    }
+//
+//    public void setThumbnailPanel(SlideThumbnailPanel panel)
+//    {
+//        this.thumbnailPanel = panel;
+//    }
 
     public PresentationState getCurrentState()
     {
@@ -124,6 +126,26 @@ public class Presentation
     public void setCurrentState(PresentationState currentState)
     {
         this.currentState = currentState;
+    }
+
+    public SlideViewerFrame getSlideViewerFrame()
+    {
+        return this.slideViewerFrame;
+    }
+
+    public void setSlideViewerFrame(SlideViewerFrame slideViewerFrame)
+    {
+        this.slideViewerFrame = slideViewerFrame;
+    }
+
+    // Get a slide with a certain slidenumber
+    public Slide getSlide(int number)
+    {
+        if (number < 0 || number >= getSize())
+        {
+            return null;
+        }
+        return (Slide) showList.get(number);
     }
 
     // go to the next slide unless your at the end of the presentation.
@@ -151,15 +173,6 @@ public class Presentation
         this.currentState.addSlide(this, slide);
     }
 
-    // Get a slide with a certain slidenumber
-    public Slide getSlide(int number)
-    {
-        if (number < 0 || number >= getSize())
-        {
-            return null;
-        }
-        return (Slide) showList.get(number);
-    }
 
     // Give the current slide
     public Slide getCurrentSlide()

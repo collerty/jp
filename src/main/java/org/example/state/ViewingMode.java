@@ -37,8 +37,7 @@ public class ViewingMode implements PresentationState
     @Override
     public void enterFullscreen(Presentation presentation)
     {
-        presentation.getThumbnailPanel().setVisible(false);
-        presentation.getSlideViewComponent().enterFullScreen();
+        presentation.getSlideViewerFrame().enterFullScreen();
         System.out.println("Entering fullscreen mode");
         presentation.setCurrentState(new FullscreenMode());
     }
@@ -60,17 +59,17 @@ public class ViewingMode implements PresentationState
     public void clear(Presentation presentation)
     {
         presentation.setShowList(new ArrayList<Slide>());
-        presentation.setSlideNumber(-1);
+//        presentation.setSlideNumber(-1);
     }
 
     @Override
     public void addSlide(Presentation presentation, Slide slide)
     {
         presentation.getShowList().add(slide);
-        if (presentation.getThumbnailPanel() != null)
-        {
-            presentation.getThumbnailPanel().updateThumbnails();
-        }
+//        if (presentation.getThumbnailPanel() != null)
+//        {
+//            presentation.getThumbnailPanel().updateThumbnails();
+//        }
     }
 
 }
