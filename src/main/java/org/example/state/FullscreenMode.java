@@ -1,0 +1,54 @@
+package org.example.state;
+
+import org.example.Presentation;
+import org.example.Slide;
+
+public class FullscreenMode implements PresentationState{
+    @Override
+    public void nextSlide(Presentation presentation) {
+
+    }
+
+    @Override
+    public void prevSlide(Presentation presentation) {
+
+    }
+
+    @Override
+    public void editSlide(Presentation presentation) {
+
+    }
+
+    @Override
+    public void enterFullscreen(Presentation presentation)
+    {
+        presentation.getThumbnailPanel().setVisible(true);
+        presentation.getSlideViewComponent().exitFullScreen();
+        System.out.println("Exit fullscreen mode");
+        presentation.setCurrentState(new ViewingMode());
+    }
+
+    @Override
+    public void exit(Presentation presentation, int statusCode)
+    {
+        System.exit(statusCode);
+    }
+
+
+    @Override
+    public void save(Presentation presentation) {
+
+    }
+
+    @Override
+    public void clear(Presentation presentation)
+    {
+
+    }
+
+    @Override
+    public void addSlide(Presentation presentation, Slide slide)
+    {
+
+    }
+}

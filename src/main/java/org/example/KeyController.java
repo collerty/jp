@@ -35,7 +35,11 @@ public class KeyController extends KeyAdapter {
 				break;
 			case 'q':
 			case 'Q':
-				System.exit(0);
+				presentation.exit(0);
+				break;
+			case 'f':
+			case 'F':
+				presentation.enterFullscreen();
 				break;
 			default:
 				break;

@@ -1,23 +1,8 @@
 package org.example;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Rectangle;
+import java.awt.*;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-
-
-/** <p>java.com.SlideViewerComponent is a graphical component that can show slides.</p>
- * @author Ian F. Darwin, ian@darwinsys.com, Gert Florijn, Sylvia Stuurman
- * @version 1.1 2002/12/17 Gert Florijn
- * @version 1.2 2003/11/19 Sylvia Stuurman
- * @version 1.3 2004/08/17 Sylvia Stuurman
- * @version 1.4 2007/07/16 Sylvia Stuurman
- * @version 1.5 2010/03/03 Sylvia Stuurman
- * @version 1.6 2014/05/16 Sylvia Stuurman
- */
 
 public class SlideViewerComponent extends JComponent {
 		
@@ -78,4 +63,45 @@ public class SlideViewerComponent extends JComponent {
 		Rectangle area = new Rectangle(x, y, Slide.WIDTH, Slide.HEIGHT);
 		slide.draw(g, area, this);
 	}
+
+	public void enterFullScreen()
+	{
+		if (frame != null)
+		{
+			frame.dispose(); // Dispose to apply changes
+			frame.setUndecorated(true); // Remove title bar and borders
+			frame.setResizable(false);
+
+			GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+			if (gd.isFullScreenSupported())
+			{
+				gd.setFullScreenWindow(frame);
+			}
+			else
+			{
+				// If full-screen is not supported, maximize manually
+				frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+				frame.setVisible(true);
+			}
+		}
+	}
+	public void exitFullScreen()
+	{
+		if (frame != null)
+		{
+			GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+			if (gd.getFullScreenWindow() == frame)
+			{
+				gd.setFullScreenWindow(null); // Exit fullscreen mode
+			}
+
+			frame.dispose(); // Dispose so changes can apply
+			frame.setUndecorated(false);
+			frame.setResizable(true);
+			frame.setVisible(true);
+			frame.setExtendedState(JFrame.NORMAL);
+		}
+	}
+
+
 }

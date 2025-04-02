@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE presentation SYSTEM "jabberpoint.dtd">
+<presentation>
+<showtitle>null</showtitle>
+<slide>
+<title>null</title>
+</slide>
+<slide>
+<title>null</title>
+<item kind="text" level="1">New Text Slide</item>
+<item kind="text" level="2">Enter your text here</item>
+</slide>
+<slide>
+<title>null</title>
+<item kind="text" level="1">New Text Slide</item>
+<item kind="text" level="2">Enter your text here</item>
+</slide>
+<slide>
+<title>null</title>
+<item kind="text" level="1">New Text Slide</item>
+<item kind="text" level="2">Enter your text here</item>
+</slide>
+</presentation>
