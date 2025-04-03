@@ -54,6 +54,11 @@ public class ViewingMode implements PresentationState
     public void clear(Presentation presentation)
     {
         presentation.setShowList(new ArrayList<Slide>());
+        presentation.setCurrentSlideNumber(0);
+        presentation.setTitle("");
+        if (presentation.getSlideViewComponent() != null) {
+            presentation.getSlideViewComponent().update(presentation, null);
+        }
     }
 
     @Override

@@ -13,6 +13,7 @@ public class Presentation
     private SlideViewerComponent slideViewComponent = null; // the viewcomponent of the Slides
     private PresentationState currentState;
     private SlideViewerFrame slideViewerFrame = null;
+    private SlideThumbnailPanel thumbnailPanel = null;
 
 
     public Presentation()
@@ -61,9 +62,9 @@ public class Presentation
         {
             slideViewComponent.update(this, getCurrentSlide());
         }
-        if (this.slideViewerFrame.getThumbnailPanel()  != null)
+        if (slideViewerFrame != null && slideViewerFrame.getThumbnailPanel() != null)
         {
-            this.slideViewerFrame.getThumbnailPanel().setSelectedIndex(number);
+            slideViewerFrame.getThumbnailPanel().setSelectedIndex(number);
         }
     }
 
@@ -107,15 +108,15 @@ public class Presentation
         this.slideViewComponent = slideViewComponent;
     }
 
-//    public SlideThumbnailPanel getThumbnailPanel()
-//    {
-//        return this.thumbnailPanel;
-//    }
-//
-//    public void setThumbnailPanel(SlideThumbnailPanel panel)
-//    {
-//        this.thumbnailPanel = panel;
-//    }
+    public SlideThumbnailPanel getThumbnailPanel()
+    {
+        return this.thumbnailPanel;
+    }
+
+    public void setThumbnailPanel(SlideThumbnailPanel panel)
+    {
+        this.thumbnailPanel = panel;
+    }
 
     public PresentationState getCurrentState()
     {
@@ -162,7 +163,20 @@ public class Presentation
     // Delete the presentation to be ready for the next one.
     void clear()
     {
-        this.currentState.clear(this);
+        showList = new ArrayList<Slide>();
+        currentSlideNumber = 0;
+        showTitle = "";
+        if (thumbnailPanel != null) {
+            thumbnailPanel.removeAll();
+            thumbnailPanel.revalidate();
+            thumbnailPanel.repaint();
+        }
+        if (slideViewComponent != null) {
+            slideViewComponent.update(this, null);
+        }
+        if (slideViewerFrame != null) {
+            slideViewerFrame.repaint();
+        }
     }
 
 
