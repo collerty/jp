@@ -10,13 +10,19 @@ public class EditingMode implements PresentationState
     @Override
     public void nextSlide(Presentation presentation)
     {
-
+        if (presentation.getSlideNumber() < (presentation.getSize() - 1))
+        {
+            presentation.setSlideNumber(presentation.getSlideNumber() + 1);
+        }
     }
 
     @Override
     public void prevSlide(Presentation presentation)
     {
-
+        if (presentation.getSlideNumber() > 0)
+        {
+            presentation.setSlideNumber(presentation.getSlideNumber() - 1);
+        }
     }
 
     @Override
@@ -60,7 +66,8 @@ public class EditingMode implements PresentationState
     @Override
     public void addSlide(Presentation presentation, Slide slide)
     {
-
+        presentation.getShowList().add(slide);
+        presentation.setSlideNumber(presentation.getSize() - 1);
     }
 
 }
