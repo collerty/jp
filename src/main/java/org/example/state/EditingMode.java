@@ -68,6 +68,12 @@ public class EditingMode implements PresentationState
     {
         presentation.getShowList().add(slide);
         presentation.setSlideNumber(presentation.getSize() - 1);
+        // Ensure frame maintains focus ( do not remove, fixes bug with not registering shortcuts )
+        if (presentation.getSlideViewerFrame() != null) {
+            presentation.getSlideViewerFrame().requestFocus();
+            presentation.getSlideViewerFrame().requestFocusInWindow();
+            presentation.getSlideViewerFrame().toFront();
+        }
     }
 
 }
