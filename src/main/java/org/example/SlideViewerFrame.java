@@ -99,8 +99,8 @@ public class SlideViewerFrame extends JFrame
         // Add thumbnail panel to the left
         mainPanel.add(thumbnailPanel, BorderLayout.WEST);
 
-        // Add slide viewer to the center
-        mainPanel.add(slideViewerComponent, BorderLayout.CENTER);
+        // Add slide viewer with scroll pane to the center
+        mainPanel.add(slideViewerComponent.getScrollPane(), BorderLayout.CENTER);
 
         // Add the main panel to the frame
         getContentPane().add(mainPanel);
@@ -120,6 +120,7 @@ public class SlideViewerFrame extends JFrame
 
     public void enterFullScreen()
     {
+//        this.slide
         this.mainPanel.remove(thumbnailPanel);
         this.mainPanel.repaint();
 

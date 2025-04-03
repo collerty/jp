@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.ImageObserver;
 import java.util.Vector;
+import java.awt.Graphics2D;
 
 /** <p>A slide. This class has a drawing functionality.</p>
  * @author Ian F. Darwin, ian@darwinsys.com, Gert Florijn, Sylvia Stuurman
@@ -80,5 +81,39 @@ public class Slide {
 	// Give the scale for drawing
 	private float getScale(Rectangle area) {
 		return Math.min(((float)area.width) / ((float)WIDTH), ((float)area.height) / ((float)HEIGHT));
+	}
+
+	// Calculate the actual bounds of the slide content
+	public Rectangle getBounds() {
+		Rectangle bounds = new Rectangle(0, 0, WIDTH, HEIGHT);
+		int maxWidth = WIDTH;
+		int totalHeight = 0;
+
+		// Create a temporary graphics context for measurements
+		java.awt.image.BufferedImage tempImage = new java.awt.image.BufferedImage(1, 1, java.awt.image.BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g2d = tempImage.createGraphics();
+		ImageObserver observer = null; // We don't need an observer for measurements
+
+		// Add title height
+		SlideItem titleItem = new TextItem(0, getTitle());
+		Style titleStyle = Style.getStyle(titleItem.getLevel());
+		Rectangle titleBounds = titleItem.getBoundingBox(g2d, observer, 1.0f, titleStyle);
+		totalHeight += titleBounds.height;
+
+		// Add content heights
+		for (int number = 0; number < getSize(); number++) {
+			SlideItem item = getSlideItems().elementAt(number);
+			Style style = Style.getStyle(item.getLevel());
+			Rectangle itemBounds = item.getBoundingBox(g2d, observer, 1.0f, style);
+			totalHeight += itemBounds.height;
+		}
+
+		// Clean up
+		g2d.dispose();
+		tempImage.flush();
+
+		// Update bounds with actual content size
+		bounds.height = totalHeight;
+		return bounds;
 	}
 }

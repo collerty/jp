@@ -35,14 +35,21 @@ public BitmapItem(int level, String name) {
 	super(level);
 	imageName = name;
 	try {
-		// Use getClassLoader().getResourceAsStream() to load from classpath
-		InputStream imgStream = getClass().getClassLoader().getResourceAsStream(imageName);
-		if (imgStream == null) {
-			throw new IOException(FILE + imageName + NOTFOUND);
+		// First try to load from file system
+		File imageFile = new File(name);
+		if (imageFile.exists()) {
+			bufferedImage = ImageIO.read(imageFile);
+		} else {
+			// If not found in file system, try classpath
+			InputStream imgStream = getClass().getClassLoader().getResourceAsStream(name);
+			if (imgStream == null) {
+				throw new IOException(FILE + imageName + NOTFOUND);
+			}
+			bufferedImage = ImageIO.read(imgStream);
 		}
-		bufferedImage = ImageIO.read(imgStream);
 	} catch (IOException e) {
 		System.err.println(FILE + imageName + NOTFOUND);
+		e.printStackTrace();
 	}
 }
 
