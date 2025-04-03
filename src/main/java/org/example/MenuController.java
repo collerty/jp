@@ -55,6 +55,8 @@ public class MenuController extends JMenuBar
         menuItem.addActionListener(e ->
         {
             presentation.clear();
+            presentation.setSlideViewerFrame((SlideViewerFrame)parent);
+            currentFile = null;
             parent.repaint();
         });
 
@@ -80,6 +82,7 @@ public class MenuController extends JMenuBar
                 File selectedFile = fileChooser.getSelectedFile();
                 currentFile = selectedFile;
                 presentation.clear();
+                presentation.setSlideViewerFrame((SlideViewerFrame)parent);
                 Accessor xmlAccessor = new XMLAccessor();
 
                 try

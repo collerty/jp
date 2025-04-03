@@ -40,16 +40,17 @@ public class SlideViewerFrame extends JFrame
             e.printStackTrace();
         }
         this.slideViewerComponent = new SlideViewerComponent(presentation, this);
+        this.thumbnailPanel = new SlideThumbnailPanel(presentation);
+        this.headerPanel = new HeaderPanel(presentation);
         presentation.setShowView(slideViewerComponent);
-//        presentation.setThumbnailPanel(thumbnailPanel);
+        presentation.setThumbnailPanel(thumbnailPanel);
+        presentation.setSlideViewerFrame(this); // Set the frame reference
 
         // Create main content panel with BorderLayout
         mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBackground(new Color(46, 52, 64)); // Dark background
 
         // Setting up the header panel
-        this.headerPanel = new HeaderPanel(presentation);
-
         this.headerWrapper = new JPanel(new BorderLayout());
         this.headerWrapper.setBackground(new Color(46, 52, 64));
         this.headerWrapper.setBorder(BorderFactory.createEmptyBorder(0, 24, 0, 24)); // Match slide panel's left padding
@@ -99,8 +100,8 @@ public class SlideViewerFrame extends JFrame
         // Add thumbnail panel to the left
         mainPanel.add(thumbnailPanel, BorderLayout.WEST);
 
-        // Add slide viewer to the center
-        mainPanel.add(slideViewerComponent, BorderLayout.CENTER);
+        // Add slide viewer with scroll pane to the center
+        mainPanel.add(slideViewerComponent.getScrollPane(), BorderLayout.CENTER);
 
         // Add the main panel to the frame
         getContentPane().add(mainPanel);
@@ -120,6 +121,7 @@ public class SlideViewerFrame extends JFrame
 
     public void enterFullScreen()
     {
+//        this.slide
         this.mainPanel.remove(thumbnailPanel);
         this.mainPanel.repaint();
 
