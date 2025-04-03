@@ -1,115 +1,196 @@
 package org.example;
 
+import org.example.state.PresentationState;
+import org.example.state.ViewingMode;
+
 import java.util.ArrayList;
 
+public class Presentation
+{
+    private String showTitle; // title of the presentation
+    private ArrayList<Slide> showList = null; // an ArrayList with Slides
+    private int currentSlideNumber = 0; // the slidenummer of the current java.com.Slide
+    private SlideViewerComponent slideViewComponent = null; // the viewcomponent of the Slides
+    private PresentationState currentState;
+    private SlideViewerFrame slideViewerFrame = null;
 
-/**
- * <p>java.com.Presentation maintains the slides in the presentation.</p>
- * <p>There is only instance of this class.</p>
- * @author Ian F. Darwin, ian@darwinsys.com, Gert Florijn, Sylvia Stuurman
- * @version 1.1 2002/12/17 Gert Florijn
- * @version 1.2 2003/11/19 Sylvia Stuurman
- * @version 1.3 2004/08/17 Sylvia Stuurman
- * @version 1.4 2007/07/16 Sylvia Stuurman
- * @version 1.5 2010/03/03 Sylvia Stuurman
- * @version 1.6 2014/05/16 Sylvia Stuurman
- */
 
-public class Presentation {
-	private String showTitle; // title of the presentation
-	private ArrayList<Slide> showList = null; // an ArrayList with Slides
-	private int currentSlideNumber = 0; // the slidenummer of the current java.com.Slide
-	private SlideViewerComponent slideViewComponent = null; // the viewcomponent of the Slides
-	private SlideThumbnailPanel thumbnailPanel = null; // the thumbnail panel
+    public Presentation()
+    {
+        this.slideViewComponent = null;
+        this.currentState = new ViewingMode();
+        clear();
+    }
 
-	public Presentation() {
-		slideViewComponent = null;
-		clear();
-	}
+    public Presentation(SlideViewerComponent slideViewerComponent)
+    {
+        this.slideViewComponent = slideViewerComponent;
+        this.currentState = new ViewingMode();
+        clear();
+    }
 
-	public Presentation(SlideViewerComponent slideViewerComponent) {
-		this.slideViewComponent = slideViewerComponent;
-		clear();
-	}
+    public int getSize()
+    {
+        return showList.size();
+    }
 
-	public int getSize() {
-		return showList.size();
-	}
+    public String getTitle()
+    {
+        return showTitle;
+    }
 
-	public String getTitle() {
-		return showTitle;
-	}
+    public void setTitle(String nt)
+    {
+        showTitle = nt;
+    }
 
-	public void setTitle(String nt) {
-		showTitle = nt;
-	}
+    public void setShowView(SlideViewerComponent slideViewerComponent)
+    {
+        this.slideViewComponent = slideViewerComponent;
+    }
 
-	public void setShowView(SlideViewerComponent slideViewerComponent) {
-		this.slideViewComponent = slideViewerComponent;
-	}
+    public int getSlideNumber()
+    {
+        return currentSlideNumber;
+    }
 
-	public void setThumbnailPanel(SlideThumbnailPanel panel) {
-		this.thumbnailPanel = panel;
-	}
+    public void setSlideNumber(int number)
+    {
+        currentSlideNumber = number;
+        if (slideViewComponent != null)
+        {
+            slideViewComponent.update(this, getCurrentSlide());
+        }
+        if (this.slideViewerFrame.getThumbnailPanel()  != null)
+        {
+            this.slideViewerFrame.getThumbnailPanel().setSelectedIndex(number);
+        }
+    }
 
-	// give the number of the current slide
-	public int getSlideNumber() {
-		return currentSlideNumber;
-	}
+    public ArrayList<Slide> getShowList()
+    {
+        return this.showList;
+    }
 
-	// change the current slide number and signal it to the window
-	public void setSlideNumber(int number) {
-		currentSlideNumber = number;
-		if (slideViewComponent != null) {
-			slideViewComponent.update(this, getCurrentSlide());
-		}
-		if (thumbnailPanel != null) {
-			thumbnailPanel.setSelectedIndex(number);
-		}
-	}
+    public String getShowTitle()
+    {
+        return this.showTitle;
+    }
 
-	// go to the previous slide unless your at the beginning of the presentation
-	public void prevSlide() {
-		if (currentSlideNumber > 0) {
-			setSlideNumber(currentSlideNumber - 1);
-	    }
-	}
+    public void setShowTitle(String showTitle)
+    {
+        this.showTitle = showTitle;
+    }
 
-	// go to the next slide unless your at the end of the presentation.
-	public void nextSlide() {
-		if (currentSlideNumber < (showList.size()-1)) {
-			setSlideNumber(currentSlideNumber + 1);
-		}
-	}
+    public void setShowList(ArrayList<Slide> showList)
+    {
+        this.showList = showList;
+    }
 
-	// Delete the presentation to be ready for the next one.
-	void clear() {
-		showList = new ArrayList<Slide>();
-		setSlideNumber(-1);
-	}
+    public int getCurrentSlideNumber()
+    {
+        return this.currentSlideNumber;
+    }
 
-	// Add a slide to the presentation
-	public void append(Slide slide) {
-		showList.add(slide);
-		if (thumbnailPanel != null) {
-			thumbnailPanel.updateThumbnails();
-		}
-	}
+    public void setCurrentSlideNumber(int currentSlideNumber)
+    {
+        this.currentSlideNumber = currentSlideNumber;
+    }
 
-	// Get a slide with a certain slidenumber
-	public Slide getSlide(int number) {
-		if (number < 0 || number >= getSize()){
-			return null;
-	    }
-			return (Slide)showList.get(number);
-	}
+    public SlideViewerComponent getSlideViewComponent()
+    {
+        return this.slideViewComponent;
+    }
 
-	// Give the current slide
-	public Slide getCurrentSlide() {
-		return getSlide(currentSlideNumber);
-	}
+    public void setSlideViewComponent(SlideViewerComponent slideViewComponent)
+    {
+        this.slideViewComponent = slideViewComponent;
+    }
 
-	public void exit(int n) {
-		System.exit(n);
-	}
+//    public SlideThumbnailPanel getThumbnailPanel()
+//    {
+//        return this.thumbnailPanel;
+//    }
+//
+//    public void setThumbnailPanel(SlideThumbnailPanel panel)
+//    {
+//        this.thumbnailPanel = panel;
+//    }
+
+    public PresentationState getCurrentState()
+    {
+        return this.currentState;
+    }
+
+    public void setCurrentState(PresentationState currentState)
+    {
+        this.currentState = currentState;
+    }
+
+    public SlideViewerFrame getSlideViewerFrame()
+    {
+        return this.slideViewerFrame;
+    }
+
+    public void setSlideViewerFrame(SlideViewerFrame slideViewerFrame)
+    {
+        this.slideViewerFrame = slideViewerFrame;
+    }
+
+    // Get a slide with a certain slidenumber
+    public Slide getSlide(int number)
+    {
+        if (number < 0 || number >= getSize())
+        {
+            return null;
+        }
+        return (Slide) showList.get(number);
+    }
+
+    // go to the next slide unless your at the end of the presentation.
+    public void nextSlide()
+    {
+        this.currentState.nextSlide(this);
+    }
+
+    // go to the previous slide unless your at the beginning of the presentation
+    public void prevSlide()
+    {
+        this.currentState.prevSlide(this);
+    }
+
+    // Delete the presentation to be ready for the next one.
+    void clear()
+    {
+        this.currentState.clear(this);
+    }
+
+
+    // Add a slide to the presentation
+    public void append(Slide slide)
+    {
+        this.currentState.addSlide(this, slide);
+    }
+
+
+    // Give the current slide
+    public Slide getCurrentSlide()
+    {
+        return getSlide(currentSlideNumber);
+    }
+
+    public void exit(int statusCode)
+    {
+        this.currentState.exit(this, statusCode);
+    }
+
+    public void enterFullscreen()
+    {
+        this.currentState.enterFullscreen(this);
+    }
+
+    public void editSlide()
+    {
+        this.currentState.editSlide(this);
+    }
 }

@@ -72,6 +72,7 @@ public class StartMenu extends JFrame {
         try {
             presentation.clear();
             SlideViewerFrame viewerFrame = new SlideViewerFrame("JabberPoint Demo", presentation);
+            presentation.setSlideViewerFrame(viewerFrame);
             presentation.setShowView(viewerFrame.getSlideViewerComponent());
             
             Accessor.getDemoAccessor().loadFile(presentation, "");

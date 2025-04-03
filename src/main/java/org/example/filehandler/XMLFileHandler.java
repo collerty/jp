@@ -2,7 +2,6 @@ package org.example.filehandler;
 
 import org.example.Accessor;
 import org.example.Presentation;
-import org.example.SlideViewerFrame;
 import org.example.XMLAccessor;
 
 import java.awt.*;
