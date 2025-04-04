@@ -6,6 +6,8 @@ import org.example.filehandler.XMLAccessor;
 import org.example.model.Presentation;
 import org.example.filehandler.FileHandlerStrategy;
 import org.example.filehandler.XMLFileHandler;
+import org.example.exception.FileOperationException;
+import org.example.exception.PresentationException;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -13,20 +15,20 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
+
 public class StartMenu extends JFrame
 {
     private Presentation presentation;
-    private JFrame parent;
     private FileHandlerStrategy fileHandler;
 
     // Constants for menu options
-    private static final String NEW = "New";
-    private static final String OPEN = "Open";
-    private static final String DEMO = "Demo";
+    private static final String NEW_PRESENTATION = "New";
+    private static final String OPEN_PRESENTATION = "Open";
+    private static final String DEMO_PRESENTATION = "Demo";
 
-    public StartMenu(JFrame parent)
+
+    public StartMenu()
     {
-        this.parent = parent;
         this.presentation = new Presentation();
         this.fileHandler = new XMLFileHandler(this);
 
@@ -38,9 +40,9 @@ public class StartMenu extends JFrame
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Create buttons for each action
-        JButton newButton = new JButton(NEW);
-        JButton openButton = new JButton(OPEN);
-        JButton demoButton = new JButton(DEMO);
+        JButton newButton = new JButton(NEW_PRESENTATION);
+        JButton openButton = new JButton(OPEN_PRESENTATION);
+        JButton demoButton = new JButton(DEMO_PRESENTATION);
 
         // Add action listeners to buttons
         newButton.addActionListener(e -> loadNewPresentation());
@@ -66,13 +68,14 @@ public class StartMenu extends JFrame
 
     private void loadNewPresentation()
     {
-        fileHandler.newFile(presentation);
-        SlideViewerFrame viewerFrame = new SlideViewerFrame("JabberPoint", presentation);
-        presentation.setShowView(viewerFrame.getSlideViewerComponent());
-        presentation.setSlideNumber(0);
-        viewerFrame.getSlideViewerComponent().revalidate();
-        viewerFrame.getSlideViewerComponent().repaint();
-        dispose();
+        try
+        {
+            fileHandler.newFile(presentation);
+            createAndSetupViewerFrame("JabberPoint");
+        } catch (PresentationException e)
+        {
+            showError("Failed to create new presentation: " + e.getMessage(), e);
+        }
     }
 
     private void loadDemoPresentation()
@@ -80,33 +83,66 @@ public class StartMenu extends JFrame
         try
         {
             fileHandler.newFile(presentation);
-            SlideViewerFrame viewerFrame = new SlideViewerFrame("JabberPoint Demo", presentation);
+            SlideViewerFrame viewerFrame = createAndSetupViewerFrame("JabberPoint Demo");
             presentation.setSlideViewerFrame(viewerFrame);
-            presentation.setShowView(viewerFrame.getSlideViewerComponent());
-
             Accessor.getDemoAccessor().loadFile(presentation, "");
+            // Ensure we're showing the first slide
             presentation.setSlideNumber(0);
-
+            // Force a complete refresh of the UI
+            viewerFrame.getSlideViewerComponent().update(presentation, presentation.getCurrentSlide());
             viewerFrame.getSlideViewerComponent().revalidate();
             viewerFrame.getSlideViewerComponent().repaint();
-
-            dispose();
-        } catch (IOException ex)
+        } catch (Exception e)
         {
-            JOptionPane.showMessageDialog(this, "IO Error: " + ex, "Error", JOptionPane.ERROR_MESSAGE);
+            showError("Failed to load demo presentation: " + e.getMessage(), e);
         }
     }
 
     private void openPresentationFile()
     {
-        if (fileHandler.openFile(presentation))
+        try
         {
-            SlideViewerFrame viewerFrame = new SlideViewerFrame("JabberPoint", presentation);
+            if (fileHandler.openFile(presentation))
+            {
+                SlideViewerFrame viewerFrame = createAndSetupViewerFrame("JabberPoint");
+                viewerFrame.getSlideViewerComponent().revalidate();
+                viewerFrame.getSlideViewerComponent().repaint();
+            }
+        } catch (FileOperationException | PresentationException e)
+        {
+            showError("Failed to open presentation file: " + e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Displays an error message dialog with the given message and exception details.
+     *
+     * @param message The main error message to display
+     * @param e The exception that caused the error
+     */
+    private void showError(String message, Exception e)
+    {
+        String errorMessage = message;
+        if (e.getCause() != null)
+        {
+            errorMessage += "\nCause: " + e.getCause().getMessage();
+        }
+        JOptionPane.showMessageDialog(this, 
+            errorMessage, 
+            "Error", 
+            JOptionPane.ERROR_MESSAGE);
+    }
+
+
+    private SlideViewerFrame createAndSetupViewerFrame(String title) throws PresentationException
+    {
+        try {
+            SlideViewerFrame viewerFrame = new SlideViewerFrame(title, presentation);
             presentation.setShowView(viewerFrame.getSlideViewerComponent());
-            presentation.setSlideNumber(0);
-            viewerFrame.getSlideViewerComponent().revalidate();
-            viewerFrame.getSlideViewerComponent().repaint();
             dispose();
+            return viewerFrame;
+        } catch (Exception e) {
+            throw new PresentationException("Failed to create slide viewer frame: " + e.getMessage(), e);
         }
     }
 }

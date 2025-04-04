@@ -35,7 +35,7 @@ public class JabberPoint
         Presentation presentation = new Presentation();
 
         // First show the Start Menu
-        StartMenu startMenu = new StartMenu(new JFrame());
+        StartMenu startMenu = new StartMenu();
 
     }
 }
