@@ -1,6 +1,7 @@
 package org.example.filehandler;
 
 import org.example.model.Presentation;
+import org.example.view.SlideViewerFrame;
 
 import java.awt.*;
 import java.io.File;
@@ -85,5 +86,17 @@ public class XMLFileHandler implements FileHandlerStrategy
             return saveFile(presentation, new File(filePath));
         }
         return false; // If user cancels the save operation
+    }
+
+    @Override
+    public boolean newFile(Presentation presentation)
+    {
+        presentation.clear();
+        if (parent instanceof SlideViewerFrame)
+        {
+            presentation.setSlideViewerFrame((SlideViewerFrame) parent);
+        }
+        parent.repaint();
+        return true;
     }
 }

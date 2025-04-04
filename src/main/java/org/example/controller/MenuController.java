@@ -53,16 +53,7 @@ public class MenuController extends JMenuBar
         JMenu fileMenu = new JMenu(FILE);
 
         fileMenu.add(menuItem = mkMenuItem(NEW));
-        menuItem.addActionListener(e ->
-        {
-            presentation.clear();
-            if (parent instanceof SlideViewerFrame)
-            {
-                presentation.setSlideViewerFrame((SlideViewerFrame) parent);
-            }
-            currentFile = null;
-            parent.repaint();
-        });
+        menuItem.addActionListener(e -> newFile());
 
         fileMenu.add(menuItem = mkMenuItem(OPEN));
         menuItem.addActionListener(e -> openFile());
@@ -102,6 +93,11 @@ public class MenuController extends JMenuBar
         helpMenu.add(menuItem = mkMenuItem(ABOUT));
         menuItem.addActionListener(e -> AboutBox.show(parent));
         add(helpMenu);
+    }
+
+    private void newFile()
+    {
+        fileHandler.newFile(presentation);
     }
 
     private void openFile()

@@ -4,6 +4,8 @@ import com.formdev.flatlaf.intellijthemes.FlatNordIJTheme;
 import org.example.filehandler.Accessor;
 import org.example.filehandler.XMLAccessor;
 import org.example.model.Presentation;
+import org.example.filehandler.FileHandlerStrategy;
+import org.example.filehandler.XMLFileHandler;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -15,17 +17,18 @@ public class StartMenu extends JFrame
 {
     private Presentation presentation;
     private JFrame parent;
+    private FileHandlerStrategy fileHandler;
 
     // Constants for menu options
     private static final String NEW = "New";
     private static final String OPEN = "Open";
     private static final String DEMO = "Demo";
-    private static final String BROWSE = "Browse file system";
 
     public StartMenu(JFrame parent)
     {
         this.parent = parent;
         this.presentation = new Presentation();
+        this.fileHandler = new XMLFileHandler(this);
 
         // Set up the frame
         setTitle("JabberPoint - Start Menu");
@@ -63,7 +66,7 @@ public class StartMenu extends JFrame
 
     private void loadNewPresentation()
     {
-        presentation.clear();
+        fileHandler.newFile(presentation);
         SlideViewerFrame viewerFrame = new SlideViewerFrame("JabberPoint", presentation);
         presentation.setShowView(viewerFrame.getSlideViewerComponent());
         presentation.setSlideNumber(0);
@@ -76,7 +79,7 @@ public class StartMenu extends JFrame
     {
         try
         {
-            presentation.clear();
+            fileHandler.newFile(presentation);
             SlideViewerFrame viewerFrame = new SlideViewerFrame("JabberPoint Demo", presentation);
             presentation.setSlideViewerFrame(viewerFrame);
             presentation.setShowView(viewerFrame.getSlideViewerComponent());
@@ -96,34 +99,14 @@ public class StartMenu extends JFrame
 
     private void openPresentationFile()
     {
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Open Presentation File");
-        fileChooser.setFileFilter(new FileNameExtensionFilter("Presentation Files (*.xml)", "xml"));
-
-        int userSelection = fileChooser.showOpenDialog(this);
-
-        if (userSelection == JFileChooser.APPROVE_OPTION)
+        if (fileHandler.openFile(presentation))
         {
-            File selectedFile = fileChooser.getSelectedFile();
-            presentation.clear();
-
-            SlideViewerFrame viewerFrame = new SlideViewerFrame("JabberPoint - " + selectedFile.getName(), presentation);
+            SlideViewerFrame viewerFrame = new SlideViewerFrame("JabberPoint", presentation);
             presentation.setShowView(viewerFrame.getSlideViewerComponent());
-
-            Accessor xmlAccessor = new XMLAccessor();
-            try
-            {
-                xmlAccessor.loadFile(presentation, selectedFile.getAbsolutePath());
-                presentation.setSlideNumber(0);
-
-                viewerFrame.getSlideViewerComponent().revalidate();
-                viewerFrame.getSlideViewerComponent().repaint();
-
-                dispose();
-            } catch (IOException ex)
-            {
-                JOptionPane.showMessageDialog(this, "IO Error: " + ex, "Error", JOptionPane.ERROR_MESSAGE);
-            }
+            presentation.setSlideNumber(0);
+            viewerFrame.getSlideViewerComponent().revalidate();
+            viewerFrame.getSlideViewerComponent().repaint();
+            dispose();
         }
     }
 }

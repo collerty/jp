@@ -11,4 +11,6 @@ public interface FileHandlerStrategy
     boolean saveFile(Presentation presentation, File file);
 
     boolean saveAs(Presentation presentation);
+
+    boolean newFile(Presentation presentation);
 }
