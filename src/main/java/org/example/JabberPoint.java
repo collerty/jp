@@ -4,6 +4,8 @@ import com.formdev.flatlaf.intellijthemes.FlatNordIJTheme;
 import org.example.model.Presentation;
 import org.example.model.Style;
 import org.example.view.StartMenu;
+import org.example.view.SlideViewerFrame;
+import org.example.util.FileChooserUtils;
 
 import javax.swing.*;
 
@@ -28,6 +30,8 @@ public class JabberPoint
             e.printStackTrace();
         }
 
+        // Initialize file choosers in parallel
+        FileChooserUtils.initialize();
 
         // Create styles
         Style.createStyles();

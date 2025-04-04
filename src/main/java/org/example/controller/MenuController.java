@@ -1,19 +1,13 @@
 package org.example.controller;
 
-import com.formdev.flatlaf.intellijthemes.FlatNordIJTheme;
-import org.example.filehandler.Accessor;
-import org.example.filehandler.XMLAccessor;
 import org.example.model.Presentation;
 import org.example.view.AboutBox;
-import org.example.view.SlideViewerFrame;
 import org.example.filehandler.FileHandlerStrategy;
 import org.example.filehandler.XMLFileHandler;
 
 import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.io.IOException;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class MenuController extends JMenuBar
 {

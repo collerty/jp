@@ -1,6 +1,5 @@
 package org.example.view;
 
-import org.example.view.TextBubbleBorder;
 import org.example.model.BitmapItem;
 import org.example.model.Presentation;
 import org.example.model.Slide;

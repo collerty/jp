@@ -3,17 +3,13 @@ package org.example.filehandler;
 import org.example.exception.FileOperationException;
 import org.example.exception.PresentationException;
 import org.example.model.Presentation;
+import org.example.util.FileChooserUtils;
 import org.example.view.SlideViewerFrame;
 
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
-/**
- * XML file handler implementation for the presentation application.
- */
 public class XMLFileHandler implements FileHandlerStrategy
 {
     private final Component parent;
@@ -26,15 +22,9 @@ public class XMLFileHandler implements FileHandlerStrategy
     @Override
     public boolean openFile(Presentation presentation) throws FileOperationException
     {
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Open Presentation File");
-        fileChooser.setFileFilter(new FileNameExtensionFilter("Presentation Files (*.xml)", "xml"));
-
-        int userSelection = fileChooser.showOpenDialog(parent);
-
-        if (userSelection == JFileChooser.APPROVE_OPTION)
+        File selectedFile = FileChooserUtils.selectXMLFile(parent);
+        if (selectedFile != null)
         {
-            File selectedFile = fileChooser.getSelectedFile();
             Accessor xmlAccessor = new XMLAccessor();
             try
             {
@@ -53,7 +43,6 @@ public class XMLFileHandler implements FileHandlerStrategy
         return false; // If no file was selected
     }
 
-
     @Override
     public boolean saveFile(Presentation presentation, File file) throws FileOperationException
     {
@@ -71,24 +60,10 @@ public class XMLFileHandler implements FileHandlerStrategy
     @Override
     public boolean saveAs(Presentation presentation) throws FileOperationException
     {
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Save Presentation As...");
-        fileChooser.setFileFilter(new FileNameExtensionFilter("Presentation Files (*.xml)", "xml"));
-
-        int userSelection = fileChooser.showSaveDialog(parent);
-
-        if (userSelection == JFileChooser.APPROVE_OPTION)
+        File selectedFile = FileChooserUtils.selectSaveXMLFile(parent);
+        if (selectedFile != null)
         {
-            File selectedFile = fileChooser.getSelectedFile();
-
-            // Ensure the file has .xml extension
-            String filePath = selectedFile.getAbsolutePath();
-            if (!filePath.toLowerCase().endsWith(".xml"))
-            {
-                filePath += ".xml";
-            }
-
-            return saveFile(presentation, new File(filePath));
+            return saveFile(presentation, selectedFile);
         }
         return false; // If user cancels the save operation
     }
