@@ -4,25 +4,15 @@ import org.example.model.BitmapItem;
 import org.example.model.Presentation;
 import org.example.model.Slide;
 import org.example.model.TextItem;
+import org.example.style.StyleConstants;
+import org.example.util.FileChooserUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.RoundRectangle2D;
 
 public class HeaderPanel extends JPanel
 {
-    private static final Color BACKGROUND_COLOR = new Color(76, 86, 106);
-    private static final Color BUTTON_COLOR = new Color(67, 76, 94);
-    private static final Color BUTTON_HOVER_COLOR = new Color(88, 101, 126);
-    private static final Color TEXT_COLOR = Color.WHITE;
-
-    private static final int PANEL_HEIGHT = 96;  // Fixed height for the header
-    private static final int BUTTON_WIDTH = 160;  // Fixed width for buttons
-    private static final int BUTTON_HEIGHT = 96;  // Fixed height for buttons
-    private static final int HORIZONTAL_MARGIN = 24;  // Match frame padding
-    private static final int VERTICAL_MARGIN = 20;    // Margin from top/bottom edges
-    private static final int BUTTON_SPACING = 16;     // Space between buttons
-    private static final int PANEL_PADDING = 24;      // Match frame padding
-
     private Presentation presentation;
     private JButton addSlideButton;
     private JButton addTextSlideButton;
@@ -32,19 +22,35 @@ public class HeaderPanel extends JPanel
     public HeaderPanel(Presentation presentation)
     {
         this.presentation = presentation;
-        setBackground(BACKGROUND_COLOR);
-        setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-        setBorder(new TextBubbleBorder(BACKGROUND_COLOR, 2, 15, 0)); // Using TextBubbleBorder with no pointer
-        setPreferredSize(new Dimension(Slide.WIDTH, PANEL_HEIGHT));
+        setLayout(new BorderLayout());
+        setPreferredSize(new Dimension(Slide.WIDTH, StyleConstants.PANEL_HEIGHT));
+        setOpaque(false); // Important for rounded corners to work
 
         // Create a container panel for buttons with vertical centering
-        JPanel buttonContainer = new JPanel();
-        buttonContainer.setLayout(new BoxLayout(buttonContainer, BoxLayout.X_AXIS));
-        buttonContainer.setBackground(BACKGROUND_COLOR);
+        JPanel buttonContainer = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g;
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                
+                // Draw rounded background
+                g2.setColor(StyleConstants.SECONDARY_BACKGROUND);
+                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 
+                    StyleConstants.BORDER_RADIUS, StyleConstants.BORDER_RADIUS);
+            }
+        };
+        
+        // Use GridBagLayout for precise centering
+        buttonContainer.setLayout(new GridBagLayout());
+        buttonContainer.setOpaque(false);
+        
+        // Create a panel for the buttons using FlowLayout
+        JPanel buttonsPanel = new JPanel();
+        buttonsPanel.setOpaque(false);
+        buttonsPanel.setLayout(new FlowLayout(FlowLayout.CENTER, StyleConstants.BUTTON_SPACING, 0));
 
         // Create and style the "Add New Slide" button
         addSlideButton = createStyledButton("Add New Slide");
-        addSlideButton.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT));
         addSlideButton.addActionListener(e ->
         {
             Slide newSlide = new Slide();
@@ -54,7 +60,6 @@ public class HeaderPanel extends JPanel
 
         // Create and style the "Add Text Slide" button
         addTextSlideButton = createStyledButton("Add Text Slide");
-        addTextSlideButton.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT));
         addTextSlideButton.addActionListener(e ->
         {
             Slide newSlide = new Slide();
@@ -68,7 +73,6 @@ public class HeaderPanel extends JPanel
 
         // Create and style the "Add Text" button
         addTextButton = createStyledButton("Add Text");
-        addTextButton.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT));
         addTextButton.addActionListener(e ->
         {
             if (presentation.getCurrentSlide() != null)
@@ -79,73 +83,69 @@ public class HeaderPanel extends JPanel
                     TextItem textItem = new TextItem(presentation.getCurrentSlide().getSize() + 1, text);
                     presentation.getCurrentSlide().append(textItem);
                     presentation.getSlideViewComponent().update(presentation, presentation.getCurrentSlide());
-
-                    // Ensure frame maintains focus
-                    if (presentation.getSlideViewerFrame() != null)
-                    {
-                        presentation.getSlideViewerFrame().requestFocus();
-                        presentation.getSlideViewerFrame().requestFocusInWindow();
-                        presentation.getSlideViewerFrame().toFront();
-                    }
+                    maintainFrameFocus();
                 }
             }
         });
 
         // Create and style the "Add Image" button
         addImageButton = createStyledButton("Add Image");
-        addImageButton.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT));
         addImageButton.addActionListener(e ->
         {
             if (presentation.getCurrentSlide() != null)
             {
-                JFileChooser fileChooser = new JFileChooser();
-                fileChooser.setFileFilter(new javax.swing.filechooser.FileFilter()
-                {
-                    public boolean accept(java.io.File f)
-                    {
-                        return f.isDirectory() || f.getName().toLowerCase().endsWith(".jpg")
-                                || f.getName().toLowerCase().endsWith(".png")
-                                || f.getName().toLowerCase().endsWith(".gif");
-                    }
-
-                    public String getDescription()
-                    {
-                        return "Image files (*.jpg, *.png, *.gif)";
-                    }
-                });
-
-                int result = fileChooser.showOpenDialog(this);
-                if (result == JFileChooser.APPROVE_OPTION)
-                {
-                    java.io.File selectedFile = fileChooser.getSelectedFile();
-                    BitmapItem bitmapItem = new BitmapItem(presentation.getCurrentSlide().getSize() + 1, selectedFile.getAbsolutePath());
-                    presentation.getCurrentSlide().append(bitmapItem);
-                    presentation.getSlideViewComponent().update(presentation, presentation.getCurrentSlide());
-
-                    // Ensure frame maintains focus
-                    if (presentation.getSlideViewerFrame() != null)
-                    {
-                        presentation.getSlideViewerFrame().requestFocus();
-                        presentation.getSlideViewerFrame().requestFocusInWindow();
-                        presentation.getSlideViewerFrame().toFront();
-                    }
-                }
+                handleImageAddition();
             }
         });
 
-        // Add buttons to the container with spacing
-        buttonContainer.add(Box.createHorizontalGlue()); // Push buttons to center
-        buttonContainer.add(addSlideButton);
-        buttonContainer.add(Box.createHorizontalStrut(BUTTON_SPACING));
-        buttonContainer.add(addTextSlideButton);
-        buttonContainer.add(Box.createHorizontalStrut(BUTTON_SPACING));
-        buttonContainer.add(addTextButton);
-        buttonContainer.add(Box.createHorizontalStrut(BUTTON_SPACING));
-        buttonContainer.add(addImageButton);
-        buttonContainer.add(Box.createHorizontalGlue()); // Push buttons to center
+        // Add buttons to the buttons panel
+        buttonsPanel.add(addSlideButton);
+        buttonsPanel.add(addTextSlideButton);
+        buttonsPanel.add(addTextButton);
+        buttonsPanel.add(addImageButton);
+        
+        // Add the buttons panel to the container with GridBagConstraints for perfect centering
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.anchor = GridBagConstraints.CENTER;
+        buttonContainer.add(buttonsPanel, gbc);
 
-        // Add the button container to the main panel
-        add(buttonContainer);
+        // Create a wrapper with padding
+        JPanel containerWrapper = new JPanel(new BorderLayout());
+        containerWrapper.setOpaque(false);
+        containerWrapper.setBorder(BorderFactory.createEmptyBorder(
+            StyleConstants.MARGIN_MEDIUM, 
+            StyleConstants.MARGIN_LARGE, 
+            StyleConstants.MARGIN_MEDIUM, 
+            StyleConstants.MARGIN_LARGE
+        ));
+        containerWrapper.add(buttonContainer, BorderLayout.CENTER);
+
+        // Add the wrapper to the main panel
+        add(containerWrapper, BorderLayout.CENTER);
+    }
+
+    private void handleImageAddition() {
+        java.io.File selectedFile = FileChooserUtils.selectImageFile(this);
+        if (selectedFile != null) {
+            BitmapItem bitmapItem = new BitmapItem(presentation.getCurrentSlide().getSize() + 1, selectedFile.getAbsolutePath());
+            presentation.getCurrentSlide().append(bitmapItem);
+            presentation.getSlideViewComponent().update(presentation, presentation.getCurrentSlide());
+            maintainFrameFocus();
+        }
+    }
+
+    private void maintainFrameFocus() {
+        // Ensure frame maintains focus
+        if (presentation.getSlideViewerFrame() != null) {
+            presentation.getSlideViewerFrame().requestFocus();
+            presentation.getSlideViewerFrame().requestFocusInWindow();
+            presentation.getSlideViewerFrame().toFront();
+        }
     }
 
     private JButton createStyledButton(String text)
@@ -155,35 +155,45 @@ public class HeaderPanel extends JPanel
             @Override
             protected void paintComponent(Graphics g)
             {
-                if (getModel().isPressed())
+                Graphics2D g2 = (Graphics2D) g;
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                
+                if (getModel().isPressed() || getModel().isRollover())
                 {
-                    g.setColor(BUTTON_HOVER_COLOR);
-                }
-                else if (getModel().isRollover())
-                {
-                    g.setColor(BUTTON_HOVER_COLOR);
+                    g2.setColor(StyleConstants.PRIMARY_HOVER);
                 }
                 else
                 {
-                    g.setColor(BUTTON_COLOR);
+                    g2.setColor(StyleConstants.PRIMARY);
                 }
-                g.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 5, 5);
+                
+                g2.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 
+                    StyleConstants.BORDER_RADIUS, StyleConstants.BORDER_RADIUS);
+                
                 super.paintComponent(g);
+            }
+            
+            // Force the button to respect its preferred size
+            @Override
+            public Dimension getMinimumSize() {
+                return getPreferredSize();
+            }
+            
+            @Override
+            public Dimension getMaximumSize() {
+                return getPreferredSize();
             }
         };
 
-        button.setForeground(TEXT_COLOR);
+        button.setForeground(StyleConstants.TEXT_ON_DARK);
         button.setFocusPainted(false);
         button.setBorderPainted(false);
         button.setContentAreaFilled(false);
-        button.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        button.setFont(StyleConstants.BODY_FONT);
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-        // Set both preferred and maximum size
-        Dimension buttonSize = new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT);
-        button.setPreferredSize(buttonSize);
-        button.setMaximumSize(buttonSize);
-        button.setMinimumSize(buttonSize);
+        // Set the preferred size
+        button.setPreferredSize(new Dimension(StyleConstants.BUTTON_WIDTH, StyleConstants.BUTTON_HEIGHT));
 
         return button;
     }

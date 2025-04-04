@@ -2,6 +2,7 @@ package org.example.view;
 
 import org.example.model.Presentation;
 import org.example.model.Slide;
+import org.example.style.StyleConstants;
 
 import java.awt.*;
 import javax.swing.JComponent;
@@ -10,7 +11,6 @@ import javax.swing.JScrollPane;
 
 public class SlideViewerComponent extends JComponent
 {
-
     private Slide slide; // current slide
     private Font labelFont = null; // font for labels
     private Presentation presentation = null; // the presentation
@@ -20,25 +20,18 @@ public class SlideViewerComponent extends JComponent
 
     private static final long serialVersionUID = 227L;
 
-    private static final Color SLIDE_BORDER = new Color(200, 200, 200);
-    private static final int BORDER_WIDTH = 2;
-    private static final Color BGCOLOR = new Color(46, 52, 64); // Dark background
-    private static final Color COLOR = new Color(216, 222, 233);
-    private static final String FONTNAME = "Dialog";
-    private static final int FONTSTYLE = Font.BOLD;
-    private static final int FONTHEIGHT = 10;
-    private static final int XPOS = 1100; // I dont know what that does
-    private static final int YPOS = 20;
-    private static final int SLIDE_MARGIN = 40; // Margin around the slide
-
     public SlideViewerComponent(Presentation pres, JFrame frame)
     {
-        setBackground(BGCOLOR);
+        setBackground(StyleConstants.BACKGROUND);
         presentation = pres;
-        labelFont = new Font(FONTNAME, FONTSTYLE, FONTHEIGHT);
+        labelFont = StyleConstants.LABEL_FONT;
         this.frame = frame;
         setDoubleBuffered(false); // Disable double buffering for faster updates
 
+        setupScrollPane();
+    }
+
+    private void setupScrollPane() {
         // Create scroll pane
         scrollPane = new JScrollPane(this);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -66,7 +59,7 @@ public class SlideViewerComponent extends JComponent
             maxHeight = Math.max(maxHeight, bounds.height);
         }
 
-        return new Dimension(maxWidth + (2 * SLIDE_MARGIN), maxHeight + (2 * SLIDE_MARGIN));
+        return new Dimension(maxWidth + (2 * StyleConstants.SLIDE_MARGIN), maxHeight + (2 * StyleConstants.SLIDE_MARGIN));
     }
 
     public void update(Presentation presentation, Slide data)
@@ -74,7 +67,8 @@ public class SlideViewerComponent extends JComponent
         this.presentation = presentation;
         this.slide = data;
 
-        // Force a complete repaint regardless of datarevalidate();
+        // Force a complete repaint
+        revalidate();
         repaint();
 
         // Update frame title
@@ -93,61 +87,74 @@ public class SlideViewerComponent extends JComponent
     // draw the slide
     public void paintComponent(Graphics g)
     {
-        // Clear the background first
-        g.setColor(BGCOLOR);
-        g.fillRect(0, 0, getSize().width, getSize().height);
+        clearBackground(g);
 
-        // If no slide or invalid slide number, just show empty background
         if (presentation.getSlideNumber() < 0 || slide == null || presentation.getSize() == 0)
         {
-            // Draw a message indicating no slides
-            g.setFont(labelFont);
-            g.setColor(COLOR);
-            g.drawString("No slides available", XPOS, YPOS);
+            drawEmptyMessage(g);
             return;
         }
 
         if (isFullscreen)
         {
-            // In fullscreen mode, fill the entire screen with white
-            g.setColor(Color.WHITE);
-            g.fillRect(0, 0, getSize().width, getSize().height);
-
-            // Calculate scaling to fit the screen while maintaining aspect ratio
-            double scaleX = (double) getWidth() / Slide.WIDTH;
-            double scaleY = (double) getHeight() / Slide.HEIGHT;
-            double scale = Math.min(scaleX, scaleY);
-
-            // Calculate scaled dimensions
-            int scaledWidth = (int) (Slide.WIDTH * scale);
-            int scaledHeight = (int) (Slide.HEIGHT * scale);
-
-            // Center the scaled slide
-            int x = (getWidth() - scaledWidth) / 2;
-            int y = (getHeight() - scaledHeight) / 2;
-
-            // Draw the slide content scaled
-            Rectangle area = new Rectangle(x, y, scaledWidth, scaledHeight);
-            slide.draw(g, area, this);
+            drawFullscreenSlide(g);
         }
         else
         {
-            // In normal mode, draw the slide with margins
-            int x = (getWidth() - Slide.WIDTH) / 2;
-            int y = (getHeight() - Slide.HEIGHT) / 2;
-
-            // Draw white background for the slide
-            g.setColor(Color.WHITE);
-            g.fillRect(x, y, Slide.WIDTH, Slide.HEIGHT);
-
-            // Draw slide border
-            g.setColor(SLIDE_BORDER);
-            g.drawRect(x, y, Slide.WIDTH, Slide.HEIGHT);
-
-            // Draw slide content
-            Rectangle area = new Rectangle(x, y, Slide.WIDTH, Slide.HEIGHT);
-            slide.draw(g, area, this);
+            drawNormalSlide(g);
         }
+    }
+
+    private void clearBackground(Graphics g) {
+        g.setColor(StyleConstants.BACKGROUND);
+        g.fillRect(0, 0, getSize().width, getSize().height);
+    }
+
+    private void drawEmptyMessage(Graphics g) {
+        g.setFont(labelFont);
+        g.setColor(StyleConstants.TEXT_ON_DARK);
+        g.drawString("No slides available", getWidth() / 2 - 50, getHeight() / 2);
+    }
+
+    private void drawFullscreenSlide(Graphics g) {
+        // In fullscreen mode, fill the entire screen with white
+        g.setColor(StyleConstants.SURFACE);
+        g.fillRect(0, 0, getSize().width, getSize().height);
+
+        // Calculate scaling to fit the screen while maintaining aspect ratio
+        double scaleX = (double) getWidth() / Slide.WIDTH;
+        double scaleY = (double) getHeight() / Slide.HEIGHT;
+        double scale = Math.min(scaleX, scaleY);
+
+        // Calculate scaled dimensions
+        int scaledWidth = (int) (Slide.WIDTH * scale);
+        int scaledHeight = (int) (Slide.HEIGHT * scale);
+
+        // Center the scaled slide
+        int x = (getWidth() - scaledWidth) / 2;
+        int y = (getHeight() - scaledHeight) / 2;
+
+        // Draw the slide content scaled
+        Rectangle area = new Rectangle(x, y, scaledWidth, scaledHeight);
+        slide.draw(g, area, this);
+    }
+
+    private void drawNormalSlide(Graphics g) {
+        // In normal mode, draw the slide with margins
+        int x = (getWidth() - Slide.WIDTH) / 2;
+        int y = (getHeight() - Slide.HEIGHT) / 2;
+
+        // Draw white background for the slide
+        g.setColor(StyleConstants.SURFACE);
+        g.fillRect(x, y, Slide.WIDTH, Slide.HEIGHT);
+
+        // Draw slide border
+        g.setColor(StyleConstants.BORDER);
+        g.drawRect(x, y, Slide.WIDTH, Slide.HEIGHT);
+
+        // Draw slide content
+        Rectangle area = new Rectangle(x, y, Slide.WIDTH, Slide.HEIGHT);
+        slide.draw(g, area, this);
     }
 
     public JScrollPane getScrollPane()
@@ -208,6 +215,4 @@ public class SlideViewerComponent extends JComponent
             frame.setExtendedState(JFrame.NORMAL);
         }
     }
-
-
 }
