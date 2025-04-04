@@ -1,16 +1,13 @@
-package org.example;
+package org.example.model.demo;
 
-/** A built in demo-presentation
- * @author Ian F. Darwin, ian@darwinsys.com, Gert Florijn, Sylvia Stuurman
- * @version 1.1 2002/12/17 Gert Florijn
- * @version 1.2 2003/11/19 Sylvia Stuurman
- * @version 1.3 2004/08/17 Sylvia Stuurman
- * @version 1.4 2007/07/16 Sylvia Stuurman
- * @version 1.5 2010/03/03 Sylvia Stuurman
- * @version 1.6 2014/05/16 Sylvia Stuurman
- */
+import org.example.filehandler.Accessor;
+import org.example.model.BitmapItem;
+import org.example.model.Presentation;
+import org.example.model.Slide;
 
-class DemoPresentation extends Accessor {
+
+public class DemoPresentation extends Accessor
+{
 
 	public void loadFile(Presentation presentation, String unusedFilename) {
 		presentation.setTitle("Demo java.com.Presentation");

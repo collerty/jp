@@ -1,33 +1,33 @@
-package org.example;
+package org.example.view;
 
 import com.formdev.flatlaf.intellijthemes.FlatNordIJTheme;
+import org.example.controller.KeyController;
+import org.example.controller.MenuController;
+import org.example.model.Presentation;
+import org.example.style.StyleConstants;
 
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.Dimension;
-import java.awt.Color;
 import java.awt.BorderLayout;
 
-/**
- * <p>The application window for a slideviewcomponent</p>
- *
- * @author Ian F. Darwin, ian@darwinsys.com, Gert Florijn, Sylvia Stuurman
- * @version 1.6 2014/05/16 Sylvia Stuurman
- */
 
 public class SlideViewerFrame extends JFrame
 {
     private static final long serialVersionUID = 3227L;
 
     private static final String JABTITLE = "Jabberpoint 1.6 - OU";
-    public final static int WIDTH = 1200;
-    public final static int HEIGHT = 800;
     private SlideViewerComponent slideViewerComponent;
     private SlideThumbnailPanel thumbnailPanel;
     private HeaderPanel headerPanel;
     private JPanel mainPanel;
     private JPanel headerWrapper;
+
+    public SlideViewerFrame(Presentation presentation)
+    {
+        this(JABTITLE, presentation);
+    }
 
     public SlideViewerFrame(String title, Presentation presentation)
     {
@@ -48,16 +48,13 @@ public class SlideViewerFrame extends JFrame
 
         // Create main content panel with BorderLayout
         mainPanel = new JPanel(new BorderLayout());
-        mainPanel.setBackground(new Color(46, 52, 64)); // Dark background
+        mainPanel.setBackground(StyleConstants.BACKGROUND);
 
         // Setting up the header panel
         this.headerWrapper = new JPanel(new BorderLayout());
-        this.headerWrapper.setBackground(new Color(46, 52, 64));
+        this.headerWrapper.setBackground(StyleConstants.BACKGROUND);
         this.headerWrapper.setBorder(BorderFactory.createEmptyBorder(0, 24, 0, 24)); // Match slide panel's left padding
         this.headerWrapper.add(this.headerPanel, BorderLayout.CENTER);
-
-        // Setting up the sidebar panel
-        this.thumbnailPanel = new SlideThumbnailPanel(presentation);
 
         // Making setup window for viewing mode
         setupWindow(slideViewerComponent, presentation);
@@ -111,7 +108,8 @@ public class SlideViewerFrame extends JFrame
         addKeyListener(new KeyController(presentation));
 
         // Set window size and make it visible
-        setSize(new Dimension(WIDTH + thumbnailPanel.getPreferredSize().width, HEIGHT + headerPanel.getPreferredSize().height));
+        setSize(new Dimension(StyleConstants.WINDOW_WIDTH + thumbnailPanel.getPreferredSize().width, 
+                             StyleConstants.WINDOW_HEIGHT + headerPanel.getPreferredSize().height));
         setVisible(true);
         requestFocus();
         requestFocusInWindow();
@@ -121,7 +119,6 @@ public class SlideViewerFrame extends JFrame
 
     public void enterFullScreen()
     {
-//        this.slide
         this.mainPanel.remove(thumbnailPanel);
         this.mainPanel.repaint();
 
@@ -130,7 +127,6 @@ public class SlideViewerFrame extends JFrame
 
     public void exitFullScreen()
     {
-
         this.mainPanel.add(thumbnailPanel, BorderLayout.WEST);
         this.mainPanel.revalidate();
         this.mainPanel.repaint();

@@ -1,5 +1,8 @@
-package org.example;
+package org.example.model;
 
+import org.example.view.SlideThumbnailPanel;
+import org.example.view.SlideViewerComponent;
+import org.example.view.SlideViewerFrame;
 import org.example.state.PresentationState;
 import org.example.state.ViewingMode;
 
@@ -7,6 +10,7 @@ import java.util.ArrayList;
 
 public class Presentation
 {
+    private static final String JABTITLE = "New jabbepoint presentation";
     private String showTitle; // title of the presentation
     private ArrayList<Slide> showList = null; // an ArrayList with Slides
     private int currentSlideNumber = 0; // the slidenummer of the current java.com.Slide
@@ -161,20 +165,46 @@ public class Presentation
     }
 
     // Delete the presentation to be ready for the next one.
-    void clear()
+    public void clear()
     {
+        // Clear data
         showList = new ArrayList<Slide>();
         currentSlideNumber = 0;
-        showTitle = "";
-        if (thumbnailPanel != null) {
-            thumbnailPanel.removeAll();
-            thumbnailPanel.revalidate();
-            thumbnailPanel.repaint();
+        showTitle = JABTITLE;  // Set default title instead of empty string
+        
+        // Reset state
+        currentState = new ViewingMode();
+
+        // Remove header panel if in view mode
+        if (slideViewerFrame != null) {
+            slideViewerFrame.exitEditMode();
         }
+
+        // Reset UI components
+        updateUI();
+        
+        // Update thumbnail panel
+        if (this.thumbnailPanel != null) {
+            this.thumbnailPanel.updateThumbnails();
+        }
+    }
+    
+    // Helper method to update all UI components
+    private void updateUI() {
+        // Update thumbnail panel
+        if (thumbnailPanel != null) {
+            thumbnailPanel.updateThumbnails();
+        }
+        
+        // Update slide viewer
         if (slideViewComponent != null) {
             slideViewComponent.update(this, null);
         }
+        
+        // Update frame
         if (slideViewerFrame != null) {
+            slideViewerFrame.setTitle(JABTITLE);
+            slideViewerFrame.revalidate();
             slideViewerFrame.repaint();
         }
     }
@@ -183,7 +213,19 @@ public class Presentation
     // Add a slide to the presentation
     public void append(Slide slide)
     {
+        // Store current title
+        String currentTitle = this.showTitle;
+        
+        // Add slide using state pattern
         this.currentState.addSlide(this, slide);
+        
+        // Restore title if it was changed
+        if (this.showTitle.isEmpty()) {
+            this.showTitle = currentTitle;
+        }
+        
+        // Update UI after adding slide
+        updateUI();
     }
 
 

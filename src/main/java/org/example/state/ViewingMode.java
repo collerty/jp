@@ -1,9 +1,8 @@
 package org.example.state;
 
-import org.example.Presentation;
-import org.example.Slide;
+import org.example.model.Presentation;
+import org.example.model.Slide;
 
-import javax.swing.*;
 import java.util.ArrayList;
 
 public class ViewingMode implements PresentationState
@@ -55,7 +54,7 @@ public class ViewingMode implements PresentationState
     {
         presentation.setShowList(new ArrayList<Slide>());
         presentation.setCurrentSlideNumber(0);
-        presentation.setTitle("");
+        presentation.setTitle("New jabbepoint presentation");
         if (presentation.getSlideViewComponent() != null) {
             presentation.getSlideViewComponent().update(presentation, null);
         }
