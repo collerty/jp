@@ -99,8 +99,21 @@ public class HeaderPanel extends JPanel
                     System.out.println("Is instance: " + (item instanceof ItalicDecorator));
 
                     presentation.getCurrentSlide().append(item);
+                    
+                    // Force a complete update of the entire slide viewer component
                     presentation.getSlideViewComponent().update(presentation, presentation.getCurrentSlide());
-                    presentation.getSlideViewComponent().repaint();
+                    
+                    // Request multiple repaints to ensure proper rendering
+                    SwingUtilities.invokeLater(() -> {
+                        presentation.getSlideViewComponent().revalidate();
+                        presentation.getSlideViewComponent().repaint();
+                        
+                        // Schedule another repaint to ensure decorations are visible
+                        SwingUtilities.invokeLater(() -> {
+                            presentation.getSlideViewComponent().repaint();
+                        });
+                    });
+                    
                     maintainFrameFocus();
                 }
             }

@@ -119,6 +119,13 @@ public class TextItem extends SlideItem
     	return layouts;
 	}
 
+	// Add a method to clear the layouts cache
+	public void clearLayoutCache() {
+		cachedLayouts = null;
+		lastScale = -1;
+		lastStyle = null;
+	}
+
 	public String toString() {
 		return "java.com.TextItem[" + getLevel()+","+getText()+"]";
 	}
