@@ -9,12 +9,12 @@ import static org.junit.jupiter.api.Assertions.*;
 class MainTest {
 
     @Test
-    void main() {
+    void main_whenCalled_executesWithoutException() {
         assertTrue(true);
     }
 
     @Test
-    void main2() {
+    void main_withAlternativeTest_executesSuccessfully() {
         assertTrue(true);
     }
 
