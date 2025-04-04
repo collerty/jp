@@ -1,4 +1,6 @@
-package org.example.model;
+package org.example.model.slideComponents;
+
+import org.example.model.Style;
 
 import java.awt.Rectangle;
 import java.awt.Graphics;

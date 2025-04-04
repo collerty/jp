@@ -3,6 +3,8 @@ package org.example.state;
 import org.example.model.Presentation;
 import org.example.model.Slide;
 
+import javax.swing.*;
+
 public class FullscreenMode implements PresentationState
 {
     @Override
@@ -27,14 +29,13 @@ public class FullscreenMode implements PresentationState
     @Override
     public void editSlide(Presentation presentation)
     {
-
+        System.out.println("This action is not allowed");
     }
 
     @Override
     public void enterFullscreen(Presentation presentation)
     {
         presentation.getSlideViewerFrame().exitFullScreen();
-        System.out.println("Exit fullscreen mode");
         presentation.setCurrentState(new ViewingMode());
     }
 
@@ -42,12 +43,6 @@ public class FullscreenMode implements PresentationState
     public void exit(Presentation presentation, int statusCode)
     {
         System.exit(statusCode);
-    }
-
-    @Override
-    public void clear(Presentation presentation)
-    {
-
     }
 
     @Override

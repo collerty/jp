@@ -11,7 +11,7 @@ public class Style
     private static Style[] styles; // Array of styles
 
     // Constants for colors
-    private static final Color SNOW_WHITE = new Color(216, 222, 233);
+    private static final Color SNOW_WHITE = new Color(0, 0, 0);
     private static final Color BLUE = new Color(50, 100, 255);
     private static final Color RED = new Color(255, 75, 85);
 
@@ -95,6 +95,11 @@ public class Style
     public int getLeading()
     {
         return leading;
+    }
+
+    public void setFont(Font font)
+    {
+        this.font = font;
     }
 
     // Method to convert style to a string representation

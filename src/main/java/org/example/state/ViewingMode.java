@@ -48,18 +48,6 @@ public class ViewingMode implements PresentationState
         System.exit(statusCode);
     }
 
-
-    @Override
-    public void clear(Presentation presentation)
-    {
-        presentation.setShowList(new ArrayList<Slide>());
-        presentation.setCurrentSlideNumber(0);
-        presentation.setTitle("New jabbepoint presentation");
-        if (presentation.getSlideViewComponent() != null) {
-            presentation.getSlideViewComponent().update(presentation, null);
-        }
-    }
-
     @Override
     public void addSlide(Presentation presentation, Slide slide)
     {

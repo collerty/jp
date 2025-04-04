@@ -9,8 +9,6 @@ public interface PresentationState
 
     void prevSlide(Presentation presentation);
 
-    void clear(Presentation presentation);
-
     void addSlide(Presentation presentation, Slide slide);
 
     void editSlide(Presentation presentation);
