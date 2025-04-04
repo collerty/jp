@@ -1,12 +1,9 @@
 package org.example.view;
 
-import org.example.model.slideComponents.BitmapItem;
 import org.example.model.Presentation;
 import org.example.model.Slide;
 import org.example.model.slideComponents.SlideItem;
-import org.example.model.slideComponents.TextItem;
-import org.example.model.slideComponents.decorator.BoldDecorator;
-import org.example.model.slideComponents.decorator.ItalicDecorator;
+import org.example.model.slideComponents.factory.SlideItemFactory;
 import org.example.style.StyleConstants;
 import org.example.util.FileChooserUtils;
 
@@ -65,8 +62,9 @@ public class HeaderPanel extends JPanel
         addTextSlideButton.addActionListener(e ->
         {
             Slide newSlide = new Slide();
-            TextItem titleItem = new TextItem(1, "New Text Slide");
-            TextItem textItem = new TextItem(2, "Enter your text here");
+            // Use factory to create TextItems
+            SlideItem titleItem = SlideItemFactory.createTextItem(1, "New Text Slide");
+            SlideItem textItem = SlideItemFactory.createTextItem(2, "Enter your text here");
             newSlide.append(titleItem);
             newSlide.append(textItem);
             presentation.append(newSlide);
@@ -83,21 +81,20 @@ public class HeaderPanel extends JPanel
                 if (text != null && !text.trim().isEmpty())
                 {
                     int level = presentation.getCurrentSlide().getSize() + 1;
-                    SlideItem item = new TextItem(level, text);
-
+                    
+                    // Get formatting choices
                     int boldChoice = JOptionPane.showConfirmDialog(null, "Do you want the text to be bold?", "Bold", JOptionPane.YES_NO_OPTION);
-                    if (boldChoice == JOptionPane.YES_OPTION)
-                    {
-                        item = new BoldDecorator(item);
-                    }
-
+                    boolean isBold = (boldChoice == JOptionPane.YES_OPTION);
+                    
                     int italicChoice = JOptionPane.showConfirmDialog(null, "Do you want the text to be italic?", "Italic", JOptionPane.YES_NO_OPTION);
-                    if (italicChoice == JOptionPane.YES_OPTION)
-                    {
-                        item = new ItalicDecorator(item);
-                    }
-                    System.out.println("Is instance: " + (item instanceof ItalicDecorator));
-
+                    boolean isItalic = (italicChoice == JOptionPane.YES_OPTION);
+                    
+                    // Use the factory to create the formatted text item
+                    SlideItem item = SlideItemFactory.createFormattedTextItem(level, text, isBold, isItalic);
+                    
+                    // Log the instance type for debugging
+                    System.out.println("Created item type: " + item.getClass().getSimpleName());
+                    
                     presentation.getCurrentSlide().append(item);
                     
                     // Force a complete update of the entire slide viewer component
@@ -164,7 +161,10 @@ public class HeaderPanel extends JPanel
     private void handleImageAddition() {
         java.io.File selectedFile = FileChooserUtils.selectImageFile(this);
         if (selectedFile != null) {
-            BitmapItem bitmapItem = new BitmapItem(presentation.getCurrentSlide().getSize() + 1, selectedFile.getAbsolutePath());
+            // Use factory to create BitmapItem
+            int level = presentation.getCurrentSlide().getSize() + 1;
+            SlideItem bitmapItem = SlideItemFactory.createBitmapItem(level, selectedFile.getAbsolutePath());
+            
             presentation.getCurrentSlide().append(bitmapItem);
             presentation.getSlideViewComponent().update(presentation, presentation.getCurrentSlide());
             maintainFrameFocus();

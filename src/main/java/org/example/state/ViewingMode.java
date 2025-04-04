@@ -54,4 +54,10 @@ public class ViewingMode implements PresentationState
         presentation.getShowList().add(slide);
     }
 
+    @Override
+    public void clear(Presentation presentation) {
+        presentation.setShowList(new ArrayList<>());
+        presentation.setCurrentSlideNumber(0);
+        presentation.setTitle("New jabbepoint presentation");
+    }
 }

@@ -1,5 +1,6 @@
 package org.example.model;
 
+import org.example.model.slideComponents.TextItem;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -42,7 +43,7 @@ class TextItemTest {
         
         // Test with null text
         TextItem nullItem = new TextItem(1, null);
-        assertEquals("", nullItem.getText());
+        assertNull(nullItem.getText());
     }
 
     @Test

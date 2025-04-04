@@ -17,4 +17,9 @@ public interface PresentationState
 
     void exit(Presentation presentation, int statusCode);
 
+    /**
+     * Clears the current presentation and resets it to a default state.
+     * @param presentation The presentation to clear
+     */
+    void clear(Presentation presentation);
 }

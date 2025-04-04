@@ -1,5 +1,7 @@
 package org.example.model;
 
+import org.example.model.slideComponents.SlideItem;
+import org.example.model.slideComponents.TextItem;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
