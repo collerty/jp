@@ -1,4 +1,6 @@
-package org.example;
+package org.example.controller;
+
+import org.example.model.Presentation;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyAdapter;

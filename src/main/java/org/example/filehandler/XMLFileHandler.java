@@ -1,8 +1,6 @@
 package org.example.filehandler;
 
-import org.example.Accessor;
-import org.example.Presentation;
-import org.example.XMLAccessor;
+import org.example.model.Presentation;
 
 import java.awt.*;
 import java.io.File;

@@ -1,4 +1,7 @@
-package org.example;
+package org.example.filehandler;
+
+import org.example.model.demo.DemoPresentation;
+import org.example.model.Presentation;
 
 import java.io.IOException;
 

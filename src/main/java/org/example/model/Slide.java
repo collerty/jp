@@ -1,4 +1,4 @@
-package org.example;
+package org.example.model;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;

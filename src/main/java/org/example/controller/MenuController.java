@@ -1,6 +1,11 @@
-package org.example;
+package org.example.controller;
 
 import com.formdev.flatlaf.intellijthemes.FlatNordIJTheme;
+import org.example.filehandler.Accessor;
+import org.example.filehandler.XMLAccessor;
+import org.example.model.Presentation;
+import org.example.view.AboutBox;
+import org.example.view.SlideViewerFrame;
 
 import javax.swing.*;
 import java.awt.event.KeyEvent;

@@ -1,6 +1,9 @@
-package org.example;
+package org.example.view;
 
 import com.formdev.flatlaf.intellijthemes.FlatNordIJTheme;
+import org.example.controller.KeyController;
+import org.example.controller.MenuController;
+import org.example.model.Presentation;
 
 import javax.swing.*;
 import java.awt.event.WindowAdapter;

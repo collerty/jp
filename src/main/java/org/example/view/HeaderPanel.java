@@ -1,13 +1,13 @@
-package org.example;
+package org.example.view;
+
+import org.example.view.TextBubbleBorder;
+import org.example.model.BitmapItem;
+import org.example.model.Presentation;
+import org.example.model.Slide;
+import org.example.model.TextItem;
 
 import javax.swing.*;
-import javax.swing.border.AbstractBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.geom.Area;
-import java.awt.geom.RoundRectangle2D;
-import java.awt.geom.*;
 
 public class HeaderPanel extends JPanel {
     private static final Color BACKGROUND_COLOR = new Color(76, 86, 106);

@@ -1,9 +1,8 @@
 package org.example.state;
 
-import org.example.Presentation;
-import org.example.Slide;
+import org.example.model.Presentation;
+import org.example.model.Slide;
 
-import javax.swing.*;
 import java.util.ArrayList;
 
 public class ViewingMode implements PresentationState

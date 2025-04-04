@@ -1,4 +1,4 @@
-package org.example;
+package org.example.model;
 
 import java.awt.Rectangle;
 import java.awt.Graphics;
@@ -23,7 +23,8 @@ import java.io.InputStream;
  * @version 1.6 2014/05/16 Sylvia Stuurman
 */
 
-public class BitmapItem extends SlideItem {
+public class BitmapItem extends SlideItem
+{
   private BufferedImage bufferedImage;
   private String imageName;
   

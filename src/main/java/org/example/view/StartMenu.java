@@ -1,12 +1,13 @@
-package org.example;
+package org.example.view;
 
 import com.formdev.flatlaf.intellijthemes.FlatNordIJTheme;
+import org.example.filehandler.Accessor;
+import org.example.filehandler.XMLAccessor;
+import org.example.model.Presentation;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 

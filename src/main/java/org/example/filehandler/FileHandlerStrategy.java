@@ -1,9 +1,8 @@
 package org.example.filehandler;
 
-import org.example.Presentation;
+import org.example.model.Presentation;
 
 import java.io.File;
-import java.io.IOException;
 
 public interface FileHandlerStrategy {
     boolean openFile(Presentation presentation);

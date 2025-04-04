@@ -1,9 +1,11 @@
 package org.example;
 
 import com.formdev.flatlaf.intellijthemes.FlatNordIJTheme;
+import org.example.model.Presentation;
+import org.example.model.Style;
+import org.example.view.StartMenu;
 
 import javax.swing.*;
-import java.awt.Font;
 
 /** java.com.JabberPoint Main Programma
  * <p>This program is distributed under the terms of the accompanying

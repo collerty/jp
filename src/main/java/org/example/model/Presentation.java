@@ -1,5 +1,8 @@
-package org.example;
+package org.example.model;
 
+import org.example.view.SlideThumbnailPanel;
+import org.example.view.SlideViewerComponent;
+import org.example.view.SlideViewerFrame;
 import org.example.state.PresentationState;
 import org.example.state.ViewingMode;
 
@@ -161,7 +164,7 @@ public class Presentation
     }
 
     // Delete the presentation to be ready for the next one.
-    void clear()
+    public void clear()
     {
         showList = new ArrayList<Slide>();
         currentSlideNumber = 0;

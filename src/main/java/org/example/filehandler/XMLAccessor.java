@@ -1,4 +1,4 @@
-package org.example;
+package org.example.filehandler;
 
 import java.util.Vector;
 import java.io.File;
@@ -10,6 +10,11 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.example.model.SlideItem;
+import org.example.model.BitmapItem;
+import org.example.model.Presentation;
+import org.example.model.Slide;
+import org.example.model.TextItem;
 import org.xml.sax.SAXException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

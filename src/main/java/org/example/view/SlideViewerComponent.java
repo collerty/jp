@@ -1,4 +1,7 @@
-package org.example;
+package org.example.view;
+
+import org.example.model.Presentation;
+import org.example.model.Slide;
 
 import java.awt.*;
 import javax.swing.JComponent;
