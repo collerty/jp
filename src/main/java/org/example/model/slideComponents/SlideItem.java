@@ -1,4 +1,6 @@
-package org.example.model;
+package org.example.model.slideComponents;
+
+import org.example.model.Style;
 
 import java.awt.Rectangle;
 import java.awt.Graphics;
@@ -6,7 +8,7 @@ import java.awt.image.ImageObserver;
 
 public abstract class SlideItem
 {
-    private int level = 0; // level of the slideitem
+    private int level; // level of the slideitem
 
     public SlideItem(int lev)
     {
@@ -22,6 +24,11 @@ public abstract class SlideItem
     public int getLevel()
     {
         return level;
+    }
+
+    public void setLevel(int level)
+    {
+        this.level = level;
     }
 
     // Give the bounding box

@@ -171,38 +171,52 @@ public class Presentation
         showList = new ArrayList<Slide>();
         currentSlideNumber = 0;
         showTitle = JABTITLE;  // Set default title instead of empty string
-        
+
         // Reset state
-        currentState = new ViewingMode();
+        this.currentState = new ViewingMode();
+
+        this.setShowList(new ArrayList<Slide>());
+        this.setCurrentSlideNumber(0);
+        this.setTitle("New jabbepoint presentation");
+        if (this.getSlideViewComponent() != null)
+        {
+            this.getSlideViewComponent().update(this, null);
+        }
 
         // Remove header panel if in view mode
-        if (slideViewerFrame != null) {
+        if (slideViewerFrame != null)
+        {
             slideViewerFrame.exitEditMode();
         }
 
-        // Reset UI components
+//         Reset UI components
         updateUI();
-        
-        // Update thumbnail panel
-        if (this.thumbnailPanel != null) {
+
+//         Update thumbnail panel
+        if (this.thumbnailPanel != null)
+        {
             this.thumbnailPanel.updateThumbnails();
         }
     }
-    
+
     // Helper method to update all UI components
-    private void updateUI() {
+    private void updateUI()
+    {
         // Update thumbnail panel
-        if (thumbnailPanel != null) {
+        if (thumbnailPanel != null)
+        {
             thumbnailPanel.updateThumbnails();
         }
-        
+
         // Update slide viewer
-        if (slideViewComponent != null) {
+        if (slideViewComponent != null)
+        {
             slideViewComponent.update(this, null);
         }
-        
+
         // Update frame
-        if (slideViewerFrame != null) {
+        if (slideViewerFrame != null)
+        {
             slideViewerFrame.setTitle(JABTITLE);
             slideViewerFrame.revalidate();
             slideViewerFrame.repaint();
@@ -215,15 +229,16 @@ public class Presentation
     {
         // Store current title
         String currentTitle = this.showTitle;
-        
+
         // Add slide using state pattern
         this.currentState.addSlide(this, slide);
-        
+
         // Restore title if it was changed
-        if (this.showTitle.isEmpty()) {
+        if (this.showTitle.isEmpty())
+        {
             this.showTitle = currentTitle;
         }
-        
+
         // Update UI after adding slide
         updateUI();
     }

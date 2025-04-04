@@ -1,15 +1,17 @@
 package org.example.view;
 
-import org.example.model.BitmapItem;
+import org.example.model.slideComponents.BitmapItem;
 import org.example.model.Presentation;
 import org.example.model.Slide;
-import org.example.model.TextItem;
+import org.example.model.slideComponents.SlideItem;
+import org.example.model.slideComponents.TextItem;
+import org.example.model.slideComponents.decorator.BoldDecorator;
+import org.example.model.slideComponents.decorator.ItalicDecorator;
 import org.example.style.StyleConstants;
 import org.example.util.FileChooserUtils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.RoundRectangle2D;
 
 public class HeaderPanel extends JPanel
 {
@@ -80,13 +82,43 @@ public class HeaderPanel extends JPanel
                 String text = JOptionPane.showInputDialog("Enter text to add:");
                 if (text != null && !text.trim().isEmpty())
                 {
-                    TextItem textItem = new TextItem(presentation.getCurrentSlide().getSize() + 1, text);
-                    presentation.getCurrentSlide().append(textItem);
+                    int level = presentation.getCurrentSlide().getSize() + 1;
+                    SlideItem item = new TextItem(level, text);
+
+                    int boldChoice = JOptionPane.showConfirmDialog(null, "Do you want the text to be bold?", "Bold", JOptionPane.YES_NO_OPTION);
+                    if (boldChoice == JOptionPane.YES_OPTION)
+                    {
+                        item = new BoldDecorator(item);
+                    }
+
+                    int italicChoice = JOptionPane.showConfirmDialog(null, "Do you want the text to be italic?", "Italic", JOptionPane.YES_NO_OPTION);
+                    if (italicChoice == JOptionPane.YES_OPTION)
+                    {
+                        item = new ItalicDecorator(item);
+                    }
+                    System.out.println("Is instance: " + (item instanceof ItalicDecorator));
+
+                    presentation.getCurrentSlide().append(item);
+                    
+                    // Force a complete update of the entire slide viewer component
                     presentation.getSlideViewComponent().update(presentation, presentation.getCurrentSlide());
+                    
+                    // Request multiple repaints to ensure proper rendering
+                    SwingUtilities.invokeLater(() -> {
+                        presentation.getSlideViewComponent().revalidate();
+                        presentation.getSlideViewComponent().repaint();
+                        
+                        // Schedule another repaint to ensure decorations are visible
+                        SwingUtilities.invokeLater(() -> {
+                            presentation.getSlideViewComponent().repaint();
+                        });
+                    });
+                    
                     maintainFrameFocus();
                 }
             }
         });
+
 
         // Create and style the "Add Image" button
         addImageButton = createStyledButton("Add Image");

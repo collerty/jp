@@ -1,7 +1,7 @@
 package org.example.model.demo;
 
 import org.example.filehandler.Accessor;
-import org.example.model.BitmapItem;
+import org.example.model.slideComponents.BitmapItem;
 import org.example.model.Presentation;
 import org.example.model.Slide;
 

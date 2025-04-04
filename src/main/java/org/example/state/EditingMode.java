@@ -35,7 +35,7 @@ public class EditingMode implements PresentationState
     @Override
     public void enterFullscreen(Presentation presentation)
     {
-
+        System.out.println("Cannot go to fullscreen mode in editing mode");
     }
 
     @Override
@@ -53,13 +53,6 @@ public class EditingMode implements PresentationState
         {
             System.exit(statusCode);
         }
-
-    }
-
-
-    @Override
-    public void clear(Presentation presentation)
-    {
 
     }
 

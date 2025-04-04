@@ -1,5 +1,10 @@
 package org.example.model;
 
+import org.example.model.slideComponents.SlideItem;
+import org.example.model.slideComponents.TextItem;
+import org.example.model.slideComponents.decorator.BoldDecorator;
+import org.example.model.slideComponents.decorator.ItalicDecorator;
+
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.ImageObserver;
@@ -72,8 +77,10 @@ public class Slide
         y += slideItem.getBoundingBox(g, view, scale, style).height;
         for (int number = 0; number < getSize(); number++)
         {
-            slideItem = (SlideItem) getSlideItems().elementAt(number);
+            slideItem =(SlideItem) getSlideItems().elementAt(number);
+
             style = Style.getStyle(slideItem.getLevel());
+
             slideItem.draw(area.x, y, scale, g, style, view);
             y += slideItem.getBoundingBox(g, view, scale, style).height;
         }

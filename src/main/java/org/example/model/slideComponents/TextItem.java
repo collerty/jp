@@ -1,4 +1,7 @@
-package org.example.model;
+package org.example.model.slideComponents;
+
+import org.example.model.Slide;
+import org.example.model.Style;
 
 import java.awt.Rectangle;
 import java.awt.Graphics;
@@ -114,6 +117,13 @@ public class TextItem extends SlideItem
 		lastScale = scale;
 		lastStyle = s;
     	return layouts;
+	}
+
+	// Add a method to clear the layouts cache
+	public void clearLayoutCache() {
+		cachedLayouts = null;
+		lastScale = -1;
+		lastStyle = null;
 	}
 
 	public String toString() {
