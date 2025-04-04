@@ -12,12 +12,6 @@ import java.awt.Dimension;
 import java.awt.Color;
 import java.awt.BorderLayout;
 
-/**
- * <p>The application window for a slideviewcomponent</p>
- *
- * @author Ian F. Darwin, ian@darwinsys.com, Gert Florijn, Sylvia Stuurman
- * @version 1.6 2014/05/16 Sylvia Stuurman
- */
 
 public class SlideViewerFrame extends JFrame
 {
@@ -58,9 +52,6 @@ public class SlideViewerFrame extends JFrame
         this.headerWrapper.setBackground(new Color(46, 52, 64));
         this.headerWrapper.setBorder(BorderFactory.createEmptyBorder(0, 24, 0, 24)); // Match slide panel's left padding
         this.headerWrapper.add(this.headerPanel, BorderLayout.CENTER);
-
-        // Setting up the sidebar panel
-        this.thumbnailPanel = new SlideThumbnailPanel(presentation);
 
         // Making setup window for viewing mode
         setupWindow(slideViewerComponent, presentation);

@@ -6,6 +6,8 @@ import org.example.filehandler.XMLAccessor;
 import org.example.model.Presentation;
 import org.example.view.AboutBox;
 import org.example.view.SlideViewerFrame;
+import org.example.filehandler.FileHandlerStrategy;
+import org.example.filehandler.XMLFileHandler;
 
 import javax.swing.*;
 import java.awt.event.KeyEvent;
@@ -13,18 +15,13 @@ import java.io.File;
 import java.io.IOException;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-/**
- * <p>The controller for the menu</p>
- *
- * @author Ian F. Darwin, ian@darwinsys.com, Gert Florijn, Sylvia Stuurman
- * @version 1.6 2014/05/16 Sylvia Stuurman
- */
 public class MenuController extends JMenuBar
 {
 
     private JFrame parent; // the frame, only used as parent for the Dialogs
     private Presentation presentation; // Commands are given to the presentation
     private File currentFile;  // tracks current file to chnage on save
+    private FileHandlerStrategy fileHandler;
 
     private static final long serialVersionUID = 227L;
 
@@ -43,8 +40,6 @@ public class MenuController extends JMenuBar
     protected static final String VIEW = "View";
     protected static final String FULL_SCREEN = "Full Screen";
 
-    protected static final String SAVEFILE = "dump.xml";
-
     protected static final String IOEX = "IO Exception: ";
     protected static final String LOADERR = "Load Error";
     protected static final String SAVEERR = "Save Error";
@@ -53,6 +48,7 @@ public class MenuController extends JMenuBar
     {
         parent = frame;
         presentation = pres;
+        this.fileHandler = new XMLFileHandler(frame);
         JMenuItem menuItem;
         JMenu fileMenu = new JMenu(FILE);
 
@@ -60,48 +56,16 @@ public class MenuController extends JMenuBar
         menuItem.addActionListener(e ->
         {
             presentation.clear();
-            presentation.setSlideViewerFrame((SlideViewerFrame)parent);
+            if (parent instanceof SlideViewerFrame)
+            {
+                presentation.setSlideViewerFrame((SlideViewerFrame) parent);
+            }
             currentFile = null;
             parent.repaint();
         });
 
         fileMenu.add(menuItem = mkMenuItem(OPEN));
-        menuItem.addActionListener(e ->
-        {
-            try
-            {
-                UIManager.setLookAndFeel(new FlatNordIJTheme());
-            } catch (Exception ex)
-            {
-                ex.printStackTrace();
-            }
-
-            JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setDialogTitle("Open Presentation File");
-            fileChooser.setFileFilter(new FileNameExtensionFilter("Presentation Files (*.xml)", "xml"));
-
-            int userSelection = fileChooser.showOpenDialog(parent);
-
-            if (userSelection == JFileChooser.APPROVE_OPTION)
-            {
-                File selectedFile = fileChooser.getSelectedFile();
-                currentFile = selectedFile;
-                presentation.clear();
-                presentation.setSlideViewerFrame((SlideViewerFrame)parent);
-                Accessor xmlAccessor = new XMLAccessor();
-
-                try
-                {
-                    xmlAccessor.loadFile(presentation, selectedFile.getAbsolutePath());
-                    presentation.setSlideNumber(0);
-                } catch (IOException exc)
-                {
-                    JOptionPane.showMessageDialog(parent, IOEX + exc,
-                            LOADERR, JOptionPane.ERROR_MESSAGE);
-                }
-                parent.repaint();
-            }
-        });
+        menuItem.addActionListener(e -> openFile());
 
         fileMenu.add(menuItem = mkMenuItem(FULL_SCREEN));
         menuItem.addActionListener(e ->
@@ -110,64 +74,10 @@ public class MenuController extends JMenuBar
         });
 
         fileMenu.add(menuItem = mkMenuItem(SAVE));
-        menuItem.addActionListener(e ->
-        {
-            if (currentFile != null)
-            {
-                Accessor xmlAccessor = new XMLAccessor();
-                try
-                {
-                    xmlAccessor.saveFile(presentation, currentFile.getAbsolutePath());
-                } catch (IOException exc)
-                {
-                    JOptionPane.showMessageDialog(parent, IOEX + exc,
-                            SAVEERR, JOptionPane.ERROR_MESSAGE);
-                }
-            } else
-            {
-                JOptionPane.showMessageDialog(parent, "No file opened. Please use 'Save As...'",
-                        SAVEERR, JOptionPane.WARNING_MESSAGE);
-            }
-        });
+        menuItem.addActionListener(e -> saveFile());
 
         fileMenu.add(menuItem = mkMenuItem(SAVE_AS, KeyEvent.VK_S, true));
-        menuItem.addActionListener(e ->
-        {
-            try
-            {
-                UIManager.setLookAndFeel(new FlatNordIJTheme());
-            } catch (Exception ex)
-            {
-                ex.printStackTrace();
-            }
-
-            JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setDialogTitle("Save Presentation As...");
-            fileChooser.setFileFilter(new FileNameExtensionFilter("Presentation Files (*.xml)", "xml"));
-
-            int userSelection = fileChooser.showSaveDialog(parent);
-
-            if (userSelection == JFileChooser.APPROVE_OPTION)
-            {
-                File selectedFile = fileChooser.getSelectedFile();
-                currentFile = selectedFile;
-                String filePath = selectedFile.getAbsolutePath();
-                if (!filePath.toLowerCase().endsWith(".xml"))
-                {
-                    filePath += ".xml";
-                }
-
-                Accessor xmlAccessor = new XMLAccessor();
-                try
-                {
-                    xmlAccessor.saveFile(presentation, filePath);
-                } catch (IOException exc)
-                {
-                    JOptionPane.showMessageDialog(parent, IOEX + exc,
-                            SAVEERR, JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
+        menuItem.addActionListener(e -> saveAs());
 
         fileMenu.addSeparator();
         fileMenu.add(menuItem = mkMenuItem(EXIT));
@@ -192,6 +102,21 @@ public class MenuController extends JMenuBar
         helpMenu.add(menuItem = mkMenuItem(ABOUT));
         menuItem.addActionListener(e -> AboutBox.show(parent));
         add(helpMenu);
+    }
+
+    private void openFile()
+    {
+        fileHandler.openFile(presentation);
+    }
+
+    private void saveFile()
+    {
+        fileHandler.saveFile(presentation, currentFile);
+    }
+
+    private void saveAs()
+    {
+        fileHandler.saveAs(presentation);
     }
 
     // Create a menu item with specific shortcut key

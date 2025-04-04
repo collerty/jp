@@ -11,7 +11,8 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
-public class StartMenu extends JFrame {
+public class StartMenu extends JFrame
+{
     private Presentation presentation;
     private JFrame parent;
 
@@ -21,7 +22,8 @@ public class StartMenu extends JFrame {
     private static final String DEMO = "Demo";
     private static final String BROWSE = "Browse file system";
 
-    public StartMenu(JFrame parent) {
+    public StartMenu(JFrame parent)
+    {
         this.parent = parent;
         this.presentation = new Presentation();
 
@@ -59,7 +61,8 @@ public class StartMenu extends JFrame {
         setVisible(true);
     }
 
-    private void loadNewPresentation() {
+    private void loadNewPresentation()
+    {
         presentation.clear();
         SlideViewerFrame viewerFrame = new SlideViewerFrame("JabberPoint", presentation);
         presentation.setShowView(viewerFrame.getSlideViewerComponent());
@@ -69,55 +72,56 @@ public class StartMenu extends JFrame {
         dispose();
     }
 
-    private void loadDemoPresentation() {
-        try {
+    private void loadDemoPresentation()
+    {
+        try
+        {
             presentation.clear();
             SlideViewerFrame viewerFrame = new SlideViewerFrame("JabberPoint Demo", presentation);
             presentation.setSlideViewerFrame(viewerFrame);
             presentation.setShowView(viewerFrame.getSlideViewerComponent());
-            
+
             Accessor.getDemoAccessor().loadFile(presentation, "");
             presentation.setSlideNumber(0);
-            
+
             viewerFrame.getSlideViewerComponent().revalidate();
             viewerFrame.getSlideViewerComponent().repaint();
-            
+
             dispose();
-        } catch (IOException ex) {
+        } catch (IOException ex)
+        {
             JOptionPane.showMessageDialog(this, "IO Error: " + ex, "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    private void openPresentationFile() {
-        try {
-            UIManager.setLookAndFeel(new FlatNordIJTheme());
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
+    private void openPresentationFile()
+    {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Open Presentation File");
         fileChooser.setFileFilter(new FileNameExtensionFilter("Presentation Files (*.xml)", "xml"));
 
         int userSelection = fileChooser.showOpenDialog(this);
 
-        if (userSelection == JFileChooser.APPROVE_OPTION) {
+        if (userSelection == JFileChooser.APPROVE_OPTION)
+        {
             File selectedFile = fileChooser.getSelectedFile();
             presentation.clear();
-            
+
             SlideViewerFrame viewerFrame = new SlideViewerFrame("JabberPoint - " + selectedFile.getName(), presentation);
             presentation.setShowView(viewerFrame.getSlideViewerComponent());
-            
+
             Accessor xmlAccessor = new XMLAccessor();
-            try {
+            try
+            {
                 xmlAccessor.loadFile(presentation, selectedFile.getAbsolutePath());
                 presentation.setSlideNumber(0);
-                
+
                 viewerFrame.getSlideViewerComponent().revalidate();
                 viewerFrame.getSlideViewerComponent().repaint();
-                
+
                 dispose();
-            } catch (IOException ex) {
+            } catch (IOException ex)
+            {
                 JOptionPane.showMessageDialog(this, "IO Error: " + ex, "Error", JOptionPane.ERROR_MESSAGE);
             }
         }

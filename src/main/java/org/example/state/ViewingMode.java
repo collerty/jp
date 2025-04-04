@@ -54,7 +54,7 @@ public class ViewingMode implements PresentationState
     {
         presentation.setShowList(new ArrayList<Slide>());
         presentation.setCurrentSlideNumber(0);
-        presentation.setTitle("");
+        presentation.setTitle("New jabbepoint presentation");
         if (presentation.getSlideViewComponent() != null) {
             presentation.getSlideViewComponent().update(presentation, null);
         }

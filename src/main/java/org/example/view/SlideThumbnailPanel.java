@@ -55,18 +55,46 @@ public class SlideThumbnailPanel extends JPanel
 
     public void updateThumbnails()
     {
+        // Clear all existing thumbnails
         thumbnailsPanel.removeAll();
-
+        
+        // Add a message if no slides
+        if (presentation.getSize() == 0) {
+            JLabel emptyLabel = new JLabel("No slides available");
+            emptyLabel.setForeground(SNOW_WHITE);
+            emptyLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+            thumbnailsPanel.add(emptyLabel);
+            
+            // Force a complete refresh
+            thumbnailsPanel.revalidate();
+            thumbnailsPanel.repaint();
+            scrollPane.revalidate();
+            scrollPane.repaint();
+            this.revalidate();
+            this.repaint();
+            return;
+        }
+        
+        // Add thumbnails for each slide
         for (int i = 0; i < presentation.getSize(); i++)
         {
             Slide slide = presentation.getSlide(i);
             JPanel thumbnailPanel = createThumbnailPanel(slide, i);
             thumbnailsPanel.add(thumbnailPanel);
             thumbnailsPanel.add(Box.createVerticalStrut(10));
+            
+            // Force a complete refresh after adding each thumbnail
+            thumbnailsPanel.revalidate();
+            thumbnailsPanel.repaint();
         }
-
+        
+        // Force a complete refresh
         thumbnailsPanel.revalidate();
         thumbnailsPanel.repaint();
+        scrollPane.revalidate();
+        scrollPane.repaint();
+        this.revalidate();
+        this.repaint();
     }
 
     private JPanel createThumbnailPanel(Slide slide, int index)
@@ -89,6 +117,7 @@ public class SlideThumbnailPanel extends JPanel
         panel.setMaximumSize(new Dimension(THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT));
         panel.setBackground(BACKGROUND_COLOR);
         panel.setLayout(new BorderLayout());
+        
         // Create thumbnail preview
         JPanel previewPanel = new JPanel()
         {
@@ -147,6 +176,10 @@ public class SlideThumbnailPanel extends JPanel
                 }
             }
         });
+        
+        // Force a complete refresh of the panel
+        panel.revalidate();
+        panel.repaint();
 
         return panel;
     }
@@ -160,6 +193,19 @@ public class SlideThumbnailPanel extends JPanel
     public void setVisible(boolean visible)
     {
         this.thumbnailsPanel.setVisible(visible);
+    }
+    
+    public void removeAll() {
+        // Remove all components from the thumbnails panel
+        thumbnailsPanel.removeAll();
+        
+        // Force a complete refresh
+        thumbnailsPanel.revalidate();
+        thumbnailsPanel.repaint();
+        scrollPane.revalidate();
+        scrollPane.repaint();
+        this.revalidate();
+        this.repaint();
     }
 }
 
