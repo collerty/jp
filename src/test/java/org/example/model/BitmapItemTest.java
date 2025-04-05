@@ -1,5 +1,6 @@
 package org.example.model;
 
+import org.example.model.slideComponents.BitmapItem;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Disabled;

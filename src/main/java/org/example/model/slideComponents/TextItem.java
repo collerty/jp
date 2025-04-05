@@ -41,17 +41,17 @@ public class TextItem extends SlideItem
 
 // give the text
 	public String getText() {
-		return text == null ? "" : text;
+		return text;
 	}
 
 // geef de AttributedString voor het item
 	public AttributedString getAttributedString(Style style, float scale) {
-		String text = getText();
-		if (text.isEmpty()) {
-			text = EMPTYTEXT;
+		String displayText = getText();
+		if (displayText == null || displayText.isEmpty()) {
+			displayText = EMPTYTEXT;
 		}
-		AttributedString attrStr = new AttributedString(text);
-		attrStr.addAttribute(TextAttribute.FONT, style.getFont(scale), 0, text.length());
+		AttributedString attrStr = new AttributedString(displayText);
+		attrStr.addAttribute(TextAttribute.FONT, style.getFont(scale), 0, displayText.length());
 		return attrStr;
 	}
 
@@ -107,7 +107,9 @@ public class TextItem extends SlideItem
     	FontRenderContext frc = g2d.getFontRenderContext();
     	LineBreakMeasurer measurer = new LineBreakMeasurer(attrStr.getIterator(), frc);
     	float wrappingWidth = (Slide.WIDTH - s.getIndent()) * scale;
-    	while (measurer.getPosition() < getText().length()) {
+    	String textValue = getText();
+    	int textLength = textValue == null ? 0 : textValue.length();
+    	while (measurer.getPosition() < textLength) {
     		TextLayout layout = measurer.nextLayout(wrappingWidth);
     		layouts.add(layout);
     	}

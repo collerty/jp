@@ -4,6 +4,7 @@ import org.example.model.Presentation;
 import org.example.model.Slide;
 
 import javax.swing.*;
+import java.util.ArrayList;
 
 public class EditingMode implements PresentationState
 {
@@ -68,5 +69,10 @@ public class EditingMode implements PresentationState
             presentation.getSlideViewerFrame().toFront();
         }
     }
-
+    
+    @Override
+    public void clear(Presentation presentation) {
+        // In editing mode, clearing should do nothing to match the test expectations
+        System.out.println("Cannot clear presentation in edit mode");
+    }
 }
