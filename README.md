@@ -1,7 +1,5 @@
 # Jabberpoint
 
-# Design Patterns Presentation Application
-
 ## Introduction
 
 Jabberpoint is a Java-based presentation application that allows users to create and edit slideshows. The application is
@@ -91,4 +89,4 @@ This ensures code quality and collaboration before deploying any updates.
 
 ### Fullscreen mode
 
-![Presentation](./img/fullScreenMode.png)
+![Presentation](./img/fullscreenMode.png)
