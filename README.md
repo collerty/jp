@@ -16,6 +16,11 @@ designed to demonstrate various design patterns in Java, including the Factory M
 - `Arrow Up` – Go to **Previous Slide**
 - `Arrow Down` – Go to **Next Slide**
 - `Q` – **Exit** the application
+## How to Run Project
+```bash
+mvn compile
+mvn exec:java
+```
 
 ## How to Run **Tests**
 
