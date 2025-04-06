@@ -135,7 +135,6 @@ public class TextItem extends SlideItem
         return layouts;
     }
 
-    // Add a method to clear the layouts cache
     public void clearLayoutCache()
     {
         this.cachedLayouts = null;

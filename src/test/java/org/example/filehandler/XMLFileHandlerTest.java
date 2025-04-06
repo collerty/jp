@@ -21,7 +21,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class XMLFileHandlerTest {
+class XMLFileHandlerTest
+{
 
     @Mock
     private Presentation mockPresentation;
@@ -32,106 +33,97 @@ class XMLFileHandlerTest {
     private XMLFileHandler xmlFileHandler;
 
     @BeforeEach
-    void setUp() {
-        xmlFileHandler = new XMLFileHandler(mockFrame);
+    void setUp()
+    {
+        this.xmlFileHandler = new XMLFileHandler(this.mockFrame);
     }
 
     @Test
-    void newFile_withValidPresentation_returnsTrue() throws PresentationException {
-        // No need to mock getClass() - just use the actual SlideViewerFrame instance
-        
-        // Test new file
-        boolean result = xmlFileHandler.newFile(mockPresentation);
-        
-        // Verify
+    void newFile_withValidPresentation_returnsTrue() throws PresentationException
+    {
+        boolean result = this.xmlFileHandler.newFile(this.mockPresentation);
+
         assertTrue(result);
-        verify(mockPresentation).clear();
-        verify(mockPresentation).setSlideViewerFrame(mockFrame);
-        verify(mockFrame).repaint();
+        verify(this.mockPresentation).clear();
+        verify(this.mockPresentation).setSlideViewerFrame(this.mockFrame);
+        verify(this.mockFrame).repaint();
     }
 
     @Test
-    void openFile_withValidFile_returnsTrue() throws FileOperationException, IOException {
-        // Use the mockito-inline capability to mock static methods
-        try (MockedStatic<FileChooserUtils> utilities = Mockito.mockStatic(FileChooserUtils.class)) {
-            
-            // Setup mock file
+    void openFile_withValidFile_returnsTrue() throws FileOperationException, IOException
+    {
+        try (MockedStatic<FileChooserUtils> utilities = Mockito.mockStatic(FileChooserUtils.class))
+        {
+
             File mockFile = new File("test.xml");
-            utilities.when(() -> FileChooserUtils.selectXMLFile(mockFrame))
-                  .thenReturn(mockFile);
-            
-            // Create a special subclass of XMLFileHandler for testing
-            XMLFileHandler handlerForTest = new XMLFileHandler(mockFrame) {
+            utilities.when(() -> FileChooserUtils.selectXMLFile(this.mockFrame))
+                    .thenReturn(mockFile);
+
+            XMLFileHandler handlerForTest = new XMLFileHandler(this.mockFrame)
+            {
                 @Override
-                public boolean openFile(Presentation presentation) throws FileOperationException {
-                    // Simulate what the real openFile method does but without creating an actual XMLAccessor
+                public boolean openFile(Presentation presentation) throws FileOperationException
+                {
                     presentation.clear();
-                    // Skip the loadFile call
                     presentation.setSlideNumber(0);
-                    mockFrame.repaint();
+                    XMLFileHandlerTest.this.mockFrame.repaint();
                     return true;
                 }
             };
-            
-            // Test open file
-            boolean result = handlerForTest.openFile(mockPresentation);
-            
-            // Verify
+
+            boolean result = handlerForTest.openFile(this.mockPresentation);
+
             assertTrue(result);
-            verify(mockPresentation).clear();
-            verify(mockPresentation).setSlideNumber(0);
-            verify(mockFrame).repaint();
+            verify(this.mockPresentation).clear();
+            verify(this.mockPresentation).setSlideNumber(0);
+            verify(this.mockFrame).repaint();
         }
     }
 
     @Test
-    void openFile_whenUserCancelsSelection_returnsFalse() throws FileOperationException {
-        try (MockedStatic<FileChooserUtils> utilities = Mockito.mockStatic(FileChooserUtils.class)) {
-            // Setup mocks - user cancels file selection
-            utilities.when(() -> FileChooserUtils.selectXMLFile(mockFrame))
-                  .thenReturn(null);
-            
-            // Test open file
-            boolean result = xmlFileHandler.openFile(mockPresentation);
-            
-            // Verify
+    void openFile_whenUserCancelsSelection_returnsFalse() throws FileOperationException
+    {
+        try (MockedStatic<FileChooserUtils> utilities = Mockito.mockStatic(FileChooserUtils.class))
+        {
+            utilities.when(() -> FileChooserUtils.selectXMLFile(this.mockFrame))
+                    .thenReturn(null);
+
+            boolean result = this.xmlFileHandler.openFile(this.mockPresentation);
+
             assertFalse(result);
-            verify(mockPresentation, never()).clear();
+            verify(this.mockPresentation, never()).clear();
         }
     }
 
     @Test
-    void saveAs_withValidFile_returnsTrue() throws FileOperationException {
-        try (MockedStatic<FileChooserUtils> utilities = Mockito.mockStatic(FileChooserUtils.class)) {
-            // Setup mocks
+    void saveAs_withValidFile_returnsTrue() throws FileOperationException
+    {
+        try (MockedStatic<FileChooserUtils> utilities = Mockito.mockStatic(FileChooserUtils.class))
+        {
             File mockFile = new File("test.xml");
-            utilities.when(() -> FileChooserUtils.selectSaveXMLFile(mockFrame))
-                  .thenReturn(mockFile);
-            
-            // Create a spy on XMLFileHandler to mock saveFile method
-            XMLFileHandler spyHandler = Mockito.spy(xmlFileHandler);
-            doReturn(true).when(spyHandler).saveFile(mockPresentation, mockFile);
-            
-            // Test save as
-            boolean result = spyHandler.saveAs(mockPresentation);
-            
-            // Verify
+            utilities.when(() -> FileChooserUtils.selectSaveXMLFile(this.mockFrame))
+                    .thenReturn(mockFile);
+
+            XMLFileHandler spyHandler = Mockito.spy(this.xmlFileHandler);
+            doReturn(true).when(spyHandler).saveFile(this.mockPresentation, mockFile);
+
+            boolean result = spyHandler.saveAs(this.mockPresentation);
+
             assertTrue(result);
-            verify(spyHandler).saveFile(mockPresentation, mockFile);
+            verify(spyHandler).saveFile(this.mockPresentation, mockFile);
         }
     }
 
     @Test
-    void saveAs_whenUserCancelsSelection_returnsFalse() throws FileOperationException {
-        try (MockedStatic<FileChooserUtils> utilities = Mockito.mockStatic(FileChooserUtils.class)) {
-            // Setup mocks - user cancels file selection
-            utilities.when(() -> FileChooserUtils.selectSaveXMLFile(mockFrame))
-                  .thenReturn(null);
-            
-            // Test save as
-            boolean result = xmlFileHandler.saveAs(mockPresentation);
-            
-            // Verify
+    void saveAs_whenUserCancelsSelection_returnsFalse() throws FileOperationException
+    {
+        try (MockedStatic<FileChooserUtils> utilities = Mockito.mockStatic(FileChooserUtils.class))
+        {
+            utilities.when(() -> FileChooserUtils.selectSaveXMLFile(this.mockFrame))
+                    .thenReturn(null);
+
+            boolean result = this.xmlFileHandler.saveAs(this.mockPresentation);
+
             assertFalse(result);
         }
     }

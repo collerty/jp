@@ -24,21 +24,18 @@ public class JabberPoint
     {
         try
         {
-            UIManager.setLookAndFeel(new FlatNordIJTheme());  // Set the Look and Feel
+            UIManager.setLookAndFeel(new FlatNordIJTheme());
         } catch (UnsupportedLookAndFeelException e)
         {
             e.printStackTrace();
         }
 
-        // Initialize file choosers in parallel
         FileChooserUtils.initialize();
 
-        // Create styles
         Style.createStyles();
 
         Presentation presentation = new Presentation();
 
-        // First show the Start Menu
         StartMenu startMenu = new StartMenu();
 
     }

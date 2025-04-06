@@ -152,19 +152,16 @@ public class Presentation
         return (Slide) this.showList.get(number);
     }
 
-    // go to the next slide unless your at the end of the presentation.
     public void nextSlide()
     {
         this.currentState.nextSlide(this);
     }
 
-    // go to the previous slide unless your at the beginning of the presentation
     public void prevSlide()
     {
         this.currentState.prevSlide(this);
     }
 
-    // Delete the presentation to be ready for the next one.
     public void clear()
     {
         // Clear data
@@ -189,32 +186,26 @@ public class Presentation
             this.slideViewerFrame.exitEditMode();
         }
 
-//         Reset UI components
         this.updateUI();
 
-//         Update thumbnail panel
         if (this.thumbnailPanel != null)
         {
             this.thumbnailPanel.updateThumbnails();
         }
     }
 
-    // Helper method to update all UI components
     private void updateUI()
     {
-        // Update thumbnail panel
         if (this.thumbnailPanel != null)
         {
             this.thumbnailPanel.updateThumbnails();
         }
 
-        // Update slide viewer
         if (this.slideViewComponent != null)
         {
             slideViewComponent.update(this, null);
         }
 
-        // Update frame
         if (this.slideViewerFrame != null)
         {
             this.slideViewerFrame.setTitle(JABTITLE);
@@ -224,27 +215,21 @@ public class Presentation
     }
 
 
-    // Add a slide to the presentation
     public void append(Slide slide)
     {
-        // Store current title
         String currentTitle = this.showTitle;
 
-        // Add slide using state pattern
         this.currentState.addSlide(this, slide);
 
-        // Restore title if it was changed
         if (this.showTitle.isEmpty())
         {
             this.showTitle = currentTitle;
         }
 
-        // Update UI after adding slide
         this.updateUI();
     }
 
 
-    // Give the current slide
     public Slide getCurrentSlide()
     {
         return this.getSlide(this.currentSlideNumber);

@@ -23,8 +23,8 @@ import org.w3c.dom.NodeList;
 
 public class XMLAccessor extends Accessor
 {
-    protected static final String SHOWTITLE = "showtitle";
-    protected static final String SLIDETITLE = "title";
+    protected static final String SHOW_TITLE = "showtitle";
+    protected static final String SLIDE_TITLE = "title";
     protected static final String SLIDE = "slide";
     protected static final String ITEM = "item";
     protected static final String LEVEL = "level";
@@ -36,7 +36,7 @@ public class XMLAccessor extends Accessor
      * tekst van messages
      */
     protected static final String PCE = "Parser Configuration Exception";
-    protected static final String UNKNOWNTYPE = "Unknown Element type";
+    protected static final String UNKNOWN_TYPE = "Unknown Element type";
     protected static final String NFE = "Number Format Exception";
 
 
@@ -55,7 +55,7 @@ public class XMLAccessor extends Accessor
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             Document document = builder.parse(new File(filename)); // Create a JDOM document
             Element doc = document.getDocumentElement();
-            presentation.setTitle(this.getTitle(doc, SHOWTITLE));
+            presentation.setTitle(this.getTitle(doc, SHOW_TITLE));
 
             NodeList slides = doc.getElementsByTagName(SLIDE);
             max = slides.getLength();
@@ -63,7 +63,7 @@ public class XMLAccessor extends Accessor
             {
                 Element xmlSlide = (Element) slides.item(slideNumber);
                 Slide slide = new Slide();
-                slide.setTitle(this.getTitle(xmlSlide, SLIDETITLE));
+                slide.setTitle(this.getTitle(xmlSlide, SLIDE_TITLE));
                 presentation.append(slide);
 
                 NodeList slideItems = xmlSlide.getElementsByTagName(ITEM);
@@ -118,7 +118,7 @@ public class XMLAccessor extends Accessor
             }
             else
             {
-                System.err.println(UNKNOWNTYPE);
+                System.err.println(UNKNOWN_TYPE);
             }
         }
     }
