@@ -24,29 +24,29 @@ public class Presentation
     {
         this.slideViewComponent = null;
         this.currentState = new ViewingMode();
-        clear();
+        this.clear();
     }
 
     public Presentation(SlideViewerComponent slideViewerComponent)
     {
         this.slideViewComponent = slideViewerComponent;
         this.currentState = new ViewingMode();
-        clear();
+        this.clear();
     }
 
     public int getSize()
     {
-        return showList.size();
+        return this.showList.size();
     }
 
     public String getTitle()
     {
-        return showTitle;
+        return this.showTitle;
     }
 
     public void setTitle(String nt)
     {
-        showTitle = nt;
+        this.showTitle = nt;
     }
 
     public void setShowView(SlideViewerComponent slideViewerComponent)
@@ -56,19 +56,19 @@ public class Presentation
 
     public int getSlideNumber()
     {
-        return currentSlideNumber;
+        return this.currentSlideNumber;
     }
 
     public void setSlideNumber(int number)
     {
-        currentSlideNumber = number;
-        if (slideViewComponent != null)
+        this.currentSlideNumber = number;
+        if (this.slideViewComponent != null)
         {
-            slideViewComponent.update(this, getCurrentSlide());
+            this.slideViewComponent.update(this, this.getCurrentSlide());
         }
-        if (slideViewerFrame != null && slideViewerFrame.getThumbnailPanel() != null)
+        if (this.slideViewerFrame != null && this.slideViewerFrame.getThumbnailPanel() != null)
         {
-            slideViewerFrame.getThumbnailPanel().setSelectedIndex(number);
+            this.slideViewerFrame.getThumbnailPanel().setSelectedIndex(number);
         }
     }
 
@@ -145,11 +145,11 @@ public class Presentation
     // Get a slide with a certain slidenumber
     public Slide getSlide(int number)
     {
-        if (number < 0 || number >= getSize())
+        if (number < 0 || number >= this.getSize())
         {
             return null;
         }
-        return (Slide) showList.get(number);
+        return (Slide) this.showList.get(number);
     }
 
     // go to the next slide unless your at the end of the presentation.
@@ -168,9 +168,9 @@ public class Presentation
     public void clear()
     {
         // Clear data
-        showList = new ArrayList<Slide>();
-        currentSlideNumber = 0;
-        showTitle = JABTITLE;  // Set default title instead of empty string
+        this.showList = new ArrayList<Slide>();
+        this.currentSlideNumber = 0;
+        this.showTitle = JABTITLE;  // Set default title instead of empty string
 
         // Reset state
         this.currentState = new ViewingMode();
@@ -184,13 +184,13 @@ public class Presentation
         }
 
         // Remove header panel if in view mode
-        if (slideViewerFrame != null)
+        if (this.slideViewerFrame != null)
         {
-            slideViewerFrame.exitEditMode();
+            this.slideViewerFrame.exitEditMode();
         }
 
 //         Reset UI components
-        updateUI();
+        this.updateUI();
 
 //         Update thumbnail panel
         if (this.thumbnailPanel != null)
@@ -203,23 +203,23 @@ public class Presentation
     private void updateUI()
     {
         // Update thumbnail panel
-        if (thumbnailPanel != null)
+        if (this.thumbnailPanel != null)
         {
-            thumbnailPanel.updateThumbnails();
+            this.thumbnailPanel.updateThumbnails();
         }
 
         // Update slide viewer
-        if (slideViewComponent != null)
+        if (this.slideViewComponent != null)
         {
             slideViewComponent.update(this, null);
         }
 
         // Update frame
-        if (slideViewerFrame != null)
+        if (this.slideViewerFrame != null)
         {
-            slideViewerFrame.setTitle(JABTITLE);
-            slideViewerFrame.revalidate();
-            slideViewerFrame.repaint();
+            this.slideViewerFrame.setTitle(JABTITLE);
+            this.slideViewerFrame.revalidate();
+            this.slideViewerFrame.repaint();
         }
     }
 
@@ -240,14 +240,14 @@ public class Presentation
         }
 
         // Update UI after adding slide
-        updateUI();
+        this.updateUI();
     }
 
 
     // Give the current slide
     public Slide getCurrentSlide()
     {
-        return getSlide(currentSlideNumber);
+        return this.getSlide(this.currentSlideNumber);
     }
 
     public void exit(int statusCode)

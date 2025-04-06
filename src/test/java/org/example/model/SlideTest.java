@@ -22,7 +22,7 @@ class SlideTest {
     
     @BeforeEach
     void setUp() {
-        slide = new Slide();
+        this.slide = new Slide();
         slide.setTitle("Test Slide");
     }
     

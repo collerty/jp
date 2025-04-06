@@ -28,16 +28,16 @@ class TextBubbleBorder extends AbstractBorder
         this.pointerSize = pointerSize;
         this.color = color;
 
-        stroke = new BasicStroke(thickness);
-        strokePad = thickness / 2;
+        this.stroke = new BasicStroke(thickness);
+        this.strokePad = thickness / 2;
 
-        hints = new RenderingHints(
+        this.hints = new RenderingHints(
                 RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
 
-        int pad = radii + strokePad;
-        int bottomPad = pad + pointerSize + strokePad;
-        insets = new Insets(pad, pad, bottomPad, pad);
+        int pad = radii + this.strokePad;
+        int bottomPad = pad + pointerSize + this.strokePad;
+        this.insets = new Insets(pad, pad, bottomPad, pad);
     }
 
     TextBubbleBorder(Color color, int thickness, int radii, int pointerSize, boolean left) {
@@ -47,62 +47,62 @@ class TextBubbleBorder extends AbstractBorder
 
     @Override
     public Insets getBorderInsets(Component c) {
-        return insets;
+        return this.insets;
     }
 
     @Override
     public Insets getBorderInsets(Component c, Insets insets) {
-        return getBorderInsets(c);
+        return this.getBorderInsets(c);
     }
 
     @Override
     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
         Graphics2D g2 = (Graphics2D) g;
 
-        int bottomLineY = height - thickness - pointerSize;
+        int bottomLineY = height - this.thickness - this.pointerSize;
 
         RoundRectangle2D.Double bubble = new RoundRectangle2D.Double(
-                0 + strokePad,
-                0 + strokePad,
-                width - thickness,
+                0 + this.strokePad,
+                0 + this.strokePad,
+                width - this.thickness,
                 bottomLineY,
-                radii,
-                radii);
+                this.radii,
+                this.radii);
 
         Polygon pointer = new Polygon();
 
-        if (left) {
+        if (this.left) {
             // left point
             pointer.addPoint(
-                    strokePad + radii + pointerPad,
+                    this.strokePad + this.radii + this.pointerPad,
                     bottomLineY);
             // right point
             pointer.addPoint(
-                    strokePad + radii + pointerPad + pointerSize,
+                    this.strokePad + this.radii + this.pointerPad + this.pointerSize,
                     bottomLineY);
             // bottom point
             pointer.addPoint(
-                    strokePad + radii + pointerPad + (pointerSize / 2),
-                    height - strokePad);
+                    this.strokePad + this.radii + this.pointerPad + (this.pointerSize / 2),
+                    height - this.strokePad);
         } else {
             // left point
             pointer.addPoint(
-                    width - (strokePad + radii + pointerPad),
+                    width - (this.strokePad + this.radii + this.pointerPad),
                     bottomLineY);
             // right point
             pointer.addPoint(
-                    width - (strokePad + radii + pointerPad + pointerSize),
+                    width - (this.strokePad + this.radii + this.pointerPad + this.pointerSize),
                     bottomLineY);
             // bottom point
             pointer.addPoint(
-                    width - (strokePad + radii + pointerPad + (pointerSize / 2)),
-                    height - strokePad);
+                    width - (this.strokePad + this.radii + this.pointerPad + (this.pointerSize / 2)),
+                    height - this.strokePad);
         }
 
         Area area = new Area(bubble);
         area.add(new Area(pointer));
 
-        g2.setRenderingHints(hints);
+        g2.setRenderingHints(this.hints);
 
         // Paint the BG color of the parent, everywhere outside the clip
         // of the text bubble.
@@ -118,8 +118,8 @@ class TextBubbleBorder extends AbstractBorder
             g2.setClip(null);
         }
 
-        g2.setColor(color);
-        g2.setStroke(stroke);
+        g2.setColor(this.color);
+        g2.setStroke(this.stroke);
         g2.draw(area);
     }
 }

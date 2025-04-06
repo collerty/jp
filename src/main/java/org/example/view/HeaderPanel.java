@@ -12,7 +12,7 @@ import java.awt.*;
 
 public class HeaderPanel extends JPanel
 {
-    private Presentation presentation;
+    private final Presentation presentation;
     private JButton addSlideButton;
     private JButton addTextSlideButton;
     private JButton addTextButton;
@@ -21,9 +21,9 @@ public class HeaderPanel extends JPanel
     public HeaderPanel(Presentation presentation)
     {
         this.presentation = presentation;
-        setLayout(new BorderLayout());
-        setPreferredSize(new Dimension(Slide.WIDTH, StyleConstants.PANEL_HEIGHT));
-        setOpaque(false); // Important for rounded corners to work
+        this.setLayout(new BorderLayout());
+        this.setPreferredSize(new Dimension(Slide.WIDTH, StyleConstants.PANEL_HEIGHT));
+        this.setOpaque(false); // Important for rounded corners to work
 
         // Create a container panel for buttons with vertical centering
         JPanel buttonContainer = new JPanel() {
@@ -34,7 +34,7 @@ public class HeaderPanel extends JPanel
                 
                 // Draw rounded background
                 g2.setColor(StyleConstants.SECONDARY_BACKGROUND);
-                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 
+                g2.fillRoundRect(0, 0, this.getWidth(), this.getHeight(),
                     StyleConstants.BORDER_RADIUS, StyleConstants.BORDER_RADIUS);
             }
         };
@@ -49,8 +49,8 @@ public class HeaderPanel extends JPanel
         buttonsPanel.setLayout(new FlowLayout(FlowLayout.CENTER, StyleConstants.BUTTON_SPACING, 0));
 
         // Create and style the "Add New Slide" button
-        addSlideButton = createStyledButton("Add New Slide");
-        addSlideButton.addActionListener(e ->
+        this.addSlideButton = this.createStyledButton("Add New Slide");
+        this.addSlideButton.addActionListener(e ->
         {
             Slide newSlide = new Slide();
             presentation.append(newSlide);
@@ -58,8 +58,8 @@ public class HeaderPanel extends JPanel
         });
 
         // Create and style the "Add Text Slide" button
-        addTextSlideButton = createStyledButton("Add Text Slide");
-        addTextSlideButton.addActionListener(e ->
+        this.addTextSlideButton = this.createStyledButton("Add Text Slide");
+        this.addTextSlideButton.addActionListener(e ->
         {
             Slide newSlide = new Slide();
             // Use factory to create TextItems
@@ -72,8 +72,8 @@ public class HeaderPanel extends JPanel
         });
 
         // Create and style the "Add Text" button
-        addTextButton = createStyledButton("Add Text");
-        addTextButton.addActionListener(e ->
+        this.addTextButton = this.createStyledButton("Add Text");
+        this.addTextButton.addActionListener(e ->
         {
             if (presentation.getCurrentSlide() != null)
             {
@@ -110,28 +110,28 @@ public class HeaderPanel extends JPanel
                             presentation.getSlideViewComponent().repaint();
                         });
                     });
-                    
-                    maintainFrameFocus();
+
+                    this.maintainFrameFocus();
                 }
             }
         });
 
 
         // Create and style the "Add Image" button
-        addImageButton = createStyledButton("Add Image");
-        addImageButton.addActionListener(e ->
+        this.addImageButton = this.createStyledButton("Add Image");
+        this.addImageButton.addActionListener(e ->
         {
             if (presentation.getCurrentSlide() != null)
             {
-                handleImageAddition();
+                this.handleImageAddition();
             }
         });
 
         // Add buttons to the buttons panel
-        buttonsPanel.add(addSlideButton);
-        buttonsPanel.add(addTextSlideButton);
-        buttonsPanel.add(addTextButton);
-        buttonsPanel.add(addImageButton);
+        buttonsPanel.add(this.addSlideButton);
+        buttonsPanel.add(this.addTextSlideButton);
+        buttonsPanel.add(this.addTextButton);
+        buttonsPanel.add(this.addImageButton);
         
         // Add the buttons panel to the container with GridBagConstraints for perfect centering
         GridBagConstraints gbc = new GridBagConstraints();
@@ -155,28 +155,28 @@ public class HeaderPanel extends JPanel
         containerWrapper.add(buttonContainer, BorderLayout.CENTER);
 
         // Add the wrapper to the main panel
-        add(containerWrapper, BorderLayout.CENTER);
+        this.add(containerWrapper, BorderLayout.CENTER);
     }
 
     private void handleImageAddition() {
         java.io.File selectedFile = FileChooserUtils.selectImageFile(this);
         if (selectedFile != null) {
             // Use factory to create BitmapItem
-            int level = presentation.getCurrentSlide().getSize() + 1;
+            int level = this.presentation.getCurrentSlide().getSize() + 1;
             SlideItem bitmapItem = SlideItemFactory.createBitmapItem(level, selectedFile.getAbsolutePath());
-            
-            presentation.getCurrentSlide().append(bitmapItem);
-            presentation.getSlideViewComponent().update(presentation, presentation.getCurrentSlide());
-            maintainFrameFocus();
+
+            this.presentation.getCurrentSlide().append(bitmapItem);
+            this.presentation.getSlideViewComponent().update(this.presentation, this.presentation.getCurrentSlide());
+            this.maintainFrameFocus();
         }
     }
 
     private void maintainFrameFocus() {
         // Ensure frame maintains focus
-        if (presentation.getSlideViewerFrame() != null) {
-            presentation.getSlideViewerFrame().requestFocus();
-            presentation.getSlideViewerFrame().requestFocusInWindow();
-            presentation.getSlideViewerFrame().toFront();
+        if (this.presentation.getSlideViewerFrame() != null) {
+            this.presentation.getSlideViewerFrame().requestFocus();
+            this.presentation.getSlideViewerFrame().requestFocusInWindow();
+            this.presentation.getSlideViewerFrame().toFront();
         }
     }
 
@@ -190,7 +190,7 @@ public class HeaderPanel extends JPanel
                 Graphics2D g2 = (Graphics2D) g;
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 
-                if (getModel().isPressed() || getModel().isRollover())
+                if (this.getModel().isPressed() || this.getModel().isRollover())
                 {
                     g2.setColor(StyleConstants.PRIMARY_HOVER);
                 }
@@ -199,7 +199,7 @@ public class HeaderPanel extends JPanel
                     g2.setColor(StyleConstants.PRIMARY);
                 }
                 
-                g2.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 
+                g2.fillRoundRect(0, 0, this.getWidth() - 1, this.getHeight() - 1,
                     StyleConstants.BORDER_RADIUS, StyleConstants.BORDER_RADIUS);
                 
                 super.paintComponent(g);
@@ -208,12 +208,12 @@ public class HeaderPanel extends JPanel
             // Force the button to respect its preferred size
             @Override
             public Dimension getMinimumSize() {
-                return getPreferredSize();
+                return this.getPreferredSize();
             }
             
             @Override
             public Dimension getMaximumSize() {
-                return getPreferredSize();
+                return this.getPreferredSize();
             }
         };
 
