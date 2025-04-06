@@ -22,7 +22,7 @@ public class XMLFileHandler implements FileHandlerStrategy
     @Override
     public boolean openFile(Presentation presentation) throws FileOperationException
     {
-        File selectedFile = FileChooserUtils.selectXMLFile(parent);
+        File selectedFile = FileChooserUtils.selectXMLFile(this.parent);
         if (selectedFile != null)
         {
             Accessor xmlAccessor = new XMLAccessor();
@@ -31,8 +31,8 @@ public class XMLFileHandler implements FileHandlerStrategy
                 // Clear the presentation before loading new content
                 presentation.clear();
                 xmlAccessor.loadFile(presentation, selectedFile.getAbsolutePath());
-                presentation.setSlideNumber(0); // Set to first slide after loading
-                parent.repaint();
+                presentation.setSlideNumber(0);
+                this.parent.repaint();
 
                 return true;
             } catch (IOException exc)
@@ -40,7 +40,7 @@ public class XMLFileHandler implements FileHandlerStrategy
                 throw new FileOperationException("Failed to open file: " + selectedFile.getName(), exc);
             }
         }
-        return false; // If no file was selected
+        return false;
     }
 
     @Override
@@ -60,12 +60,12 @@ public class XMLFileHandler implements FileHandlerStrategy
     @Override
     public boolean saveAs(Presentation presentation) throws FileOperationException
     {
-        File selectedFile = FileChooserUtils.selectSaveXMLFile(parent);
+        File selectedFile = FileChooserUtils.selectSaveXMLFile(this.parent);
         if (selectedFile != null)
         {
-            return saveFile(presentation, selectedFile);
+            return this.saveFile(presentation, selectedFile);
         }
-        return false; // If user cancels the save operation
+        return false;
     }
 
     @Override
@@ -73,11 +73,11 @@ public class XMLFileHandler implements FileHandlerStrategy
     {
         try {
             presentation.clear();
-            if (parent instanceof SlideViewerFrame)
+            if (this.parent instanceof SlideViewerFrame)
             {
-                presentation.setSlideViewerFrame((SlideViewerFrame) parent);
+                presentation.setSlideViewerFrame((SlideViewerFrame) this.parent);
             }
-            parent.repaint();
+            this.parent.repaint();
             return true;
         } catch (Exception e) {
             throw new PresentationException("Failed to create new presentation", e);

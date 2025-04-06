@@ -36,12 +36,12 @@ public class TextItemFactory implements AbstractSlideItemFactory {
      */
     public SlideItem createFormattedTextItem(int level, String text, boolean bold, boolean italic) {
         if (bold && italic) {
-            return createBoldItalicItem(level, text);
+            return this.createBoldItalicItem(level, text);
         } else if (bold) {
-            return createBoldItem(level, text);
+            return this.createBoldItem(level, text);
         } else if (italic) {
-            return createItalicItem(level, text);
+            return this.createItalicItem(level, text);
         }
-        return createItem(level, text);
+        return this.createItem(level, text);
     }
 } 

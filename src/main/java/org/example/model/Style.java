@@ -16,11 +16,11 @@ public class Style
     private static final Color RED = new Color(255, 75, 85);
 
     // Style properties
-    private int indent;
-    private Color color;
+    private final int indent;
+    private final Color color;
     private Font font;
-    private int fontSize;
-    private int leading;
+    private final int fontSize;
+    private final int leading;
 
     // Method to create styles
     public static void createStyles()
@@ -52,7 +52,32 @@ public class Style
         this.color = color;
         this.fontSize = points;
         this.leading = leading;
-        this.font = loadFont("Inter/Inter-VariableFont_opsz,wght.ttf", fontSize); // Load the variable font
+        this.font = this.loadFont("Inter/Inter-VariableFont_opsz,wght.ttf", fontSize); // Load the variable font
+    }
+
+    public int getIndent()
+    {
+        return this.indent;
+    }
+
+    public Color getColor()
+    {
+        return this.color;
+    }
+
+    public Font getFont()
+    {
+        return this.font;
+    }
+
+    public int getLeading()
+    {
+        return this.leading;
+    }
+
+    public void setFont(Font font)
+    {
+        this.font = font;
     }
 
     // Method to load the font from resources
@@ -61,7 +86,7 @@ public class Style
         try
         {
             // Load the font from the resources folder using getResourceAsStream
-            InputStream fontStream = getClass().getClassLoader().getResourceAsStream(fontPath);
+            InputStream fontStream = this.getClass().getClassLoader().getResourceAsStream(fontPath);
             if (fontStream == null)
             {
                 System.err.println("Font not found at path: " + fontPath);
@@ -76,42 +101,17 @@ public class Style
         }
     }
 
-    // Getter methods for private fields:
-    public int getIndent()
-    {
-        return indent;
-    }
-
-    public Color getColor()
-    {
-        return color;
-    }
-
-    public Font getFont()
-    {
-        return font;
-    }
-
-    public int getLeading()
-    {
-        return leading;
-    }
-
-    public void setFont(Font font)
-    {
-        this.font = font;
-    }
 
     // Method to convert style to a string representation
     @Override
     public String toString()
     {
-        return "[" + indent + ", " + color + "; " + fontSize + "pt on " + leading + "]";
+        return "[" + this.indent + ", " + this.color + "; " + this.fontSize + "pt on " + this.leading + "]";
     }
 
     // Method to get a scaled font based on the given scale
     public Font getFont(float scale)
     {
-        return font.deriveFont(fontSize * scale);  // Scale the font size
+        return this.font.deriveFont(this.fontSize * scale);  // Scale the font size
     }
 }

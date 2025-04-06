@@ -12,10 +12,10 @@ import java.io.File;
 public class MenuController extends JMenuBar
 {
 
-    private JFrame parent; // the frame, only used as parent for the Dialogs
-    private Presentation presentation; // Commands are given to the presentation
+    private final JFrame parent; // the frame, only used as parent for the Dialogs
+    private final Presentation presentation; // Commands are given to the presentation
     private File currentFile;  // tracks current file to chnage on save
-    private FileHandlerStrategy fileHandler;
+    private final FileHandlerStrategy fileHandler;
 
     private static final long serialVersionUID = 227L;
 
@@ -40,73 +40,73 @@ public class MenuController extends JMenuBar
 
     public MenuController(JFrame frame, Presentation pres)
     {
-        parent = frame;
-        presentation = pres;
+        this.parent = frame;
+        this.presentation = pres;
         this.fileHandler = new XMLFileHandler(frame);
         JMenuItem menuItem;
         JMenu fileMenu = new JMenu(FILE);
 
-        fileMenu.add(menuItem = mkMenuItem(NEW));
-        menuItem.addActionListener(e -> newFile());
+        fileMenu.add(menuItem = this.mkMenuItem(NEW));
+        menuItem.addActionListener(e -> this.newFile());
 
-        fileMenu.add(menuItem = mkMenuItem(OPEN));
-        menuItem.addActionListener(e -> openFile());
+        fileMenu.add(menuItem = this.mkMenuItem(OPEN));
+        menuItem.addActionListener(e -> this.openFile());
 
-        fileMenu.add(menuItem = mkMenuItem(FULL_SCREEN));
+        fileMenu.add(menuItem = this.mkMenuItem(FULL_SCREEN));
         menuItem.addActionListener(e ->
         {
-            presentation.enterFullscreen();
+            this.presentation.enterFullscreen();
         });
 
-        fileMenu.add(menuItem = mkMenuItem(SAVE));
-        menuItem.addActionListener(e -> saveFile());
+        fileMenu.add(menuItem = this.mkMenuItem(SAVE));
+        menuItem.addActionListener(e -> this.saveFile());
 
-        fileMenu.add(menuItem = mkMenuItem(SAVE_AS, KeyEvent.VK_S, true));
-        menuItem.addActionListener(e -> saveAs());
+        fileMenu.add(menuItem = this.mkMenuItem(SAVE_AS, KeyEvent.VK_S, true));
+        menuItem.addActionListener(e -> this.saveAs());
 
         fileMenu.addSeparator();
-        fileMenu.add(menuItem = mkMenuItem(EXIT));
-        menuItem.addActionListener(e -> presentation.exit(0));
-        add(fileMenu);
+        fileMenu.add(menuItem = this.mkMenuItem(EXIT));
+        menuItem.addActionListener(e -> this.presentation.exit(0));
+        this.add(fileMenu);
 
         JMenu viewMenu = new JMenu(VIEW);
-        viewMenu.add(menuItem = mkMenuItem(NEXT));
-        menuItem.addActionListener(e -> presentation.nextSlide());
-        viewMenu.add(menuItem = mkMenuItem(PREV));
-        menuItem.addActionListener(e -> presentation.prevSlide());
-        viewMenu.add(menuItem = mkMenuItem(GOTO));
+        viewMenu.add(menuItem = this.mkMenuItem(NEXT));
+        menuItem.addActionListener(e -> this.presentation.nextSlide());
+        viewMenu.add(menuItem = this.mkMenuItem(PREV));
+        menuItem.addActionListener(e -> this.presentation.prevSlide());
+        viewMenu.add(menuItem = this.mkMenuItem(GOTO));
         menuItem.addActionListener(e ->
         {
             String pageNumberStr = JOptionPane.showInputDialog((Object) PAGENR);
             int pageNumber = Integer.parseInt(pageNumberStr);
-            presentation.setSlideNumber(pageNumber - 1);
+            this.presentation.setSlideNumber(pageNumber - 1);
         });
-        add(viewMenu);
+        this.add(viewMenu);
 
         JMenu helpMenu = new JMenu(HELP);
-        helpMenu.add(menuItem = mkMenuItem(ABOUT));
-        menuItem.addActionListener(e -> AboutBox.show(parent));
-        add(helpMenu);
+        helpMenu.add(menuItem = this.mkMenuItem(ABOUT));
+        menuItem.addActionListener(e -> AboutBox.show(this.parent));
+        this.add(helpMenu);
     }
 
     private void newFile()
     {
-        fileHandler.newFile(presentation);
+        this.fileHandler.newFile(this.presentation);
     }
 
     private void openFile()
     {
-        fileHandler.openFile(presentation);
+        this.fileHandler.openFile(this.presentation);
     }
 
     private void saveFile()
     {
-        fileHandler.saveFile(presentation, currentFile);
+        this.fileHandler.saveFile(this.presentation, this.currentFile);
     }
 
     private void saveAs()
     {
-        fileHandler.saveAs(presentation);
+        this.fileHandler.saveAs(this.presentation);
     }
 
     // Create a menu item with specific shortcut key

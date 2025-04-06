@@ -19,18 +19,18 @@ public class BitmapItemFactory implements AbstractSlideItemFactory {
     @Override
     public SlideItem createBoldItem(int level, String imagePath) {
         // Bold formatting not applicable to bitmap items, but we still implement the interface
-        return createItem(level, imagePath);
+        return this.createItem(level, imagePath);
     }
     
     @Override
     public SlideItem createItalicItem(int level, String imagePath) {
         // Italic formatting not applicable to bitmap items, but we still implement the interface
-        return createItem(level, imagePath);
+        return this.createItem(level, imagePath);
     }
     
     @Override
     public SlideItem createBoldItalicItem(int level, String imagePath) {
         // Bold and italic formatting not applicable to bitmap items, but we still implement the interface
-        return createItem(level, imagePath);
+        return this.createItem(level, imagePath);
     }
 } 

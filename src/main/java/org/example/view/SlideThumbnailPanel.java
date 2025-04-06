@@ -17,81 +17,81 @@ public class SlideThumbnailPanel extends JPanel
     private static final Color HOVER_COLOR = new Color(67, 76, 94);
     private static final Color BACKGROUND_COLOR = new Color(46, 52, 64);
 
-    private Presentation presentation;
+    private final Presentation presentation;
     private int selectedIndex = -1;
-    private JPanel thumbnailsPanel;
-    private JScrollPane scrollPane;
+    private final JPanel thumbnailsPanel;
+    private final JScrollPane scrollPane;
     private static final Color SNOW_WHITE = new Color(216, 222, 233);
 
     public SlideThumbnailPanel(Presentation presentation)
     {
         this.presentation = presentation;
-        setBackground(BACKGROUND_COLOR);
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        setBorder(BorderFactory.createCompoundBorder(
+        this.setBackground(BACKGROUND_COLOR);
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.setBorder(BorderFactory.createCompoundBorder(
                 new RightOnlyBorder(SNOW_WHITE, 1),
                 BorderFactory.createEmptyBorder(16, 16, 0, 0)
         ));
-        setPreferredSize(new Dimension(THUMBNAIL_WIDTH + 32, 0));
-        setMaximumSize(new Dimension(THUMBNAIL_WIDTH + 32, Integer.MAX_VALUE));
-        setMinimumSize(new Dimension(THUMBNAIL_WIDTH + 32, 0));
+        this.setPreferredSize(new Dimension(THUMBNAIL_WIDTH + 32, 0));
+        this.setMaximumSize(new Dimension(THUMBNAIL_WIDTH + 32, Integer.MAX_VALUE));
+        this.setMinimumSize(new Dimension(THUMBNAIL_WIDTH + 32, 0));
 
         // Create a panel to hold thumbnails
-        thumbnailsPanel = new JPanel();
-        thumbnailsPanel.setLayout(new BoxLayout(thumbnailsPanel, BoxLayout.Y_AXIS));
-        thumbnailsPanel.setBackground(BACKGROUND_COLOR);
+        this.thumbnailsPanel = new JPanel();
+        this.thumbnailsPanel.setLayout(new BoxLayout(this.thumbnailsPanel, BoxLayout.Y_AXIS));
+        this.thumbnailsPanel.setBackground(BACKGROUND_COLOR);
 
         // Create scroll pane
-        scrollPane = new JScrollPane(thumbnailsPanel);
-        scrollPane.setPreferredSize(new Dimension(THUMBNAIL_WIDTH + 20, 0));
-        scrollPane.setBackground(BACKGROUND_COLOR);
-        scrollPane.getViewport().setBackground(BACKGROUND_COLOR);
-        scrollPane.setBorder(null);
+        this.scrollPane = new JScrollPane(this.thumbnailsPanel);
+        this.scrollPane.setPreferredSize(new Dimension(THUMBNAIL_WIDTH + 20, 0));
+        this.scrollPane.setBackground(BACKGROUND_COLOR);
+        this.scrollPane.getViewport().setBackground(BACKGROUND_COLOR);
+        this.scrollPane.setBorder(null);
 
-        add(scrollPane, BorderLayout.CENTER);
-        updateThumbnails();
+        this.add(this.scrollPane, BorderLayout.CENTER);
+        this.updateThumbnails();
     }
 
     public void updateThumbnails()
     {
         // Clear all existing thumbnails
-        thumbnailsPanel.removeAll();
+        this.thumbnailsPanel.removeAll();
         
         // Add a message if no slides
-        if (presentation.getSize() == 0) {
+        if (this.presentation.getSize() == 0) {
             JLabel emptyLabel = new JLabel("No slides available");
             emptyLabel.setForeground(SNOW_WHITE);
             emptyLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-            thumbnailsPanel.add(emptyLabel);
+            this.thumbnailsPanel.add(emptyLabel);
             
             // Force a complete refresh
-            thumbnailsPanel.revalidate();
-            thumbnailsPanel.repaint();
-            scrollPane.revalidate();
-            scrollPane.repaint();
+            this.thumbnailsPanel.revalidate();
+            this.thumbnailsPanel.repaint();
+            this.scrollPane.revalidate();
+            this.scrollPane.repaint();
             this.revalidate();
             this.repaint();
             return;
         }
         
         // Add thumbnails for each slide
-        for (int i = 0; i < presentation.getSize(); i++)
+        for (int i = 0; i < this.presentation.getSize(); i++)
         {
-            Slide slide = presentation.getSlide(i);
-            JPanel thumbnailPanel = createThumbnailPanel(slide, i);
-            thumbnailsPanel.add(thumbnailPanel);
-            thumbnailsPanel.add(Box.createVerticalStrut(10));
+            Slide slide = this.presentation.getSlide(i);
+            JPanel thumbnailPanel = this.createThumbnailPanel(slide, i);
+            this.thumbnailsPanel.add(thumbnailPanel);
+            this.thumbnailsPanel.add(Box.createVerticalStrut(10));
             
             // Force a complete refresh after adding each thumbnail
-            thumbnailsPanel.revalidate();
-            thumbnailsPanel.repaint();
+            this.thumbnailsPanel.revalidate();
+            this.thumbnailsPanel.repaint();
         }
         
         // Force a complete refresh
-        thumbnailsPanel.revalidate();
-        thumbnailsPanel.repaint();
-        scrollPane.revalidate();
-        scrollPane.repaint();
+        this.thumbnailsPanel.revalidate();
+        this.thumbnailsPanel.repaint();
+        this.scrollPane.revalidate();
+        this.scrollPane.repaint();
         this.revalidate();
         this.repaint();
     }
@@ -107,7 +107,7 @@ public class SlideThumbnailPanel extends JPanel
                 if (index == selectedIndex)
                 {
                     g.setColor(SELECTED_COLOR);
-                    g.fillRect(0, 0, getWidth(), getHeight());
+                    g.fillRect(0, 0, this.getWidth(), this.getHeight());
                 }
             }
         };
@@ -128,7 +128,7 @@ public class SlideThumbnailPanel extends JPanel
                 g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
                 // Draw slide content
-                Rectangle area = new Rectangle(0, 0, getWidth(), getHeight());
+                Rectangle area = new Rectangle(0, 0, this.getWidth(), this.getHeight());
                 slide.draw(g2d, area, this);
             }
         };
@@ -186,7 +186,7 @@ public class SlideThumbnailPanel extends JPanel
     public void setSelectedIndex(int index)
     {
         this.selectedIndex = index;
-        updateThumbnails();
+        this.updateThumbnails();
     }
 
     public void setVisible(boolean visible)
@@ -196,13 +196,13 @@ public class SlideThumbnailPanel extends JPanel
     
     public void removeAll() {
         // Remove all components from the thumbnails panel
-        thumbnailsPanel.removeAll();
+        this.thumbnailsPanel.removeAll();
         
         // Force a complete refresh
-        thumbnailsPanel.revalidate();
-        thumbnailsPanel.repaint();
-        scrollPane.revalidate();
-        scrollPane.repaint();
+        this.thumbnailsPanel.revalidate();
+        this.thumbnailsPanel.repaint();
+        this.scrollPane.revalidate();
+        this.scrollPane.repaint();
         this.revalidate();
         this.repaint();
     }

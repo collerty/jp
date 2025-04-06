@@ -18,11 +18,11 @@ public class SlideViewerFrame extends JFrame
     private static final long serialVersionUID = 3227L;
 
     private static final String JABTITLE = "Jabberpoint 1.6 - OU";
-    private SlideViewerComponent slideViewerComponent;
-    private SlideThumbnailPanel thumbnailPanel;
-    private HeaderPanel headerPanel;
+    private final SlideViewerComponent slideViewerComponent;
+    private final SlideThumbnailPanel thumbnailPanel;
+    private final HeaderPanel headerPanel;
     private JPanel mainPanel;
-    private JPanel headerWrapper;
+    private final JPanel headerWrapper;
 
     public SlideViewerFrame(Presentation presentation)
     {
@@ -42,13 +42,13 @@ public class SlideViewerFrame extends JFrame
         this.slideViewerComponent = new SlideViewerComponent(presentation, this);
         this.thumbnailPanel = new SlideThumbnailPanel(presentation);
         this.headerPanel = new HeaderPanel(presentation);
-        presentation.setShowView(slideViewerComponent);
-        presentation.setThumbnailPanel(thumbnailPanel);
+        presentation.setShowView(this.slideViewerComponent);
+        presentation.setThumbnailPanel(this.thumbnailPanel);
         presentation.setSlideViewerFrame(this); // Set the frame reference
 
         // Create main content panel with BorderLayout
-        mainPanel = new JPanel(new BorderLayout());
-        mainPanel.setBackground(StyleConstants.BACKGROUND);
+        this.mainPanel = new JPanel(new BorderLayout());
+        this.mainPanel.setBackground(StyleConstants.BACKGROUND);
 
         // Setting up the header panel
         this.headerWrapper = new JPanel(new BorderLayout());
@@ -57,7 +57,7 @@ public class SlideViewerFrame extends JFrame
         this.headerWrapper.add(this.headerPanel, BorderLayout.CENTER);
 
         // Making setup window for viewing mode
-        setupWindow(slideViewerComponent, presentation);
+        this.setupWindow(this.slideViewerComponent, presentation);
     }
 
     public JPanel getMainPanel()
@@ -72,20 +72,20 @@ public class SlideViewerFrame extends JFrame
 
     public SlideViewerComponent getSlideViewerComponent()
     {
-        return slideViewerComponent;
+        return this.slideViewerComponent;
     }
 
     public SlideThumbnailPanel getThumbnailPanel()
     {
-        return thumbnailPanel;
+        return this.thumbnailPanel;
     }
 
     // Setup GUI
     public void setupWindow(SlideViewerComponent
                                     slideViewerComponent, Presentation presentation)
     {
-        setTitle(JABTITLE);
-        addWindowListener(new WindowAdapter()
+        this.setTitle(JABTITLE);
+        this.addWindowListener(new WindowAdapter()
         {
             public void windowClosing(WindowEvent e)
             {
@@ -95,31 +95,31 @@ public class SlideViewerFrame extends JFrame
 
 
         // Add thumbnail panel to the left
-        mainPanel.add(thumbnailPanel, BorderLayout.WEST);
+        this.mainPanel.add(this.thumbnailPanel, BorderLayout.WEST);
 
         // Add slide viewer with scroll pane to the center
-        mainPanel.add(slideViewerComponent.getScrollPane(), BorderLayout.CENTER);
+        this.mainPanel.add(slideViewerComponent.getScrollPane(), BorderLayout.CENTER);
 
         // Add the main panel to the frame
-        getContentPane().add(mainPanel);
+        this.getContentPane().add(this.mainPanel);
 
         // Set up the menu and other components
-        setJMenuBar(new MenuController(this, presentation));
-        addKeyListener(new KeyController(presentation));
+        this.setJMenuBar(new MenuController(this, presentation));
+        this.addKeyListener(new KeyController(presentation));
 
         // Set window size and make it visible
-        setSize(new Dimension(StyleConstants.WINDOW_WIDTH + thumbnailPanel.getPreferredSize().width, 
-                             StyleConstants.WINDOW_HEIGHT + headerPanel.getPreferredSize().height));
-        setVisible(true);
-        requestFocus();
-        requestFocusInWindow();
-        toFront();
+        this.setSize(new Dimension(StyleConstants.WINDOW_WIDTH + this.thumbnailPanel.getPreferredSize().width,
+                             StyleConstants.WINDOW_HEIGHT + this.headerPanel.getPreferredSize().height));
+        this.setVisible(true);
+        this.requestFocus();
+        this.requestFocusInWindow();
+        this.toFront();
     }
 
 
     public void enterFullScreen()
     {
-        this.mainPanel.remove(thumbnailPanel);
+        this.mainPanel.remove(this.thumbnailPanel);
         this.mainPanel.repaint();
 
         this.slideViewerComponent.enterFullScreen();
@@ -127,7 +127,7 @@ public class SlideViewerFrame extends JFrame
 
     public void exitFullScreen()
     {
-        this.mainPanel.add(thumbnailPanel, BorderLayout.WEST);
+        this.mainPanel.add(this.thumbnailPanel, BorderLayout.WEST);
         this.mainPanel.revalidate();
         this.mainPanel.repaint();
         this.slideViewerComponent.exitFullScreen();

@@ -20,64 +20,64 @@ public class Slide
 
     public Slide()
     {
-        items = new Vector<SlideItem>();
+        this.items = new Vector<SlideItem>();
     }
 
     // Add a slide item
     public void append(SlideItem anItem)
     {
-        items.addElement(anItem);
+        this.items.addElement(anItem);
     }
 
     // give the title of the slide
     public String getTitle()
     {
-        return title;
+        return this.title;
     }
 
     // change the title of the slide
     public void setTitle(String newTitle)
     {
-        title = newTitle;
+        this.title = newTitle;
     }
 
     // Create java.com.TextItem of String, and add the java.com.TextItem
     public void append(int level, String message)
     {
-        append(new TextItem(level, message));
+        this.append(new TextItem(level, message));
     }
 
     // give the  java.com.SlideItem
     public SlideItem getSlideItem(int number)
     {
-        return (SlideItem) items.elementAt(number);
+        return (SlideItem) this.items.elementAt(number);
     }
 
     // give all SlideItems in a Vector
     public Vector<SlideItem> getSlideItems()
     {
-        return items;
+        return this.items;
     }
 
     // give the size of the java.com.Slide
     public int getSize()
     {
-        return items.size();
+        return this.items.size();
     }
 
     // draw the slide
     public void draw(Graphics g, Rectangle area, ImageObserver view)
     {
-        float scale = getScale(area);
+        float scale = this.getScale(area);
         int y = area.y;
         // Title is handled separately
-        SlideItem slideItem = new TextItem(0, getTitle());
+        SlideItem slideItem = new TextItem(0, this.getTitle());
         Style style = Style.getStyle(slideItem.getLevel());
         slideItem.draw(area.x, y, scale, g, style, view);
         y += slideItem.getBoundingBox(g, view, scale, style).height;
-        for (int number = 0; number < getSize(); number++)
+        for (int number = 0; number < this.getSize(); number++)
         {
-            slideItem =(SlideItem) getSlideItems().elementAt(number);
+            slideItem =(SlideItem) this.getSlideItems().elementAt(number);
 
             style = Style.getStyle(slideItem.getLevel());
 
@@ -105,15 +105,15 @@ public class Slide
         ImageObserver observer = null; // We don't need an observer for measurements
 
         // Add title height
-        SlideItem titleItem = new TextItem(0, getTitle());
+        SlideItem titleItem = new TextItem(0, this.getTitle());
         Style titleStyle = Style.getStyle(titleItem.getLevel());
         Rectangle titleBounds = titleItem.getBoundingBox(g2d, observer, 1.0f, titleStyle);
         totalHeight += titleBounds.height;
 
         // Add content heights
-        for (int number = 0; number < getSize(); number++)
+        for (int number = 0; number < this.getSize(); number++)
         {
-            SlideItem item = getSlideItems().elementAt(number);
+            SlideItem item = this.getSlideItems().elementAt(number);
             Style style = Style.getStyle(item.getLevel());
             Rectangle itemBounds = item.getBoundingBox(g2d, observer, 1.0f, style);
             totalHeight += itemBounds.height;

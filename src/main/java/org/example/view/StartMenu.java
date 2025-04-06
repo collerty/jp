@@ -13,8 +13,8 @@ import java.awt.*;
 
 public class StartMenu extends JFrame
 {
-    private Presentation presentation;
-    private FileHandlerStrategy fileHandler;
+    private final Presentation presentation;
+    private final FileHandlerStrategy fileHandler;
 
     // Constants for menu options
     private static final String NEW_PRESENTATION = "New";
@@ -26,25 +26,25 @@ public class StartMenu extends JFrame
     {
         this.presentation = new Presentation();
         this.fileHandler = new XMLFileHandler(this);
-        setupFrame();
-        setupButtons();
-        showStartMenu();
+        this.setupFrame();
+        this.setupButtons();
+        this.showStartMenu();
     }
 
     private void setupFrame()
     {
-        setTitle("JabberPoint - Start Menu");
-        setLayout(new FlowLayout());
-        setSize(400, 300);
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setTitle("JabberPoint - Start Menu");
+        this.setLayout(new FlowLayout());
+        this.setSize(400, 300);
+        this.setLocationRelativeTo(null);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     private void setupButtons()
     {
-        add(createMenuButton(NEW_PRESENTATION, this::loadNewPresentation));
-        add(createMenuButton(OPEN_PRESENTATION, this::openPresentationFile));
-        add(createMenuButton(DEMO_PRESENTATION, this::loadDemoPresentation));
+        this.add(this.createMenuButton(NEW_PRESENTATION, this::loadNewPresentation));
+        this.add(this.createMenuButton(OPEN_PRESENTATION, this::openPresentationFile));
+        this.add(this.createMenuButton(DEMO_PRESENTATION, this::loadDemoPresentation));
     }
 
     // Creates a menu button with consistent styling
@@ -60,15 +60,15 @@ public class StartMenu extends JFrame
     {
         // Request focus for the frame to avoid focusing on buttons
         this.requestFocusInWindow();
-        setVisible(true);
+        this.setVisible(true);
     }
 
     private SlideViewerFrame createAndSetupViewerFrame(String title) throws PresentationException
     {
         try
         {
-            SlideViewerFrame viewerFrame = createViewerFrame(title);
-            setupViewerFrame(viewerFrame);
+            SlideViewerFrame viewerFrame = this.createViewerFrame(title);
+            this.setupViewerFrame(viewerFrame);
             return viewerFrame;
         } catch (Exception e)
         {
@@ -85,8 +85,8 @@ public class StartMenu extends JFrame
     // Sets up the viewer frame and updates the presentation
     private void setupViewerFrame(SlideViewerFrame viewerFrame)
     {
-        presentation.setShowView(viewerFrame.getSlideViewerComponent());
-        dispose();
+        this.presentation.setShowView(viewerFrame.getSlideViewerComponent());
+        this.dispose();
     }
 
     // Refreshes the UI components of the viewer frame
@@ -102,18 +102,18 @@ public class StartMenu extends JFrame
         try
         {
             loader.run();
-            SlideViewerFrame viewerFrame = createAndSetupViewerFrame(title);
-            refreshViewerFrame(viewerFrame);
+            SlideViewerFrame viewerFrame = this.createAndSetupViewerFrame(title);
+            this.refreshViewerFrame(viewerFrame);
         } catch (Exception e)
         {
-            showError(errorMessage, e);
+            this.showError(errorMessage, e);
         }
     }
 
     private void loadNewPresentation()
     {
-        loadPresentation(
-                () -> fileHandler.newFile(presentation),
+        this.loadPresentation(
+                () -> this.fileHandler.newFile(this.presentation),
                 "JabberPoint",
                 "Failed to create new presentation"
         );
@@ -123,16 +123,16 @@ public class StartMenu extends JFrame
     {
         try
         {
-            fileHandler.newFile(presentation);
-            SlideViewerFrame viewerFrame = createAndSetupViewerFrame("JabberPoint Demo");
-            presentation.setSlideViewerFrame(viewerFrame);
-            Accessor.getDemoAccessor().loadFile(presentation, "");
-            presentation.setSlideNumber(0);
-            viewerFrame.getSlideViewerComponent().update(presentation, presentation.getCurrentSlide());
-            refreshViewerFrame(viewerFrame);
+            this.fileHandler.newFile(this.presentation);
+            SlideViewerFrame viewerFrame = this.createAndSetupViewerFrame("JabberPoint Demo");
+            this.presentation.setSlideViewerFrame(viewerFrame);
+            Accessor.getDemoAccessor().loadFile(this.presentation, "");
+            this.presentation.setSlideNumber(0);
+            viewerFrame.getSlideViewerComponent().update(this.presentation, this.presentation.getCurrentSlide());
+            this.refreshViewerFrame(viewerFrame);
         } catch (Exception e)
         {
-            showError("Failed to load demo presentation", e);
+            this.showError("Failed to load demo presentation", e);
         }
     }
 
@@ -142,12 +142,12 @@ public class StartMenu extends JFrame
         {
             if (fileHandler.openFile(presentation))
             {
-                SlideViewerFrame viewerFrame = createAndSetupViewerFrame("JabberPoint");
-                refreshViewerFrame(viewerFrame);
+                SlideViewerFrame viewerFrame = this.createAndSetupViewerFrame("JabberPoint");
+                this.refreshViewerFrame(viewerFrame);
             }
         } catch (FileOperationException | PresentationException e)
         {
-            showError("Failed to open presentation file", e);
+            this.showError("Failed to open presentation file", e);
         }
     }
 
