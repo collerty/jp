@@ -14,7 +14,7 @@ designed to demonstrate various design patterns in Java, including the Factory M
 - `E` – Toggle **Editing Mode**
 - `F` – Toggle **Fullscreen Mode**
 - `Arrow Up` – Go to **Previous Slide**
-- `Arrow Down` – Create **Next Slide**
+- `Arrow Down` – Go to **Next Slide**
 - `Q` – **Exit** the application
 
 ## How to Run **Tests**
