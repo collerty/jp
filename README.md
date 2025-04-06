@@ -7,7 +7,7 @@
 Jabberpoint is a Java-based presentation application that allows users to create and edit slideshows. The application is
 designed to demonstrate various design patterns in Java, including the Factory Method, Decorator, and State patterns.
 
-###     
+###      
 
 ![Presentation](./img/viewingMode.png)
 
@@ -29,11 +29,26 @@ To run the **Tests**:
 mvn test
 ```
 
+---
+
 ## Implemented Design Patterns
 
 - **Factory Method Pattern**
 - **Decorator Pattern**
 - **State Pattern**
+
+---
+---
+
+## CI/CD Pipeline
+
+- All tests are automatically run **on every pull request** targeting the `main` branch.
+- **Direct pushes to the `main` branch are not allowed** – all changes must go through a pull request.
+- A pull request will only be merged if:
+  - All **GitHub Actions checks pass** (e.g., tests, build)
+  - At least **one other user approves** the changes
+
+This ensures code quality and collaboration before deploying any updates.
 
 ---
 
