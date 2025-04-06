@@ -52,7 +52,7 @@ public class Style
         this.color = color;
         this.fontSize = points;
         this.leading = leading;
-        this.font = this.loadFont("Inter/Inter-VariableFont_opsz,wght.ttf", fontSize); // Load the variable font
+        this.font = this.loadFont("Inter/Inter-VariableFont_opsz,wght.ttf", this.fontSize); // Load the variable font
     }
 
     public int getIndent()
@@ -85,31 +85,28 @@ public class Style
     {
         try
         {
-            // Load the font from the resources folder using getResourceAsStream
             InputStream fontStream = this.getClass().getClassLoader().getResourceAsStream(fontPath);
             if (fontStream == null)
             {
                 System.err.println("Font not found at path: " + fontPath);
-                return new Font("Helvetica", Font.PLAIN, fontSize);  // Fallback font if not found
+                return new Font("Helvetica", Font.PLAIN, fontSize);
             }
             Font font = Font.createFont(Font.TRUETYPE_FONT, fontStream);
-            return font.deriveFont(Font.PLAIN, fontSize); // Return the font with specified size
+            return font.deriveFont(Font.PLAIN, fontSize);
         } catch (FontFormatException | IOException e)
         {
             e.printStackTrace();
-            return new Font("Helvetica", Font.PLAIN, fontSize); // Fallback in case of error
+            return new Font("Helvetica", Font.PLAIN, fontSize);
         }
     }
 
 
-    // Method to convert style to a string representation
     @Override
     public String toString()
     {
         return "[" + this.indent + ", " + this.color + "; " + this.fontSize + "pt on " + this.leading + "]";
     }
 
-    // Method to get a scaled font based on the given scale
     public Font getFont(float scale)
     {
         return this.font.deriveFont(this.fontSize * scale);  // Scale the font size

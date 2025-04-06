@@ -44,19 +44,16 @@ public class SlideViewerFrame extends JFrame
         this.headerPanel = new HeaderPanel(presentation);
         presentation.setShowView(this.slideViewerComponent);
         presentation.setThumbnailPanel(this.thumbnailPanel);
-        presentation.setSlideViewerFrame(this); // Set the frame reference
+        presentation.setSlideViewerFrame(this);
 
-        // Create main content panel with BorderLayout
         this.mainPanel = new JPanel(new BorderLayout());
         this.mainPanel.setBackground(StyleConstants.BACKGROUND);
 
-        // Setting up the header panel
         this.headerWrapper = new JPanel(new BorderLayout());
         this.headerWrapper.setBackground(StyleConstants.BACKGROUND);
         this.headerWrapper.setBorder(BorderFactory.createEmptyBorder(0, 24, 0, 24)); // Match slide panel's left padding
         this.headerWrapper.add(this.headerPanel, BorderLayout.CENTER);
 
-        // Making setup window for viewing mode
         this.setupWindow(this.slideViewerComponent, presentation);
     }
 
@@ -80,7 +77,6 @@ public class SlideViewerFrame extends JFrame
         return this.thumbnailPanel;
     }
 
-    // Setup GUI
     public void setupWindow(SlideViewerComponent
                                     slideViewerComponent, Presentation presentation)
     {
@@ -94,20 +90,15 @@ public class SlideViewerFrame extends JFrame
         });
 
 
-        // Add thumbnail panel to the left
         this.mainPanel.add(this.thumbnailPanel, BorderLayout.WEST);
 
-        // Add slide viewer with scroll pane to the center
         this.mainPanel.add(slideViewerComponent.getScrollPane(), BorderLayout.CENTER);
 
-        // Add the main panel to the frame
         this.getContentPane().add(this.mainPanel);
 
-        // Set up the menu and other components
         this.setJMenuBar(new MenuController(this, presentation));
         this.addKeyListener(new KeyController(presentation));
 
-        // Set window size and make it visible
         this.setSize(new Dimension(StyleConstants.WINDOW_WIDTH + this.thumbnailPanel.getPreferredSize().width,
                              StyleConstants.WINDOW_HEIGHT + this.headerPanel.getPreferredSize().height));
         this.setVisible(true);

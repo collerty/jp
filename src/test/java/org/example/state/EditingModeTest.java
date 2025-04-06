@@ -14,7 +14,8 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class EditingModeTest {
+class EditingModeTest
+{
 
     private EditingMode editingMode;
     private Presentation mockPresentation;
@@ -22,148 +23,117 @@ class EditingModeTest {
     private ArrayList<Slide> mockSlides;
 
     @BeforeEach
-    void setUp() {
-        editingMode = new EditingMode();
-        mockPresentation = Mockito.mock(Presentation.class);
-        mockFrame = Mockito.mock(SlideViewerFrame.class);
-        mockSlides = new ArrayList<>();
-        
-        // Add mock slides
-        mockSlides.add(Mockito.mock(Slide.class));
-        mockSlides.add(Mockito.mock(Slide.class));
-        mockSlides.add(Mockito.mock(Slide.class));
-        
-        // Setup mock presentation
-        when(mockPresentation.getSlideViewerFrame()).thenReturn(mockFrame);
-        when(mockPresentation.getShowList()).thenReturn(mockSlides);
-        when(mockPresentation.getSize()).thenReturn(mockSlides.size());
+    void setUp()
+    {
+        this.editingMode = new EditingMode();
+        this.mockPresentation = Mockito.mock(Presentation.class);
+        this.mockFrame = Mockito.mock(SlideViewerFrame.class);
+        this.mockSlides = new ArrayList<>();
+
+        this.mockSlides.add(Mockito.mock(Slide.class));
+        this.mockSlides.add(Mockito.mock(Slide.class));
+        this.mockSlides.add(Mockito.mock(Slide.class));
+
+        when(this.mockPresentation.getSlideViewerFrame()).thenReturn(this.mockFrame);
+        when(this.mockPresentation.getShowList()).thenReturn(this.mockSlides);
+        when(this.mockPresentation.getSize()).thenReturn(this.mockSlides.size());
     }
 
     @Test
-    void nextSlide_whenNotAtEndOfPresentation_incrementsSlideNumber() {
-        // Test next slide when not at the end
-        when(mockPresentation.getSlideNumber()).thenReturn(0);
-        
-        editingMode.nextSlide(mockPresentation);
-        
-        verify(mockPresentation).setSlideNumber(1);
-        
-        // Test next slide when at the end
-        when(mockPresentation.getSlideNumber()).thenReturn(mockSlides.size() - 1);
-        
-        editingMode.nextSlide(mockPresentation);
-        
-        // Should not change slide number when at the end
-        verify(mockPresentation, never()).setSlideNumber(mockSlides.size());
+    void nextSlide_whenNotAtEndOfPresentation_incrementsSlideNumber()
+    {
+        when(this.mockPresentation.getSlideNumber()).thenReturn(0);
+
+        this.editingMode.nextSlide(this.mockPresentation);
+
+        verify(this.mockPresentation).setSlideNumber(1);
+
+        when(this.mockPresentation.getSlideNumber()).thenReturn(this.mockSlides.size() - 1);
+
+        this.editingMode.nextSlide(this.mockPresentation);
+
+        verify(this.mockPresentation, never()).setSlideNumber(this.mockSlides.size());
     }
 
     @Test
-    void prevSlide_whenNotAtBeginningOfPresentation_decrementsSlideNumber() {
-        // Test prev slide when not at the beginning
-        when(mockPresentation.getSlideNumber()).thenReturn(1);
-        
-        editingMode.prevSlide(mockPresentation);
-        
-        verify(mockPresentation).setSlideNumber(0);
-        
-        // Test prev slide when at the beginning
-        when(mockPresentation.getSlideNumber()).thenReturn(0);
-        
-        editingMode.prevSlide(mockPresentation);
-        
-        // Should not change slide number when at the beginning
-        verify(mockPresentation, never()).setSlideNumber(-1);
+    void prevSlide_whenNotAtBeginningOfPresentation_decrementsSlideNumber()
+    {
+        when(this.mockPresentation.getSlideNumber()).thenReturn(1);
+
+        this.editingMode.prevSlide(this.mockPresentation);
+
+        verify(this.mockPresentation).setSlideNumber(0);
+
+        when(this.mockPresentation.getSlideNumber()).thenReturn(0);
+
+        this.editingMode.prevSlide(this.mockPresentation);
+
+        verify(this.mockPresentation, never()).setSlideNumber(-1);
     }
 
     @Test
-    void editSlide_whenCalled_changesStateToViewingMode() {
-        editingMode.editSlide(mockPresentation);
-        
-        // Should change state to ViewingMode
-        verify(mockPresentation).setCurrentState(any(ViewingMode.class));
-        
-        // Should call exitEditMode on the frame
-        verify(mockFrame).exitEditMode();
+    void editSlide_whenCalled_changesStateToViewingMode()
+    {
+        this.editingMode.editSlide(this.mockPresentation);
+
+        verify(this.mockPresentation).setCurrentState(any(ViewingMode.class));
+
+        verify(this.mockFrame).exitEditMode();
     }
 
     @Test
-    void enterFullscreen_whenCalled_doesNothing() {
-        editingMode.enterFullscreen(mockPresentation);
-        
-        // Should not interact with presentation or frame
-        verify(mockPresentation, never()).setCurrentState(any());
-        verify(mockFrame, never()).enterFullScreen();
-        verify(mockFrame, never()).exitFullScreen();
+    void enterFullscreen_whenCalled_doesNothing()
+    {
+        this.editingMode.enterFullscreen(this.mockPresentation);
+
+        verify(this.mockPresentation, never()).setCurrentState(any());
+        verify(this.mockFrame, never()).enterFullScreen();
+        verify(this.mockFrame, never()).exitFullScreen();
     }
 
     @Test
-    void clear_whenCalled_doesNothing() {
-        editingMode.clear(mockPresentation);
-        
-        // Should not interact with presentation
-        verify(mockPresentation, never()).setShowList(any());
-        verify(mockPresentation, never()).setCurrentSlideNumber(anyInt());
-        verify(mockPresentation, never()).setTitle(anyString());
+    void clear_whenCalled_doesNothing()
+    {
+        this.editingMode.clear(this.mockPresentation);
+
+        verify(this.mockPresentation, never()).setShowList(any());
+        verify(this.mockPresentation, never()).setCurrentSlideNumber(anyInt());
+        verify(this.mockPresentation, never()).setTitle(anyString());
     }
 
     @Test
-    void addSlide_whenCalled_addsSlideAndMovesToIt() {
+    void addSlide_whenCalled_addsSlideAndMovesToIt()
+    {
         Slide mockSlide = Mockito.mock(Slide.class);
-        
-        // Initial size is 3
-        int initialSize = mockSlides.size();
-        when(mockPresentation.getSize()).thenReturn(initialSize + 1);  // Size after adding the slide
-        
-        editingMode.addSlide(mockPresentation, mockSlide);
-        
-        // Verify showList is retrieved to add the slide
-        verify(mockPresentation).getShowList();
-        
-        // Verify slide is added to the list
-        assertEquals(initialSize + 1, mockSlides.size());
-        assertTrue(mockSlides.contains(mockSlide));
-        
-        // Verify slide number is updated to the new slide
-        verify(mockPresentation).setSlideNumber(initialSize);
-        
-        // Verify frame focus is maintained
-        verify(mockFrame).requestFocus();
-        verify(mockFrame).requestFocusInWindow();
-        verify(mockFrame).toFront();
+
+        int initialSize = this.mockSlides.size();
+        when(this.mockPresentation.getSize()).thenReturn(initialSize + 1);
+
+        this.editingMode.addSlide(this.mockPresentation, mockSlide);
+
+        verify(this.mockPresentation).getShowList();
+
+        assertEquals(initialSize + 1, this.mockSlides.size());
+        assertTrue(this.mockSlides.contains(mockSlide));
+
+        verify(this.mockPresentation).setSlideNumber(initialSize);
+
+        verify(this.mockFrame).requestFocus();
+        verify(this.mockFrame).requestFocusInWindow();
+        verify(this.mockFrame).toFront();
     }
 
-    @Test
-    @Disabled("Cannot test System.exit without SecurityManager")
-    void exit_whenUserConfirms_callsSystemExit() {
-        // This test is disabled because we can't easily test System.exit calls
-        // without a SecurityManager, which requires more setup
-    }
 
     @Test
-    void exit_whenUserCancels_doesNotExit() {
-        // Using a simpler approach that doesn't require mocking static methods
-        // Just verify the dialog shows up by mocking JOptionPane
-        try (var mockedStatic = mockStatic(JOptionPane.class)) {
-            // Configure the mock to return NO_OPTION (user cancels)
-            mockedStatic.when(() -> JOptionPane.showConfirmDialog(
-                    isNull(),
-                    anyString(),
-                    anyString(),
-                    anyInt(),
-                    anyInt()
-            )).thenReturn(JOptionPane.NO_OPTION);
-            
-            // Execute the method (should not call System.exit)
-            editingMode.exit(mockPresentation, 0);
-            
-            // Verify the dialog was shown
-            mockedStatic.verify(() -> JOptionPane.showConfirmDialog(
-                    isNull(),
-                    anyString(),
-                    anyString(),
-                    anyInt(),
-                    anyInt()
-            ));
+    void exit_whenUserCancels_doesNotExit()
+    {
+        try (var mockedStatic = mockStatic(JOptionPane.class))
+        {
+            mockedStatic.when(() -> JOptionPane.showConfirmDialog(isNull(), anyString(), anyString(), anyInt(), anyInt())).thenReturn(JOptionPane.NO_OPTION);
+
+            this.editingMode.exit(this.mockPresentation, 0);
+
+            mockedStatic.verify(() -> JOptionPane.showConfirmDialog(isNull(), anyString(), anyString(), anyInt(), anyInt()));
         }
     }
 } 

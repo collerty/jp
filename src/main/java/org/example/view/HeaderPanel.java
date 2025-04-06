@@ -82,30 +82,23 @@ public class HeaderPanel extends JPanel
                 {
                     int level = presentation.getCurrentSlide().getSize() + 1;
                     
-                    // Get formatting choices
                     int boldChoice = JOptionPane.showConfirmDialog(null, "Do you want the text to be bold?", "Bold", JOptionPane.YES_NO_OPTION);
                     boolean isBold = (boldChoice == JOptionPane.YES_OPTION);
                     
                     int italicChoice = JOptionPane.showConfirmDialog(null, "Do you want the text to be italic?", "Italic", JOptionPane.YES_NO_OPTION);
                     boolean isItalic = (italicChoice == JOptionPane.YES_OPTION);
                     
-                    // Use the factory to create the formatted text item
                     SlideItem item = SlideItemFactory.createFormattedTextItem(level, text, isBold, isItalic);
                     
-                    // Log the instance type for debugging
-                    System.out.println("Created item type: " + item.getClass().getSimpleName());
-                    
+
                     presentation.getCurrentSlide().append(item);
                     
-                    // Force a complete update of the entire slide viewer component
                     presentation.getSlideViewComponent().update(presentation, presentation.getCurrentSlide());
                     
-                    // Request multiple repaints to ensure proper rendering
                     SwingUtilities.invokeLater(() -> {
                         presentation.getSlideViewComponent().revalidate();
                         presentation.getSlideViewComponent().repaint();
                         
-                        // Schedule another repaint to ensure decorations are visible
                         SwingUtilities.invokeLater(() -> {
                             presentation.getSlideViewComponent().repaint();
                         });
@@ -127,13 +120,11 @@ public class HeaderPanel extends JPanel
             }
         });
 
-        // Add buttons to the buttons panel
         buttonsPanel.add(this.addSlideButton);
         buttonsPanel.add(this.addTextSlideButton);
         buttonsPanel.add(this.addTextButton);
         buttonsPanel.add(this.addImageButton);
         
-        // Add the buttons panel to the container with GridBagConstraints for perfect centering
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -143,7 +134,6 @@ public class HeaderPanel extends JPanel
         gbc.anchor = GridBagConstraints.CENTER;
         buttonContainer.add(buttonsPanel, gbc);
 
-        // Create a wrapper with padding
         JPanel containerWrapper = new JPanel(new BorderLayout());
         containerWrapper.setOpaque(false);
         containerWrapper.setBorder(BorderFactory.createEmptyBorder(
@@ -154,14 +144,12 @@ public class HeaderPanel extends JPanel
         ));
         containerWrapper.add(buttonContainer, BorderLayout.CENTER);
 
-        // Add the wrapper to the main panel
         this.add(containerWrapper, BorderLayout.CENTER);
     }
 
     private void handleImageAddition() {
         java.io.File selectedFile = FileChooserUtils.selectImageFile(this);
         if (selectedFile != null) {
-            // Use factory to create BitmapItem
             int level = this.presentation.getCurrentSlide().getSize() + 1;
             SlideItem bitmapItem = SlideItemFactory.createBitmapItem(level, selectedFile.getAbsolutePath());
 
@@ -172,7 +160,6 @@ public class HeaderPanel extends JPanel
     }
 
     private void maintainFrameFocus() {
-        // Ensure frame maintains focus
         if (this.presentation.getSlideViewerFrame() != null) {
             this.presentation.getSlideViewerFrame().requestFocus();
             this.presentation.getSlideViewerFrame().requestFocusInWindow();
@@ -205,7 +192,6 @@ public class HeaderPanel extends JPanel
                 super.paintComponent(g);
             }
             
-            // Force the button to respect its preferred size
             @Override
             public Dimension getMinimumSize() {
                 return this.getPreferredSize();
@@ -224,7 +210,6 @@ public class HeaderPanel extends JPanel
         button.setFont(StyleConstants.BODY_FONT);
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-        // Set the preferred size
         button.setPreferredSize(new Dimension(StyleConstants.BUTTON_WIDTH, StyleConstants.BUTTON_HEIGHT));
 
         return button;

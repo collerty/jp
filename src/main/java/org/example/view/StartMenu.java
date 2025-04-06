@@ -47,7 +47,6 @@ public class StartMenu extends JFrame
         this.add(this.createMenuButton(DEMO_PRESENTATION, this::loadDemoPresentation));
     }
 
-    // Creates a menu button with consistent styling
     private JButton createMenuButton(String text, Runnable action)
     {
         JButton button = new JButton(text);
@@ -58,7 +57,6 @@ public class StartMenu extends JFrame
 
     private void showStartMenu()
     {
-        // Request focus for the frame to avoid focusing on buttons
         this.requestFocusInWindow();
         this.setVisible(true);
     }
@@ -76,27 +74,23 @@ public class StartMenu extends JFrame
         }
     }
 
-    // Creates a new SlideViewerFrame with the given title
     private SlideViewerFrame createViewerFrame(String title)
     {
         return new SlideViewerFrame(title, presentation);
     }
 
-    // Sets up the viewer frame and updates the presentation
     private void setupViewerFrame(SlideViewerFrame viewerFrame)
     {
         this.presentation.setShowView(viewerFrame.getSlideViewerComponent());
         this.dispose();
     }
 
-    // Refreshes the UI components of the viewer frame
     private void refreshViewerFrame(SlideViewerFrame viewerFrame)
     {
         viewerFrame.getSlideViewerComponent().revalidate();
         viewerFrame.getSlideViewerComponent().repaint();
     }
 
-    // Common pattern for loading presentations
     private void loadPresentation(Runnable loader, String title, String errorMessage)
     {
         try
@@ -151,7 +145,6 @@ public class StartMenu extends JFrame
         }
     }
 
-    // Shows an error dialog with the given message and exception
     private void showError(String message, Exception e)
     {
         String errorMessage = message;

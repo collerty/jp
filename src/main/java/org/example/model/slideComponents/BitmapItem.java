@@ -48,17 +48,14 @@ public BitmapItem(int level, String name) {
 }
 
 
-// An empty bitmap-item
 	public BitmapItem() {
 		this(0, null);
 	}
 
-// give the filename of the image
 	public String getName() {
 		return this.imageName;
 	}
 
-// give the  bounding box of the image
 	public Rectangle getBoundingBox(Graphics g, ImageObserver observer, float scale, Style myStyle) {
 		return new Rectangle((int) (myStyle.getIndent() * scale), 0,
 				(int) (this.bufferedImage.getWidth(observer) * scale),
@@ -66,7 +63,6 @@ public BitmapItem(int level, String name) {
 				(int) (this.bufferedImage.getHeight(observer) * scale));
 	}
 
-// draw the image
 	public void draw(int x, int y, float scale, Graphics g, Style myStyle, ImageObserver observer) {
 		int width = x + (int) (myStyle.getIndent() * scale);
 		int height = y + (int) (myStyle.getLeading() * scale);

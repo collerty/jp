@@ -54,10 +54,8 @@ public class SlideThumbnailPanel extends JPanel
 
     public void updateThumbnails()
     {
-        // Clear all existing thumbnails
         this.thumbnailsPanel.removeAll();
         
-        // Add a message if no slides
         if (this.presentation.getSize() == 0) {
             JLabel emptyLabel = new JLabel("No slides available");
             emptyLabel.setForeground(SNOW_WHITE);
@@ -74,7 +72,6 @@ public class SlideThumbnailPanel extends JPanel
             return;
         }
         
-        // Add thumbnails for each slide
         for (int i = 0; i < this.presentation.getSize(); i++)
         {
             Slide slide = this.presentation.getSlide(i);

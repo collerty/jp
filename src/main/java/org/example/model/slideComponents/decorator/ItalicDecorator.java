@@ -17,10 +17,8 @@ public class ItalicDecorator extends SlideItemDecorator
     @Override
     public void draw(int x, int y, float scale, Graphics g, Style style, ImageObserver observer)
     {
-        // First call super to clear cache
         super.draw(x, y, scale, g, style, observer);
         
-        // Apply italic formatting
         style.setFont(super.modifyFont(style, scale, Font.ITALIC));
         super.getDecoratedItem().draw(x, y, scale, g, style, observer);
     }
