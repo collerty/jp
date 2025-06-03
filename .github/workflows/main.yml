@@ -25,6 +25,9 @@ jobs:
       - name: Build with Maven
         run: mvn -B package
 
+      - name: Run Unit Tests
+        run: mvn test
+
   test:
     if: github.ref == 'refs/heads/testing'
     runs-on: ubuntu-latest
@@ -41,8 +44,8 @@ jobs:
       - name: Build with Maven
         run: mvn -B package
 
-      - name: Run Unit Tests
-        run: mvn test
+      - name: Run Integration Tests
+        run: mvn verify # run any checks on results of integration tests to ensure quality criteria are met
 
   deploy-acceptance:
     if: github.ref == 'refs/heads/acceptance'
