@@ -108,6 +108,7 @@ public class XMLAccessor extends Accessor
         String type = attributes.getNamedItem(KIND).getTextContent();
         if (TEXT.equals(type))
         {
+
             slide.append(new TextItem(level, item.getTextContent()));
         }
         else
