@@ -20,7 +20,7 @@ designed to demonstrate various design patterns in Java, including the Factory M
 ```bash 
 mvn compile
 mvn exec:java
-```
+```  
 
 ## How to Run **Tests**
 
