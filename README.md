@@ -24,7 +24,7 @@ mvn exec:java
 
 ## How to Run **Tests**
 
-Make sure you have **Maven** installed.
+Make sure you have **Maven** installed. 
 
 To run the **Tests**:
 
