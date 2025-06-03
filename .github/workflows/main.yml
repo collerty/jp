@@ -1,39 +1,68 @@
-name: CI
+name: DTAP Pipeline
 
 on:
   push:
     branches:
+      - develop
+      - testing
+      - acceptance
       - main
-      - ci-cd
-  pull_request:
-    branches:
-      - main
-      - ci-cd
+
 jobs:
   build:
-
+    if: github.ref == 'refs/heads/develop'
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up JDK 23
+      - name: Set up Java
         uses: actions/setup-java@v4
         with:
           java-version: '23'
-          distribution: 'temurin'  # Other options: 'zulu', 'adopt'
-
-      - name: Cache Maven packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
+          distribution: 'temurin'
 
       - name: Build with Maven
-        run: mvn -B package --file pom.xml
+        run: mvn -B package
 
-      - name: Run tests
+      - name: Run Unit Tests
         run: mvn test
+
+  test:
+    if: github.ref == 'refs/heads/testing'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '23'
+          distribution: 'temurin'
+          
+      - name: Build with Maven
+        run: mvn -B package
+
+      - name: Run Integration Tests
+        run: mvn verify # run any checks on results of integration tests to ensure quality criteria are met
+
+  deploy-acceptance:
+    if: github.ref == 'refs/heads/acceptance'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy to Staging
+        run: echo "Deploying to acceptance (staging) environment"
+
+  deploy-production:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy to Production
+        run: echo "Deploying to production server"
