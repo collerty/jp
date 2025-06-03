@@ -5,10 +5,6 @@ import org.example.model.slideComponents.TextItem;
 import org.example.model.slideComponents.decorator.BoldDecorator;
 import org.example.model.slideComponents.decorator.ItalicDecorator;
 
-/**
- * Factory for creating TextItem instances.
- * Implements the Abstract Factory pattern.
- */
 public class TextItemFactory implements AbstractSlideItemFactory {
     
     @Override
@@ -30,10 +26,7 @@ public class TextItemFactory implements AbstractSlideItemFactory {
     public SlideItem createBoldItalicItem(int level, String content) {
         return new BoldDecorator(new ItalicDecorator(new TextItem(level, content)));
     }
-    
-    /**
-     * Creates a formatted text item based on the given formatting options
-     */
+
     public SlideItem createFormattedTextItem(int level, String text, boolean bold, boolean italic) {
         if (bold && italic) {
             return this.createBoldItalicItem(level, text);

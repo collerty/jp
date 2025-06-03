@@ -15,16 +15,16 @@ designed to demonstrate various design patterns in Java, including the Factory M
 - `F` – Toggle **Fullscreen Mode**
 - `Arrow Up` – Go to **Previous Slide**
 - `Arrow Down` – Go to **Next Slide**
-- `Q` – **Exit** the application
+- `Q` – **Exit** the application 
 ## How to Run Project
-```bash
+```bash 
 mvn compile
 mvn exec:java
 ```
 
 ## How to Run **Tests**
 
-Make sure you have **Maven** installed.
+Make sure you have **Maven** installed. 
 
 To run the **Tests**:
 
