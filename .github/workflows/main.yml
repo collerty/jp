@@ -25,6 +25,9 @@ jobs:
       - name: Build with Maven
         run: mvn -B package
 
+      - name: Run Unit Tests
+        run: mvn test
+
   test:
     if: github.ref == 'refs/heads/testing'
     runs-on: ubuntu-latest
@@ -41,8 +44,8 @@ jobs:
       - name: Build with Maven
         run: mvn -B package
 
-      - name: Run Unit Tests
-        run: mvn test
+      - name: Run Integration Tests
+        run: mvn verify # run any checks on results of integration tests to ensure quality criteria are met
 
   deploy-acceptance:
     if: github.ref == 'refs/heads/acceptance'
@@ -51,8 +54,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Deploy to Staging
-        run: echo "Deploying to acceptance (staging) environment"
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '23'
+          distribution: 'temurin'
+
+      - name: Build with Maven
+        run: mvn package
+
+      - name: Run Acceptance (E2E) Tests
+        run: mvn verify -Pacceptance-tests
 
   deploy-production:
     if: github.ref == 'refs/heads/main'
