@@ -31,25 +31,15 @@ public abstract class SlideItemDecorator extends SlideItem
     public Font modifyFont(Style style, float scale, int fontStyle)
     {
         Font font = style.getFont();
-        return font.deriveFont(fontStyle | font.getStyle(), scale);
+        return font.deriveFont(fontStyle | font.getStyle(), scale * style.getFont().getSize());
     }
 
     @Override
     public Rectangle getBoundingBox(Graphics g, ImageObserver observer, float scale, Style style)
     {
-        // Clear text item cache if this is a TextItem decorator
-        if (this.decoratedItem instanceof TextItem) {
-            ((TextItem) this.decoratedItem).clearLayoutCache();
-        }
         return this.decoratedItem.getBoundingBox(g, observer, scale, style);
     }
     
     @Override
-    public void draw(int x, int y, float scale, Graphics g, Style style, ImageObserver observer) {
-        // Clear text item cache before drawing to ensure formatting is applied
-        if (this.decoratedItem instanceof TextItem) {
-            ((TextItem) this.decoratedItem).clearLayoutCache();
-        }
-        // Implementation should be provided by subclasses
-    }
+    public abstract void draw(int x, int y, float scale, Graphics g, Style style, ImageObserver observer);
 }
