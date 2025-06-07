@@ -78,7 +78,7 @@ public class SlideViewerComponent extends JComponent
             System.out.println("  - Frame is null, cannot update title");
         }
 
-        System.out.println("SlideViewerComponent.update() completed");
+//        System.out.println("SlideViewerComponent.update() completed");
     }
 
     // draw the slide
