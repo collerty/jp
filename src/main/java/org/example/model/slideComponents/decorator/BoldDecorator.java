@@ -22,7 +22,7 @@ public class BoldDecorator extends SlideItemDecorator
             style.getFont().getSize(),
             style.getLeading()
         );
-        newStyle.setFont(super.modifyFont(style, scale, Font.BOLD));
-        super.getDecoratedItem().draw(x, y, scale, g, newStyle, observer);
+        newStyle.setFont(this.modifyFont(style, scale, Font.BOLD));
+        this.getDecoratedItem().draw(x, y, scale, g, newStyle, observer);
     }
 }
