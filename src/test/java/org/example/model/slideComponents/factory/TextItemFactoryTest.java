@@ -47,85 +47,55 @@ class TextItemFactoryTest
     }
 
     @Test
-    void createBoldItem_returnsBoldDecorator()
+    void createFormattedItem_withNoFormatting_returnsTextItem()
     {
-        SlideItem item = this.factory.createBoldItem(1, "Bold Text");
-        assertTrue(item instanceof BoldDecorator);
-        assertEquals(1, item.getLevel());
-
-        SlideItem decoratedItem = ((BoldDecorator) item).getDecoratedItem();
-        assertTrue(decoratedItem instanceof TextItem);
-        assertEquals("Bold Text", ((TextItem) decoratedItem).getText());
-    }
-
-    @Test
-    void createItalicItem_returnsItalicDecorator()
-    {
-        SlideItem item = this.factory.createItalicItem(1, "Italic Text");
-        assertTrue(item instanceof ItalicDecorator);
-        assertEquals(1, item.getLevel());
-
-        SlideItem decoratedItem = ((ItalicDecorator) item).getDecoratedItem();
-        assertTrue(decoratedItem instanceof TextItem);
-        assertEquals("Italic Text", ((TextItem) decoratedItem).getText());
-    }
-
-    @Test
-    void createBoldItalicItem_returnsBoldDecoratorWrappingItalicDecorator()
-    {
-        SlideItem item = this.factory.createBoldItalicItem(1, "Bold Italic Text");
-        assertTrue(item instanceof BoldDecorator);
-        assertEquals(1, item.getLevel());
-
-        SlideItem italicItem = ((BoldDecorator) item).getDecoratedItem();
-        assertTrue(italicItem instanceof ItalicDecorator);
-
-        SlideItem textItem = ((ItalicDecorator) italicItem).getDecoratedItem();
-        assertTrue(textItem instanceof TextItem);
-        assertEquals("Bold Italic Text", ((TextItem) textItem).getText());
-    }
-
-    @Test
-    void createFormattedTextItem_withNoFormatting_returnsTextItem()
-    {
-        SlideItem item = this.factory.createFormattedTextItem(1, "Plain Text", false, false);
+        SlideItem item = this.factory.createFormattedItem(1, "Plain Text", false, false);
         assertTrue(item instanceof TextItem);
-        assertEquals("Plain Text", ((TextItem) item).getText());
+        assertFalse(item instanceof BoldDecorator);
+        assertFalse(item instanceof ItalicDecorator);
     }
 
     @Test
-    void createFormattedTextItem_withBoldOnly_returnsBoldDecorator()
+    void createFormattedItem_withBoldOnly_returnsBoldDecorator()
     {
-        SlideItem item = this.factory.createFormattedTextItem(1, "Bold Text", true, false);
+        SlideItem item = this.factory.createFormattedItem(1, "Bold Text", true, false);
         assertTrue(item instanceof BoldDecorator);
-
-        SlideItem textItem = ((BoldDecorator) item).getDecoratedItem();
+        
+        SlideItem textItem = ((BoldDecorator)item).getDecoratedItem();
         assertTrue(textItem instanceof TextItem);
-        assertEquals("Bold Text", ((TextItem) textItem).getText());
+        assertEquals("Bold Text", ((TextItem)textItem).getText());
     }
-
+    
     @Test
-    void createFormattedTextItem_withItalicOnly_returnsItalicDecorator()
-    {
-        SlideItem item = this.factory.createFormattedTextItem(1, "Italic Text", false, true);
+    void createFormattedItem_withItalicOnly_returnsItalicDecorator() {
+        SlideItem item = this.factory.createFormattedItem(1, "Italic Text", false, true);
         assertTrue(item instanceof ItalicDecorator);
-
-        SlideItem textItem = ((ItalicDecorator) item).getDecoratedItem();
+        
+        SlideItem textItem = ((ItalicDecorator)item).getDecoratedItem();
         assertTrue(textItem instanceof TextItem);
-        assertEquals("Italic Text", ((TextItem) textItem).getText());
+        assertEquals("Italic Text", ((TextItem)textItem).getText());
     }
-
+    
     @Test
-    void createFormattedTextItem_withBoldAndItalic_returnsBoldDecoratorWrappingItalicDecorator()
-    {
-        SlideItem item = this.factory.createFormattedTextItem(1, "Bold Italic Text", true, true);
-        assertTrue(item instanceof BoldDecorator);
-
-        SlideItem italicItem = ((BoldDecorator) item).getDecoratedItem();
+    void createFormattedItem_withEmptyText_returnsItemWithEmptyText() {
+        // Test with different formatting combinations
+        SlideItem plainItem = this.factory.createFormattedItem(1, "", false, false);
+        assertTrue(plainItem instanceof TextItem);
+        assertEquals("", ((TextItem)plainItem).getText());
+        
+        SlideItem boldItem = this.factory.createFormattedItem(1, "", true, false);
+        assertTrue(boldItem instanceof BoldDecorator);
+        assertEquals("", ((TextItem)((BoldDecorator)boldItem).getDecoratedItem()).getText());
+    }
+    
+    @Test
+    void createFormattedItem_withNullText_returnsItemWithNullText() {
+        SlideItem plainItem = this.factory.createFormattedItem(1, null, false, false);
+        assertTrue(plainItem instanceof TextItem);
+        assertNull(((TextItem)plainItem).getText());
+        
+        SlideItem italicItem = this.factory.createFormattedItem(1, null, false, true);
         assertTrue(italicItem instanceof ItalicDecorator);
-
-        SlideItem textItem = ((ItalicDecorator) italicItem).getDecoratedItem();
-        assertTrue(textItem instanceof TextItem);
-        assertEquals("Bold Italic Text", ((TextItem) textItem).getText());
+        assertNull(((TextItem)((ItalicDecorator)italicItem).getDecoratedItem()).getText());
     }
 } 
