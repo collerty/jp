@@ -22,7 +22,7 @@ public class ItalicDecorator extends SlideItemDecorator
             style.getFont().getSize(),
             style.getLeading()
         );
-        newStyle.setFont(super.modifyFont(style, scale, Font.ITALIC));
-        super.getDecoratedItem().draw(x, y, scale, g, newStyle, observer);
+        newStyle.setFont(this.modifyFont(style, scale, Font.ITALIC));
+        this.getDecoratedItem().draw(x, y, scale, g, newStyle, observer);
     }
 }
