@@ -3,7 +3,9 @@ package org.example.view;
 import org.example.model.Presentation;
 import org.example.model.Slide;
 import org.example.model.slideComponents.SlideItem;
-import org.example.model.slideComponents.factory.SlideItemFactory;
+import org.example.model.slideComponents.factory.AbstractSlideItemFactory;
+import org.example.model.slideComponents.factory.BitmapItemFactory;
+import org.example.model.slideComponents.factory.TextItemFactory;
 import org.example.style.StyleConstants;
 import org.example.util.FileChooserUtils;
 
@@ -17,6 +19,8 @@ public class HeaderPanel extends JPanel
     private JButton addTextSlideButton;
     private JButton addTextButton;
     private JButton addImageButton;
+    private final TextItemFactory textItemFactory = new TextItemFactory();
+    private final AbstractSlideItemFactory bitmapItemFactory = new BitmapItemFactory();
 
     public HeaderPanel(Presentation presentation)
     {
@@ -63,8 +67,8 @@ public class HeaderPanel extends JPanel
         {
             Slide newSlide = new Slide();
             // Use factory to create TextItems
-            SlideItem titleItem = SlideItemFactory.createTextItem(1, "New Text Slide");
-            SlideItem textItem = SlideItemFactory.createTextItem(2, "Enter your text here");
+            SlideItem titleItem = this.textItemFactory.createItem(1, "New Text Slide");
+            SlideItem textItem = this.textItemFactory.createItem(2, "Enter your text here");
             newSlide.append(titleItem);
             newSlide.append(textItem);
             presentation.append(newSlide);
@@ -88,7 +92,7 @@ public class HeaderPanel extends JPanel
                     int italicChoice = JOptionPane.showConfirmDialog(null, "Do you want the text to be italic?", "Italic", JOptionPane.YES_NO_OPTION);
                     boolean isItalic = (italicChoice == JOptionPane.YES_OPTION);
                     
-                    SlideItem item = SlideItemFactory.createFormattedTextItem(level, text, isBold, isItalic);
+                    SlideItem item = this.textItemFactory.createFormattedItem(level, text, isBold, isItalic);
                     
 
                     presentation.getCurrentSlide().append(item);
@@ -151,7 +155,7 @@ public class HeaderPanel extends JPanel
         java.io.File selectedFile = FileChooserUtils.selectImageFile(this);
         if (selectedFile != null) {
             int level = this.presentation.getCurrentSlide().getSize() + 1;
-            SlideItem bitmapItem = SlideItemFactory.createBitmapItem(level, selectedFile.getAbsolutePath());
+            SlideItem bitmapItem = this.bitmapItemFactory.createItem(level, selectedFile.getAbsolutePath());
 
             this.presentation.getCurrentSlide().append(bitmapItem);
             this.presentation.getSlideViewComponent().update(this.presentation, this.presentation.getCurrentSlide());
