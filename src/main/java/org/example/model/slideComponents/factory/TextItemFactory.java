@@ -2,39 +2,25 @@ package org.example.model.slideComponents.factory;
 
 import org.example.model.slideComponents.SlideItem;
 import org.example.model.slideComponents.TextItem;
-import org.example.model.slideComponents.decorator.BoldDecorator;
-import org.example.model.slideComponents.decorator.ItalicDecorator;
+import org.example.model.slideComponents.util.SlideItemDecoratorUtil;
+import org.example.model.slideComponents.util.TextDecoratorType;
+import org.example.model.slideComponents.factory.AbstractSlideItemFactory;
 
-public class TextItemFactory implements AbstractSlideItemFactory {
-    
+import java.util.ArrayList;
+import java.util.List;
+
+public class TextItemFactory implements AbstractSlideItemFactory
+{
+
     @Override
     public SlideItem createItem(int level, String content) {
         return new TextItem(level, content);
     }
-    
-    @Override
-    public SlideItem createBoldItem(int level, String content) {
-        return new BoldDecorator(new TextItem(level, content));
-    }
-    
-    @Override
-    public SlideItem createItalicItem(int level, String content) {
-        return new ItalicDecorator(new TextItem(level, content));
-    }
-    
-    @Override
-    public SlideItem createBoldItalicItem(int level, String content) {
-        return new BoldDecorator(new ItalicDecorator(new TextItem(level, content)));
-    }
 
-    public SlideItem createFormattedTextItem(int level, String text, boolean bold, boolean italic) {
-        if (bold && italic) {
-            return this.createBoldItalicItem(level, text);
-        } else if (bold) {
-            return this.createBoldItem(level, text);
-        } else if (italic) {
-            return this.createItalicItem(level, text);
-        }
-        return this.createItem(level, text);
+    public SlideItem createFormattedItem(int level, String content, boolean bold, boolean italic) {
+        List<TextDecoratorType> decorators = new ArrayList<>();
+        if (bold) decorators.add(TextDecoratorType.BOLD);
+        if (italic) decorators.add(TextDecoratorType.ITALIC);
+        return SlideItemDecoratorUtil.applyDecorators(new TextItem(level, content), decorators);
     }
-} 
+}

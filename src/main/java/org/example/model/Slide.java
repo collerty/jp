@@ -1,9 +1,8 @@
 package org.example.model;
 
 import org.example.model.slideComponents.SlideItem;
-import org.example.model.slideComponents.TextItem;
-import org.example.model.slideComponents.decorator.BoldDecorator;
-import org.example.model.slideComponents.decorator.ItalicDecorator;
+import org.example.model.slideComponents.factory.AbstractSlideItemFactory;
+import org.example.model.slideComponents.factory.TextItemFactory;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
@@ -17,6 +16,7 @@ public class Slide
     public final static int HEIGHT = 720;
     protected String title;
     protected Vector<SlideItem> items;
+    private final AbstractSlideItemFactory factory = new TextItemFactory();
 
     public Slide()
     {
@@ -40,7 +40,7 @@ public class Slide
 
     public void append(int level, String message)
     {
-        this.append(new TextItem(level, message));
+        this.append(this.factory.createItem(level, message));
     }
 
     public SlideItem getSlideItem(int number)
@@ -63,13 +63,13 @@ public class Slide
         float scale = this.getScale(area);
         int y = area.y;
         // Title is handled separately
-        SlideItem slideItem = new TextItem(0, this.getTitle());
+        SlideItem slideItem = this.factory.createItem(0, this.getTitle());
         Style style = Style.getStyle(slideItem.getLevel());
         slideItem.draw(area.x, y, scale, g, style, view);
         y += slideItem.getBoundingBox(g, view, scale, style).height;
         for (int number = 0; number < this.getSize(); number++)
         {
-            slideItem =(SlideItem) this.getSlideItems().elementAt(number);
+            slideItem = (SlideItem) this.getSlideItems().elementAt(number);
 
             style = Style.getStyle(slideItem.getLevel());
 
@@ -95,7 +95,7 @@ public class Slide
         ImageObserver observer = null; // We don't need an observer for measurements
 
         // Add title height
-        SlideItem titleItem = new TextItem(0, this.getTitle());
+        SlideItem titleItem = this.factory.createItem(0, this.getTitle());
         Style titleStyle = Style.getStyle(titleItem.getLevel());
         Rectangle titleBounds = titleItem.getBoundingBox(g2d, observer, 1.0f, titleStyle);
         totalHeight += titleBounds.height;
