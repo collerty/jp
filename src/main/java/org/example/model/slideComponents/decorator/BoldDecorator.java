@@ -16,9 +16,13 @@ public class BoldDecorator extends SlideItemDecorator
     @Override
     public void draw(int x, int y, float scale, Graphics g, Style style, ImageObserver observer)
     {
-        super.draw(x, y, scale, g, style, observer);
-        
-        style.setFont(super.modifyFont(style, scale, Font.BOLD));
-        super.getDecoratedItem().draw(x, y, scale, g, style, observer);
+        Style newStyle = new Style(
+            style.getIndent(),
+            style.getColor(),
+            style.getFont().getSize(),
+            style.getLeading()
+        );
+        newStyle.setFont(super.modifyFont(style, scale, Font.BOLD));
+        super.getDecoratedItem().draw(x, y, scale, g, newStyle, observer);
     }
 }
