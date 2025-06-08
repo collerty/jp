@@ -15,6 +15,9 @@ import org.example.model.slideComponents.BitmapItem;
 import org.example.model.Presentation;
 import org.example.model.Slide;
 import org.example.model.slideComponents.TextItem;
+import org.example.model.slideComponents.factory.AbstractSlideItemFactory;
+import org.example.model.slideComponents.factory.BitmapItemFactory;
+import org.example.model.slideComponents.factory.TextItemFactory;
 import org.xml.sax.SAXException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -31,6 +34,9 @@ public class XMLAccessor extends Accessor
     protected static final String KIND = "kind";
     protected static final String TEXT = "text";
     protected static final String IMAGE = "image";
+    private final AbstractSlideItemFactory bitmapItemFactory = new BitmapItemFactory();
+    private final AbstractSlideItemFactory textItemFactory = new TextItemFactory();
+
 
     /**
      * tekst van messages
@@ -74,16 +80,13 @@ public class XMLAccessor extends Accessor
                     this.loadSlideItem(slide, item);
                 }
             }
-        }
-        catch (IOException iox)
+        } catch (IOException iox)
         {
             System.err.println(iox.toString());
-        }
-        catch (SAXException sax)
+        } catch (SAXException sax)
         {
             System.err.println(sax.getMessage());
-        }
-        catch (ParserConfigurationException pcx)
+        } catch (ParserConfigurationException pcx)
         {
             System.err.println(PCE);
         }
@@ -99,8 +102,7 @@ public class XMLAccessor extends Accessor
             try
             {
                 level = Integer.parseInt(levelText);
-            }
-            catch (NumberFormatException x)
+            } catch (NumberFormatException x)
             {
                 System.err.println(NFE);
             }
@@ -109,13 +111,13 @@ public class XMLAccessor extends Accessor
         if (TEXT.equals(type))
         {
 
-            slide.append(new TextItem(level, item.getTextContent()));
+            slide.append(this.textItemFactory.createItem(level, item.getTextContent()));
         }
         else
         {
             if (IMAGE.equals(type))
             {
-                slide.append(new BitmapItem(level, item.getTextContent()));
+                slide.append(this.bitmapItemFactory.createItem(level, item.getTextContent()));
             }
             else
             {

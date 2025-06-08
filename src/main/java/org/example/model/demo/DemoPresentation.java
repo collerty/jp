@@ -4,11 +4,14 @@ import org.example.filehandler.Accessor;
 import org.example.model.slideComponents.BitmapItem;
 import org.example.model.Presentation;
 import org.example.model.Slide;
+import org.example.model.slideComponents.factory.AbstractSlideItemFactory;
+import org.example.model.slideComponents.factory.BitmapItemFactory;
+import org.example.model.slideComponents.factory.TextItemFactory;
 
 
 public class DemoPresentation extends Accessor
 {
-
+	private final AbstractSlideItemFactory bitmapItemFactory = new BitmapItemFactory();
 	public void loadFile(Presentation presentation, String unusedFilename) {
 		presentation.setTitle("Demo java.com.Presentation");
 		Slide slide;
@@ -43,7 +46,7 @@ public class DemoPresentation extends Accessor
 		slide.append(2, "use File->Open from the menu.");
 		slide.append(1, " ");
 		slide.append(1, "This is the end of the presentation.");
-		slide.append(new BitmapItem(1, "JabberPoint.jpg"));
+		slide.append(this.bitmapItemFactory.createItem(1, "JabberPoint.jpg"));
 		presentation.append(slide);
 	}
 
