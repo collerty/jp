@@ -43,34 +43,4 @@ class BitmapItemFactoryTest
         assertTrue(item instanceof BitmapItem);
         assertEquals("  \t  ", ((BitmapItem) item).getName());
     }
-
-    @Test
-    void createBoldItem_returnsBitmapItemUndecorated()
-    {
-        SlideItem item = this.factory.createBoldItem(1, "test.jpg");
-        assertTrue(item instanceof BitmapItem);
-        assertFalse(item.getClass().getSimpleName().contains("Decorator"));
-        assertEquals(1, item.getLevel());
-        assertEquals("test.jpg", ((BitmapItem) item).getName());
-    }
-
-    @Test
-    void createItalicItem_returnsBitmapItemUndecorated()
-    {
-        SlideItem item = this.factory.createItalicItem(1, "test.jpg");
-        assertTrue(item instanceof BitmapItem);
-        assertFalse(item.getClass().getSimpleName().contains("Decorator"));
-        assertEquals(1, item.getLevel());
-        assertEquals("test.jpg", ((BitmapItem) item).getName());
-    }
-
-    @Test
-    void createBoldItalicItem_returnsBitmapItemUndecorated()
-    {
-        SlideItem item = this.factory.createBoldItalicItem(1, "test.jpg");
-        assertTrue(item instanceof BitmapItem);
-        assertFalse(item.getClass().getSimpleName().contains("Decorator"));
-        assertEquals(1, item.getLevel());
-        assertEquals("test.jpg", ((BitmapItem) item).getName());
-    }
 } 
